@@ -4,10 +4,23 @@ import { JsonPatchBuilder, modifyPatchField } from '../../support/utilities/json
 import { UserPatchFactory } from '../../support/factories/userPatch'
 import { patchUserViaRules, getUsersViaProfile, SERVICE_CREDENTIALS } from '../../support/api/rulesClient'
 import { attachHttpExchangeReport } from '../../support/helpers/apiExchange'
-import { pollGetUsersField } from '../../support/utilities/retry'
+import { readFixture } from '../../support/helpers/fixtures'
+import {
+  runPatchTests,
+  runMandatoryFieldPatchTests,
+  executeSuccessfulPatchFlow,
+  type PatchTestCase,
+} from '../../support/utilities/patchTests'
 import { validateSchema } from '../../support/helpers'
 import { visitAuthenticated } from '../../support/auth'
 import { DEMO_EMAIL, DEMO_PASSWORD } from '../../support/helpers'
+
+interface PatchPayloadFixture {
+  validNamePatches: Array<{ label: string; patches: PatchTestCase['patches']; userId?: number }>
+  invalidPatches: Array<{ label: string; patches: PatchTestCase['patches']; userId?: number }>
+}
+
+const patchPayloads = readFixture<PatchPayloadFixture>('api/patch-payloads.json')
 
 test.describe('API — Rules engine patterns', { tag: ['@api', '@regression'] }, () => {
   test.describe('JSON Patch utilities', () => {
@@ -43,15 +56,28 @@ test.describe('API — Rules engine patterns', { tag: ['@api', '@regression'] },
       expect([EXPECT.happy, EXPECT.noContent, EXPECT.notFound, EXPECT.badRequest, EXPECT.validationError, EXPECT.methodNotAllowed])
         .toContain(response.status())
     })
-
-    test('rejects invalid patch path', async ({ request, authToken }) => {
-      const response = await patchUserViaRules(request, authToken, 999, [
-        { op: 'replace', path: '/invalid', value: null },
-      ])
-      expect([EXPECT.badRequest, EXPECT.notFound, EXPECT.validationError, EXPECT.serverError])
-        .toContain(response.status())
-    })
   })
+
+  runPatchTests(
+    'Data-driven — valid name payloads',
+    patchPayloads.validNamePatches.map((item) => ({
+      label: item.label,
+      patches: item.patches,
+      userId: item.userId,
+    })),
+    { tag: '@api' },
+  )
+
+  runPatchTests(
+    'Data-driven — invalid payloads',
+    patchPayloads.invalidPatches.map((item) => ({
+      label: item.label,
+      patches: item.patches,
+      userId: item.userId,
+      allowedStatuses: [EXPECT.badRequest, EXPECT.notFound, EXPECT.validationError, EXPECT.serverError],
+    })),
+    { tag: '@api' },
+  )
 
   test.describe('Read-after-write', () => {
     test('GET /api/users after auth returns valid user list', async ({ request, authToken }, testInfo) => {
@@ -72,31 +98,15 @@ test.describe('API — Rules engine patterns', { tag: ['@api', '@regression'] },
     test('PATCH flow with poll when write API succeeds', async ({ request, authToken }) => {
       const uniqueName = `PatchFlow ${Date.now()}`
       const patches = UserPatchFactory.createSimpleNamePatch(uniqueName)
-      const patchRes = await patchUserViaRules(request, authToken, 1, patches)
-
-      if (patchRes.status() === EXPECT.happy || patchRes.status() === EXPECT.noContent) {
-        const match = await pollGetUsersField(request, 'name', uniqueName, {
-          headers: { Authorization: `Bearer ${authToken}` },
-        })
-        expect(match.name).toBe(uniqueName)
-      } else {
-        expect([EXPECT.notFound, EXPECT.badRequest, EXPECT.methodNotAllowed, EXPECT.validationError])
-          .toContain(patchRes.status())
-      }
+      await executeSuccessfulPatchFlow(request, authToken, 1, patches, 'name')
     })
   })
 
-  test.describe('Mandatory field validation', () => {
-    for (const path of ['/name']) {
-      test(`rejects null at ${path}`, async ({ request, authToken }) => {
-        const base = UserPatchFactory.createSimpleNamePatch('Valid Name')
-        const modified = modifyPatchField(base, path, null)
-        const response = await patchUserViaRules(request, authToken, 1, modified)
-        expect([EXPECT.badRequest, EXPECT.notFound, EXPECT.validationError, EXPECT.serverError])
-          .toContain(response.status())
-      })
-    }
-  })
+  runMandatoryFieldPatchTests(
+    ['/name'],
+    UserPatchFactory.createSimpleNamePatch('Valid Name'),
+    { userId: 1 },
+  )
 
   test.describe('Service token helpers', () => {
     test('login stores usable Bearer token', async ({ request }) => {

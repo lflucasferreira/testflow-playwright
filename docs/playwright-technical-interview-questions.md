@@ -692,10 +692,15 @@
 | `dashboard` | `dashboard.spec.ts` | KPIs regex, activity feed, new run modal |
 | `team` | `team.spec.ts` | Tabela, search, filter, pagination, invite, inline edit |
 | `settings` | `settings.spec.ts` | Form, toggles, save feedback |
-| `components` | `components.spec.ts` | Toast, tabs, accordion, UI library |
-| `api` | `api/*.spec.ts` | REST contracts, validateSchema, SLA, errors |
+| `components` | `components.spec.ts` | Toast, tabs, accordion, modal a11y |
+| `widgets` | `widgets.spec.ts` | Select2, SweetAlert2, dragenter, iframes, new tab |
+| `a11y` | `a11y.spec.ts` | axe-core, scope por página, modal aberto |
+| `visual` | `visual.spec.ts` | toHaveScreenshot baselines |
+| `setup` | `auth.setup.ts` | storageState, session.json, project dependencies |
+| `smoke-firefox` / `smoke-webkit` | `navigation.spec.ts` | Cross-browser smoke |
+| `api` | `api/*.spec.ts` | REST, golden roles, runPatchTests(), expectSameMembers |
 | `wizard` | `wizard/wizard.spec.ts` | Multi-step, validação, review, factory |
-| `activity` | `activity/activity.spec.ts` | route mock, waitForResponse, expect.poll |
+| `activity` | `activity/activity.spec.ts` | route mock, expect.poll, countries fixture |
 | `advanced` | `advanced/advanced.spec.ts` | Shadow DOM, iframe, external links |
 | `states` | `states/states.spec.ts` | Skeleton, empty, error, partial loading |
 | `layout` | `layout/shell.spec.ts` | Sidebar nav, notifications, skip link, landmarks |

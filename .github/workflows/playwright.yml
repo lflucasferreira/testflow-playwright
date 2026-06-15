@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
+        run: npx playwright install chromium firefox webkit --with-deps
 
   test:
     name: Playwright — ${{ matrix.suite }}
@@ -56,7 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [api, smoke, auth, dashboard, team, settings, components, wizard, activity, advanced, states, layout, widgets, a11y]
+        suite: [api, smoke, smoke-firefox, smoke-webkit, auth, dashboard, team, settings, components, wizard, activity, advanced, states, layout, widgets, a11y, visual]
     steps:
       - name: Checkout test suite
         uses: actions/checkout@v5
@@ -73,7 +73,12 @@ jobs:
           key: pw-tests-${{ hashFiles('package-lock.json') }}
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
+        run: |
+          case "${{ matrix.suite }}" in
+            smoke-firefox) npx playwright install firefox --with-deps ;;
+            smoke-webkit) npx playwright install webkit --with-deps ;;
+            *) npx playwright install chromium --with-deps ;;
+          esac
 
       - name: Verify TestFlow is reachable
         continue-on-error: true
@@ -98,10 +103,54 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
 
+  smoke-grep:
+    name: Playwright — @smoke tag
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 10
+    services:
+      testflow:
+        image: qaschool/testflow:latest
+        ports:
+          - 5050:5050
+        options: >-
+          --health-interval 15s
+          --health-timeout 10s
+          --health-retries 6
+          --health-start-period 90s
+    steps:
+      - name: Checkout test suite
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Restore node_modules
+        uses: actions/cache@v5
+        with:
+          path: node_modules
+          key: pw-tests-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run @smoke tagged tests
+        run: npm run test:grep:smoke
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report-smoke-grep
+          path: playwright-report/
+          if-no-files-found: ignore
+
   report:
     name: Publish combined report
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test, smoke-grep]
     if: always()
     timeout-minutes: 5
     steps:

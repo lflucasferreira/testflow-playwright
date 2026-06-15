@@ -1,6 +1,8 @@
 import { test, expect, APIResponse } from '@playwright/test'
 import { validateSchema } from '../../support/helpers'
 import { visitAuthenticated } from '../../support/auth'
+import { readFixture } from '../../support/helpers/fixtures'
+import { expectSameMembers } from '../../support/helpers/contract'
 
 test.describe('API — Users & Health', () => {
   test.describe('GET /api/users', () => {
@@ -39,6 +41,12 @@ test.describe('API — Users & Health', () => {
       for (const user of body.users) {
         expect(String(user.email)).toMatch(emailRegex)
       }
+    })
+
+    test('user roles match golden fixture snapshot', async () => {
+      const golden = readFixture<{ roles: string[] }>('users/golden-roles.json')
+      const roles = [...new Set(body.users.map((u) => String(u.role)))].sort()
+      expectSameMembers(golden.roles.sort(), roles)
     })
   })
 
@@ -146,6 +154,16 @@ test.describe('API — Users & Health', () => {
       if (interception) {
         await expect(page.getByTestId('users-table').locator('tbody tr')).toHaveCount(0)
       }
+    })
+  })
+
+  test.describe('Fixture data', () => {
+    test('countries lookup fixture has code and name keys', async () => {
+      const data = readFixture<{ countries: Array<{ code: string; name: string }> }>(
+        'lookups/countries.json',
+      )
+      expect(data.countries.length).toBeGreaterThan(0)
+      expect(data.countries[0]).toEqual(expect.objectContaining({ code: expect.any(String), name: expect.any(String) }))
     })
   })
 })

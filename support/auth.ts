@@ -50,7 +50,7 @@ export async function visitAuthenticated(
 ): Promise<void> {
   const session = await fetchAuthToken(request)
   await injectAuth(page, session)
-  await page.goto(path)
+  await page.goto(path, { waitUntil: 'domcontentloaded' })
 }
 
 export async function loginViaUi(

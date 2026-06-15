@@ -129,4 +129,16 @@ test.describe('Authentication', () => {
       await expect(page).not.toHaveURL(/\/web\/login\.html/)
     })
   })
+
+  test.describe('Logout', () => {
+    test('clears session and redirects to home after logout', async ({ page }) => {
+      const login = new LoginPage(page)
+      await login.loginWith(DEMO_EMAIL, DEMO_PASSWORD)
+      await login.shouldRedirectToDashboard()
+
+      await page.getByTestId('nav-logout').click()
+      await expect(page).toHaveURL(/\/web\/index\.html/)
+      expect(await page.evaluate(() => sessionStorage.getItem('sandbox-auth'))).toBeNull()
+    })
+  })
 })

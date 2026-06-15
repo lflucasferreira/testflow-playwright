@@ -149,4 +149,17 @@ test.describe('Activity — dynamic UI & API interactions', () => {
       await expect(page).not.toHaveURL(/\/web\/activity\.html/)
     })
   })
+
+  test.describe('Fixture data', () => {
+    test('countries lookup fixture exposes expected codes', async () => {
+      const { readFixture } = await import('../../support/helpers/fixtures')
+      const data = readFixture<{ countries: Array<{ code: string; name: string }> }>(
+        'lookups/countries.json',
+      )
+
+      expect(data.countries.length).toBeGreaterThan(0)
+      expect(data.countries[0]).toEqual(expect.objectContaining({ code: expect.any(String), name: expect.any(String) }))
+      expect(data.countries.map((c) => c.code)).toEqual(expect.arrayContaining(['CA', 'US', 'BR']))
+    })
+  })
 })

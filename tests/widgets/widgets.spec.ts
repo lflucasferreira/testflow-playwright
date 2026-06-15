@@ -111,14 +111,112 @@ test.describe('Classic Widgets — QA School patterns', { tag: '@regression' }, 
         widgets.sectionFileUpload(),
         widgets.sectionJobs(),
         widgets.sectionNativeSelect(),
+        widgets.sectionSelect2(),
+        widgets.sectionSelect2Multi(),
+        widgets.sectionNewTab(),
         widgets.sectionAlerts(),
         widgets.sectionCadastro(),
+        widgets.sectionDragSwap(),
         widgets.sectionHover(),
         widgets.sectionKeyboard(),
         widgets.sectionRandom(),
+        widgets.sectionListGroup(),
+        widgets.sectionIframes(),
       ]) {
         await expect(section).toBeVisible()
       }
+    })
+  })
+
+  test.describe('Select2', () => {
+    test('selects OS via Select2 dropdown', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await widgets.selectOsOption('Linux')
+      await expect(widgets.select2Os()).toHaveValue('LINUX')
+    })
+
+    test('disable toggle disables Select2 control', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await widgets.osToggle().click()
+      await expect(page.locator('.select2-container').first()).toHaveClass(/select2-container--disabled/)
+    })
+
+    test('multi-select accepts multiple OS values', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await page.locator('[data-testid="section-select2-multi"] .select2-container').click()
+      await page.locator('.select2-results__option', { hasText: 'Linux' }).click()
+      await page.locator('[data-testid="section-select2-multi"] .select2-container').click()
+      await page.locator('.select2-results__option', { hasText: 'MacOS' }).click()
+      await expect(page.locator('[data-testid="section-select2-multi"] .select2-selection__choice')).toHaveCount(2)
+      const selected = await widgets.select2OsMulti().evaluate((el) =>
+        Array.from((el as HTMLSelectElement).selectedOptions).map((o) => o.value),
+      )
+      expect(selected).toEqual(expect.arrayContaining(['LINUX', 'MACOS']))
+    })
+  })
+
+  test.describe('SweetAlert2', () => {
+    test('shows success dialog after click', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await widgets.sweetAlertBtn().click()
+      await expect(page.locator('.swal2-popup')).toBeVisible()
+      await expect(page.locator('.swal2-title')).toContainText('Congratulations!')
+      await page.locator('.swal2-confirm').click()
+      await expect(page.locator('.swal2-popup')).toBeHidden()
+    })
+  })
+
+  test.describe('Drag & drop swap', () => {
+    test('drag boxes are draggable and show hover state on dragenter', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await expect(widgets.dragBox1()).toHaveAttribute('draggable', 'true')
+      await expect(widgets.dragBox2()).toHaveAttribute('draggable', 'true')
+
+      await widgets.dragBox2().dispatchEvent('dragenter')
+      await expect(widgets.dragBox2()).toHaveClass(/over/)
+
+      await widgets.dragBox2().dispatchEvent('dragleave')
+      await expect(widgets.dragBox2()).not.toHaveClass(/over/)
+    })
+
+    test('swaps content between drag boxes (HTML5 drop with empty getData)', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await expect(widgets.dragBox2().locator('img')).toBeVisible()
+
+      await widgets.swapDragBoxesComplete()
+
+      await expect(widgets.dragBox2()).toHaveText('Drag me')
+      await expect(widgets.dragBox1().locator('img[alt="loader"]')).toBeVisible()
+    })
+  })
+
+  test.describe('New tab', () => {
+    test('opens example.com in a new tab', async ({ page, context }) => {
+      const widgets = new WidgetsPage(page)
+      const popupPromise = context.waitForEvent('page')
+      await widgets.openNewTabBtn().click()
+      const popup = await popupPromise
+      await expect(popup).toHaveURL(/example\.com/)
+      await popup.close()
+    })
+  })
+
+  test.describe('List group', () => {
+    test('renders automation library links', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await expect(widgets.listCapybara()).toHaveAttribute('href', /capybara/)
+      await expect(page.getByTestId('list-siteprism')).toHaveAttribute('href', /site_prism/)
+      await expect(page.getByTestId('list-postgres')).toHaveAttribute('href', /ruby-pg/)
+    })
+  })
+
+  test.describe('Cross-origin iframes', () => {
+    test('YouTube embeds load with valid src and title', async ({ page }) => {
+      const widgets = new WidgetsPage(page)
+      await expect(widgets.iframeYoutubeEasy()).toHaveAttribute('src', /youtube\.com\/embed/)
+      await expect(widgets.iframeYoutubeEasy()).toHaveAttribute('title', 'YouTube easy')
+      await expect(widgets.iframeYoutubeHard()).toHaveAttribute('src', /youtube\.com\/embed/)
+      await expect(widgets.iframeYoutubeHard()).toHaveAttribute('title', 'YouTube hard')
     })
   })
 })

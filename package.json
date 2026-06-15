@@ -7,11 +7,16 @@
     "slides": "npx serve . -p 3335",
     "slides:open": "npx serve . -p 3335 & sleep 1 && open http://localhost:3335/docs/slides/",
     "slides:pdf": "node scripts/export-slides-pdf.mjs",
+    "test:setup": "playwright test --project=setup",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:api": "playwright test --project=api",
     "test:smoke": "playwright test --project=smoke",
+    "test:smoke-firefox": "playwright test --project=smoke-firefox",
+    "test:smoke-webkit": "playwright test --project=smoke-webkit",
+    "test:visual": "playwright test --project=visual",
+    "test:visual:update": "playwright test --project=visual --update-snapshots",
     "test:auth": "playwright test --project=auth",
     "test:dashboard": "playwright test --project=dashboard",
     "test:team": "playwright test --project=team",
@@ -27,7 +32,7 @@
     "test:grep:smoke": "playwright test --grep @smoke",
     "test:grep:regression": "playwright test --grep @regression",
     "report": "playwright show-report",
-    "install:browsers": "NODE_TLS_REJECT_UNAUTHORIZED=0 playwright install chromium"
+    "install:browsers": "NODE_TLS_REJECT_UNAUTHORIZED=0 playwright install chromium firefox webkit"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",

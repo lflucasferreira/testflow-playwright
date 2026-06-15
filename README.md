@@ -7,19 +7,23 @@ Playwright E2E automation suite for [TestFlow](https://github.com/qaschoolbr/tes
 | Project | Spec | What it covers |
 |---|---|---|
 | `smoke` | `tests/smoke/navigation.spec.ts` | All pages load, sidebar nav, logout, health API |
-| `auth` | `tests/auth/login.spec.ts` | Login UI/API, validation, sessionStorage, redirect |
+| `auth` | `tests/auth/login.spec.ts` | Login UI/API, validation, sessionStorage, redirect, logout |
 | `dashboard` | `tests/dashboard/dashboard.spec.ts` | KPIs, activity feed, suite health, new run modal |
 | `team` | `tests/team/team.spec.ts` | Table search, filters, sort, pagination, invite, inline edit |
 | `settings` | `tests/settings/settings.spec.ts` | Settings form and toggles |
 | `components` | `tests/components/components.spec.ts` | Buttons, modal, tabs, accordion |
-| `widgets` | `tests/widgets/widgets.spec.ts` | Classic Widgets — upload, jobs modal, selects, hover |
+| `widgets` | `tests/widgets/widgets.spec.ts` | Select2, SweetAlert, drag, iframes, upload, jobs modal |
 | `wizard` | `tests/wizard/wizard.spec.ts` | Multi-step flow, validation, review, a11y |
-| `activity` | `tests/activity/activity.spec.ts` | API mocks, counter, pipeline, dynamic content |
+| `activity` | `tests/activity/activity.spec.ts` | API mocks, counter, pipeline, countries fixture |
 | `advanced` | `tests/advanced/advanced.spec.ts` | Shadow DOM, iframe, external links, mobile |
 | `states` | `tests/states/states.spec.ts` | Skeleton, empty, error, partial loading |
 | `layout` | `tests/layout/shell.spec.ts` | Sidebar nav, notifications, skip link, theme, mobile |
-| `a11y` | `tests/a11y/a11y.spec.ts` | axe-core scans on key pages |
-| `api` | `tests/api/*.spec.ts` | REST contracts, rules/PATCH patterns, env diagnostics |
+| `a11y` | `tests/a11y/a11y.spec.ts` | axe-core on dashboard, login, wizard, components, settings, states, modal |
+| `visual` | `tests/visual/visual.spec.ts` | `toHaveScreenshot()` baselines (login, sidebar, components) |
+| `api` | `tests/api/*.spec.ts` | REST, golden roles, `runPatchTests()`, rules/PATCH |
+| `setup` | `tests/auth/auth.setup.ts` | Persists session + `storageState` before UI projects |
+| `smoke-firefox` | `tests/smoke/navigation.spec.ts` | Smoke suite on Firefox |
+| `smoke-webkit` | `tests/smoke/navigation.spec.ts` | Smoke suite on WebKit |
 
 ## Prerequisites
 
@@ -70,6 +74,7 @@ npm run test:ui
 npm run test:headed
 
 # By project
+npm run test:setup
 npm run test:smoke
 npm run test:auth
 npm run test:dashboard
@@ -83,6 +88,10 @@ npm run test:advanced
 npm run test:states
 npm run test:layout
 npm run test:a11y
+npm run test:visual
+npm run test:visual:update
+npm run test:smoke-firefox
+npm run test:smoke-webkit
 npm run test:api
 
 # Filter by tag
@@ -99,18 +108,18 @@ npm run report
 testflow-playwright/
 ├── fixtures/              # JSON fixtures + sample upload file
 ├── fixtures.ts            # Custom test fixture (authToken)
-├── globalSetup.ts         # Auth token cache (runs once per test run)
+├── globalSetup.ts         # Auth token + session cache (runs once per test run)
 ├── pages/                 # Page Object Model
 ├── support/
 │   ├── api/               # Rules API client
 │   ├── constants/         # EXPECT status codes, viewports
 │   ├── factories/         # Test data factories
-│   ├── helpers/           # API exchange, headers, contract helpers
-│   └── utilities/         # JSON Patch, retry/poll utilities
+│   ├── helpers/           # API exchange, headers, contract, readFixture
+│   ├── sessionStore.ts    # Persisted session for setup project
+│   └── utilities/         # JSON Patch, retry/poll, runPatchTests()
 ├── tests/
-│   ├── a11y/
-│   ├── api/
-│   ├── auth/
+│   ├── auth/auth.setup.ts # Setup project — storageState + session.json
+│   ├── visual/            # toHaveScreenshot baselines
 │   ├── components/
 │   ├── dashboard/
 │   ├── layout/
@@ -124,7 +133,7 @@ testflow-playwright/
 
 ## CI
 
-GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (14 matrix jobs).
+GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (17 matrix jobs + `@smoke` grep job), including Firefox/WebKit smoke and visual regression.
 
 ## Slides & interview prep
 
