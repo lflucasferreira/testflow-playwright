@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playwright — Introdução &amp; Instalação</title>
+    <meta name="description" content="Apresentação introdutória sobre Playwright: o que é, como instalar, testes E2E, API, POM e testflow-playwright." />
+
+    <link rel="icon" href="assets/playwright-logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../../node_modules/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="../../node_modules/reveal.js/dist/theme/black.css" />
+    <link rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <link rel="stylesheet" href="css/theme-playwright.css" />
+    <script>
+      if (window.location.search.match(/print-pdf/gi)) {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.type = 'text/css'
+        link.href = 'css/print-pdf.css'
+        document.head.appendChild(link)
+      }
+    </script>
+  </head>
+  <body>
+    <div class="footer-bar" aria-hidden="true"></div>
+
+    <div class="reveal">
+      <div class="slides">
+
+        <section class="slide-title" data-auto-animate>
+          <div class="logo-wrap">
+            <img src="assets/playwright-logo.svg" alt="Playwright logo" width="72" height="72" />
+            <span class="wordmark">Playwright</span>
+          </div>
+          <h1>Testes E2E e API no browser</h1>
+          <p class="subtitle">Instalação, E2E, API enterprise, POM e padrões de migração</p>
+          <span class="badge">Automação · TypeScript · testflow-playwright</span>
+        </section>
+
+        <section>
+          <h2>O que é o Playwright?</h2>
+          <p class="fragment fade-up">
+            Framework de automação da <strong>Microsoft</strong> para testes end-to-end e API —
+            com suporte nativo a Chromium, Firefox e WebKit.
+          </p>
+          <ul class="fragment fade-up">
+            <li>Escrito em <strong>TypeScript</strong> / JavaScript</li>
+            <li>API moderna com <strong>auto-wait</strong> — menos flakiness</li>
+            <li>Fixtures <code>page</code>, <code>request</code>, <code>context</code> por teste</li>
+            <li>UI Mode, trace viewer, screenshots e relatório HTML</li>
+            <li>Paralelismo nativo e isolamento entre workers</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Por que usar Playwright?</h2>
+          <div class="feature-grid">
+            <div class="feature-card fragment fade-up">
+              <div class="icon">⚡</div>
+              <h4>Velocidade &amp; paralelismo</h4>
+              <p>Workers paralelos e browser contexts isolados por teste.</p>
+            </div>
+            <div class="feature-card fragment fade-up">
+              <div class="icon">🎯</div>
+              <h4>Locators resilientes</h4>
+              <p><code>getByTestId</code>, role, text — recomendados pela doc oficial.</p>
+            </div>
+            <div class="feature-card fragment fade-up">
+              <div class="icon">🔍</div>
+              <h4>Debug rico</h4>
+              <p>UI Mode, headed, Inspector e trace on retry.</p>
+            </div>
+            <div class="feature-card fragment fade-up">
+              <div class="icon">🌐</div>
+              <h4>E2E + API unificados</h4>
+              <p><code>page</code> para UI e <code>request</code> para contratos REST.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Pré-requisitos</h2>
+          <div class="two-col">
+            <div>
+              <h3>Ambiente</h3>
+              <ul>
+                <li class="fragment fade-up"><strong>Node.js</strong> 20+</li>
+                <li class="fragment fade-up"><strong>npm</strong> (ou pnpm / yarn)</li>
+                <li class="fragment fade-up">App TestFlow na porta <code>5050</code></li>
+                <li class="fragment fade-up">Editor: VS Code / Cursor (extensão Playwright opcional)</li>
+              </ul>
+            </div>
+            <div class="terminal fragment fade-up">
+              <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <div><span class="prompt">$</span> node --version</div>
+                <div>v20.x.x</div>
+                <br />
+                <div><span class="prompt">$</span> docker run -p 5050:5050 qaschool/testflow:latest</div>
+                <div class="comment"># app disponível em localhost:5050</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Instalação — testflow-playwright</h2>
+          <ol class="steps">
+            <li class="fragment fade-up">
+              <div>
+                <strong>Clone o repositório</strong><br />
+                <code>git clone …/testflow-playwright && cd testflow-playwright</code>
+              </div>
+            </li>
+            <li class="fragment fade-up">
+              <div>
+                <strong>Instale dependências</strong><br />
+                <code>npm install</code>
+              </div>
+            </li>
+            <li class="fragment fade-up">
+              <div>
+                <strong>Instale o browser Chromium</strong><br />
+                <code>npm run install:browsers</code>
+              </div>
+            </li>
+            <li class="fragment fade-up">
+              <div>
+                <strong>Execute os testes</strong><br />
+                <code>npm test</code> ou <code>npm run test:ui</code>
+              </div>
+            </li>
+          </ol>
+          <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted); margin-top: 0.8em;">
+            Proxy corporativo (Zscaler)? O script <code>install:browsers</code> contorna erro SSL.
+            Veja também <code>NODE_EXTRA_CA_CERTS</code> no README.
+          </p>
+        </section>
+
+        <section>
+          <h2>Estrutura do projeto</h2>
+          <div class="two-col">
+            <pre class="fragment fade-up"><code class="hljs">testflow-playwright/
+├── fixtures/           # credentials.json
+├── pages/              # Page Object Model
+├── support/            # auth, helpers
+├── tests/
+│   ├── api/            # contratos REST
+│   ├── auth/
+│   ├── smoke/
+│   ├── dashboard/
+│   ├── team/
+│   ├── settings/
+│   └── components/
+├── playwright.config.ts
+└── package.json</code></pre>
+            <ul class="fragment fade-up">
+              <li><code>pages/</code> — seletores, ações e assertions por tela</li>
+              <li><code>support/auth.ts</code> — login via API ou UI</li>
+              <li><code>tests/*.spec.ts</code> — specs por feature / suite</li>
+              <li><code>data-testid</code> — convenção de seletores estáveis</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>Configuração — playwright.config.ts</h2>
+          <pre class="fragment fade-up"><code class="language-typescript">import { defineConfig } from '@playwright/test'
+
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:5050'
+
+export default defineConfig({
+  testDir: './tests',
+  timeout: 8000,
+  use: {
+    baseURL: BASE_URL,
+    viewport: { width: 1280, height: 800 },
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    { name: 'api', testMatch: /tests\/api\/.*\.spec\.ts/ },
+    { name: 'smoke', testMatch: /tests\/smoke\/.*\.spec\.ts/ },
+    { name: 'auth', testMatch: /tests\/auth\/.*\.spec\.ts/ },
+    // dashboard, team, settings, components…
+  ],
+})</code></pre>
+          <p class="fragment fade-up" style="font-size: 0.65em; color: var(--pw-muted);">
+            <code>projects</code> permitem rodar suites em paralelo no CI — mesmo padrão do testflow-cypress.
+          </p>
+        </section>
+
+        <section>
+          <h2>Seu primeiro teste</h2>
+          <pre class="fragment fade-up"><code class="language-typescript">// tests/auth/login.spec.ts
+import { test, expect } from '@playwright/test'
+import { LoginPage } from '../../pages/LoginPage'
+import { DEMO_EMAIL, DEMO_PASSWORD } from '../../support/helpers'
+
+test.describe('Authentication', () => {
+  test.beforeEach(async ({ page }) => {
+    await new LoginPage(page).visit()
+  })
+
+  test('logs in via UI and redirects to dashboard', async ({ page }) => {
+    const login = new LoginPage(page)
+    await login.loginWith(DEMO_EMAIL, DEMO_PASSWORD)
+    await login.shouldRedirectToDashboard()
+  })
+})</code></pre>
+          <p class="fragment fade-up" style="font-size: 0.6em; color: var(--pw-muted);">
+            Convenção: <code>data-testid="login-email"</code> → <code>page.getByTestId('login-email')</code>
+          </p>
+        </section>
+
+        <!-- Comandos & locators (vertical stack) -->
+        <section>
+          <section>
+            <h2>Locators &amp; navegação</h2>
+            <p style="font-size: 0.7em; color: var(--pw-muted);">
+              API Playwright usada na suíte TestFlow — seletores via <code>data-testid</code>
+            </p>
+            <table class="compare-table compact fragment fade-up">
+              <thead>
+                <tr><th>API</th><th>Uso no TestFlow</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>page.goto(path)</code></td><td>Abrir login, dashboard, team…</td></tr>
+                <tr><td><code>page.getByTestId(id)</code></td><td>Selector padrão — <code>login-email</code>, <code>page-team</code></td></tr>
+                <tr><td><code>page.getByRole(...)</code></td><td>Botões, links acessíveis</td></tr>
+                <tr><td><code>page.getByText(...)</code></td><td>Labels visíveis, mensagens de erro</td></tr>
+                <tr><td><code>locator.locator(...)</code></td><td><code>tbody tr</code>, células, colunas</td></tr>
+                <tr><td><code>locator.nth(i)</code></td><td>Linha n da tabela, item de activity</td></tr>
+                <tr><td><code>page.waitForRequest(...)</code></td><td>Spy POST login, GET users, PUT/PATCH row</td></tr>
+                <tr><td><code>page.waitForResponse(...)</code></td><td>Validar status após ação na UI</td></tr>
+                <tr><td><code>page.evaluate(...)</code></td><td>sessionStorage pós-login</td></tr>
+                <tr><td><code>page.addInitScript(...)</code></td><td>Injetar token antes do <code>goto</code></td></tr>
+                <tr><td><code>page.reload()</code></td><td>Recarregar após <code>page.route</code> mock</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2>Interações</h2>
+            <table class="compare-table compact fragment fade-up">
+              <thead>
+                <tr><th>Ação</th><th>Exemplo TestFlow</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>.fill(text)</code></td><td>Email, senha, busca na tabela</td></tr>
+                <tr><td><code>.clear()</code></td><td>Limpar busca antes de novo filtro</td></tr>
+                <tr><td><code>.click()</code></td><td>Submit, sidebar, paginação, modais</td></tr>
+                <tr><td><code>.selectOption(value)</code></td><td>Role filter, invite role, run suite</td></tr>
+                <tr><td><code>.check() / .uncheck()</code></td><td>Remember me, API toggle</td></tr>
+                <tr><td><code>.press('Escape')</code></td><td>Fechar modal de invite / new run</td></tr>
+                <tr><td><code>.innerText()</code></td><td>Extrair valor numérico de KPI</td></tr>
+                <tr><td><code>.isVisible()</code></td><td>Condicional — toast ou result msg</td></tr>
+                <tr><td><code>.evaluate(el =&gt; el.click())</code></td><td>Checkbox coberto por label custom</td></tr>
+                <tr><td><code>page.keyboard.press(...)</code></td><td>Atalhos de teclado na UI</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2>Assertions — expect()</h2>
+            <table class="compare-table compact fragment fade-up">
+              <thead>
+                <tr><th>Assertion</th><th>Exemplo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>toBeVisible()</code></td><td>Page root, modais, KPIs, toast</td></tr>
+                <tr><td><code>not.toBeVisible()</code></td><td>Modal fechado após submit</td></tr>
+                <tr><td><code>toHaveURL(...)</code></td><td>Redirect pós-login</td></tr>
+                <tr><td><code>toContainText(...)</code></td><td>Erros, greeting, row count label</td></tr>
+                <tr><td><code>toHaveAttribute(...)</code></td><td>type=password, placeholder</td></tr>
+                <tr><td><code>toHaveCount(n)</code></td><td>Linhas visíveis, colunas, activity items</td></tr>
+                <tr><td><code>toHaveText(/regex/)</code></td><td>Pass rate <code>^\d+%$</code></td></tr>
+                <tr><td><code>toMatchObject({…})</code></td><td>Payload do invite POST</td></tr>
+                <tr><td><code>expect(res.status()).toBe(200)</code></td><td>Contratos API</td></tr>
+                <tr><td><code>expect(duration).toBeLessThan(ms)</code></td><td>SLA de resposta API</td></tr>
+              </tbody>
+            </table>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted); margin-top: 0.6em;">
+              Playwright <strong>aguarda automaticamente</strong> até a condição ser verdadeira — sem waits manuais na UI.
+            </p>
+          </section>
+
+          <section>
+            <h2>Helpers compartilhados</h2>
+            <table class="compare-table compact fragment fade-up">
+              <tbody>
+                <tr class="group-row"><td colspan="2">support/helpers.ts</td></tr>
+                <tr><td><code>DEMO_EMAIL</code> · <code>DEMO_PASSWORD</code></td><td>Credenciais demo via env</td></tr>
+                <tr><td><code>validateSchema(obj, schema)</code></td><td>Tipos da resposta REST</td></tr>
+                <tr><td><code>getTableRows(page)</code></td><td>Linhas de <code>users-table</code></td></tr>
+                <tr><td><code>getCell(page, rowId, field)</code></td><td>Célula por id de linha</td></tr>
+                <tr class="group-row"><td colspan="2">support/auth.ts</td></tr>
+                <tr><td><code>loginViaApi(page, request)</code></td><td>Auth programática + goto dashboard</td></tr>
+                <tr><td><code>visitAuthenticated(page, request, path)</code></td><td>Navegar já autenticado</td></tr>
+                <tr><td><code>visitWithToken(page, path, token)</code></td><td>Smoke — token do beforeAll</td></tr>
+                <tr><td><code>loginViaUi(page)</code></td><td>Auth via formulário</td></tr>
+                <tr><td><code>authenticatedRequest(request, opts)</code></td><td>HTTP com Bearer token</td></tr>
+                <tr><td><code>getAuthToken(request)</code></td><td>Token para specs paralelos</td></tr>
+                <tr class="group-row"><td colspan="2">fixtures/</td></tr>
+                <tr><td><code>credentials.json</code></td><td>valid / invalid email e password</td></tr>
+                <tr><td><code>team-member.json</code></td><td>Payload do modal invite</td></tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <!-- Estrutura de testes (vertical stack) -->
+        <section>
+          <section>
+            <h2>Estrutura de specs</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">test.describe('Team', () => {
+  test.beforeEach(async ({ page, request }) => {
+    await visitAuthenticated(page, request, '/web/team.html')
+    await expect(new TeamPage(page).pageRoot()).toBeVisible()
+  })
+
+  test.describe('Search', () => {
+    test('filters rows by member name', async ({ page }) => {
+      const team = new TeamPage(page)
+      await team.search('Alice')
+      await team.shouldHaveRowCount(1)
+    })
+  })
+
+  test.describe('Invite modal', () => { /* … */ })
+})</code></pre>
+            <div class="command-tags fragment fade-up">
+              <span class="cmd-tag">describe aninhado</span>
+              <span class="cmd-tag">beforeEach setup</span>
+              <span class="cmd-tag">1 cenário / test()</span>
+            </div>
+          </section>
+
+          <section>
+            <h2>beforeEach vs beforeAll</h2>
+            <div class="two-col">
+              <pre class="fragment fade-up"><code class="language-typescript">// beforeEach — estado fresco por teste
+test.beforeEach(async ({ page, request }) => {
+  await loginViaApi(page, request)
+  await new DashboardPage(page).shouldBeLoaded()
+})</code></pre>
+              <pre class="fragment fade-up"><code class="language-typescript">// beforeAll — resposta API compartilhada
+let res: APIResponse
+let body: { users: User[] }
+
+test.beforeAll(async ({ request }) => {
+  const start = Date.now()
+  res = await request.get('/api/users')
+  duration = Date.now() - start
+  body = await res.json()
+})
+
+test('returns status 200', () => {
+  expect(res.status()).toBe(200)
+})</code></pre>
+            </div>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              <code>beforeAll</code> evita N chamadas idênticas; <code>beforeEach</code> isola estado de UI.
+            </p>
+          </section>
+
+          <section>
+            <h2>Data-driven tests</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// tests/smoke/navigation.spec.ts
+const PAGES = [
+  { path: '/web/dashboard.html', testId: 'page-dashboard', title: 'Dashboard' },
+  { path: '/web/team.html', testId: 'page-team', title: 'Team' },
+  // settings, components, activity, wizard…
+]
+
+for (const { path, testId, title } of PAGES) {
+  test(`${title} page loads without error`, async ({ page }) => {
+    await visitWithToken(page, path, authToken)
+    await expect(page.getByTestId(testId)).toBeVisible()
+    await expect(page).toHaveTitle(new RegExp(title))
+  })
+}</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              Um loop gera N testes nomeados — smoke cobre todas as rotas com um único padrão.
+            </p>
+          </section>
+
+          <section>
+            <h2>test.step — relatório legível</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// Padrão enterprise — steps no HTML report
+test('GET /resources — Authorization header omitted', async ({ playwright }, testInfo) => {
+  await test.step('New context without Authorization header', async () => {
+    const ctx = await playwright.request.newContext({ baseURL })
+    try {
+      const response = await ctx.get('/api/resources')
+      await attachHttpExchangeReport(testInfo, {
+        label: 'resources-no-auth',
+        method: 'GET',
+        url: '/api/resources',
+        response,
+      })
+      expect(response.status()).toBe(403)
+    } finally {
+      await ctx.dispose()
+    }
+  })
+})</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              Equivalente ao <code>cy.step</code> — útil em testes negativos de API com múltiplas fases.
+            </p>
+          </section>
+        </section>
+
+        <!-- API & rede (vertical stack) -->
+        <section>
+          <section>
+            <h2>API testing — request fixture</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// tests/api/auth.api.spec.ts
+const ENDPOINT = '/api/auth/login'
+const VALID = { email: DEMO_EMAIL, password: DEMO_PASSWORD }
+
+test.describe('Valid credentials', () => {
+  test.beforeAll(async ({ request }) => {
+    res = await request.post(ENDPOINT, { data: VALID })
+    body = await res.json()
+  })
+
+  test('returns status 200', () => expect(res.status()).toBe(200))
+  test('body has token as non-empty string', () => {
+    expect(typeof body.token).toBe('string')
+  })
+  test('responds within 2000ms', () => expect(duration).toBeLessThan(2000))
+})</code></pre>
+          </section>
+
+          <section>
+            <h2>validateSchema — contrato REST</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// support/helpers.ts
+export function validateSchema(obj, schema: Schema) {
+  for (const [key, type] of Object.entries(schema)) {
+    expect(obj).toHaveProperty(key)
+    expect(typeof obj[key]).toBe(type)
+  }
+}
+
+// tests/api/users.api.spec.ts
+for (const user of body.users) {
+  validateSchema(user, { name: 'string', email: 'string', role: 'string' })
+}</code></pre>
+            <div class="command-tags fragment fade-up">
+              <span class="cmd-tag">GET /api/users</span>
+              <span class="cmd-tag">GET /health</span>
+              <span class="cmd-tag">GET /api/errors/404</span>
+              <span class="cmd-tag">GET /api/errors/422</span>
+            </div>
+          </section>
+
+          <section>
+            <h2>page.route — spy &amp; mock</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// Spy — payload e status do login API
+const loginCall = page.waitForRequest(
+  (req) => req.url().includes('/api/auth/login') && req.method() === 'POST',
+)
+await login.toggleUseApi()
+await login.loginWith(DEMO_EMAIL, DEMO_PASSWORD)
+const req = await loginCall
+expect(req.postDataJSON().email).toBe(DEMO_EMAIL)
+expect((await req.response())?.status()).toBe(200)
+
+// Mock — lista vazia de users
+await page.route(/\/api\/users/, (route) =>
+  route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ users: [] }),
+  }),
+)
+await page.reload()</code></pre>
+          </section>
+
+          <section>
+            <h2>Intercept na UI — Team &amp; Invite</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// Spy POST invite
+const inviteRequest = page.waitForRequest(
+  (req) => req.method() === 'POST' && req.url().includes('/api/'),
+).catch(() => null)
+
+await team.openInviteModal()
+await team.fillInviteForm(teamMember.new)
+await team.submitInvite()
+
+const req = await inviteRequest
+if (req) {
+  expect(req.postDataJSON().email).toBe(teamMember.new.email)
+}
+
+// Spy PUT ou PATCH inline edit
+const writeReq = Promise.race([
+  page.waitForRequest((r) => r.method() === 'PUT' && r.url().includes('/api/')),
+  page.waitForRequest((r) => r.method() === 'PATCH' && r.url().includes('/api/')),
+])</code></pre>
+          </section>
+
+          <section>
+            <h2>Auth helpers — setup rápido</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// support/auth.ts
+async function injectAuth(page, session) {
+  await page.addInitScript((auth) => {
+    sessionStorage.setItem('sandbox-auth', JSON.stringify(auth))
+    sessionStorage.setItem('sandbox-token', auth.token)
+  }, session)
+}
+
+export async function loginViaApi(page, request) {
+  const session = await fetchAuthToken(request)
+  await injectAuth(page, session)
+  await page.goto('/web/dashboard.html')
+  await page.getByTestId('page-dashboard').waitFor()
+}</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              Usado em dashboard, team, settings — specs focam na feature, não no login.
+            </p>
+          </section>
+        </section>
+
+        <!-- Padrões avançados (clre-v2 adaptado, anonimizado) -->
+        <section>
+          <section>
+            <h2>Fixtures customizadas</h2>
+            <p style="font-size: 0.68em; color: var(--pw-muted);">
+              Substitui comandos globais — injeta token e headers em todo <code>request</code>
+            </p>
+            <pre class="fragment fade-up"><code class="language-typescript">// fixtures.ts — padrão enterprise
+export const test = base.extend&lt;{
+  authToken: string
+  userAccessToken: string
+}&gt;({
+  authToken: async ({}, use) => {
+    const token = await getOrRefreshSystemToken()
+    await use(token)
+  },
+  request: async ({ request }, use) => {
+    await use(wrapRequestWithDefaultHeaders(request, DEFAULT_HEADERS))
+  },
+})
+
+test.afterEach(async ({}, testInfo) => {
+  if (testInfo.status === 'failed') {
+    await testInfo.attach('failure-details', { body: formatError(testInfo) })
+  }
+})</code></pre>
+          </section>
+
+          <section>
+            <h2>EXPECT — status codes tipados</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// helpers/apiContract.helpers.ts
+export const EXPECT = {
+  happy: 200,
+  noAuth: 403,
+  invalidBearer: 401,
+  notFound: 404,
+  validationError: 422,
+} as const
+
+export const ATTACHMENT_LABELS = {
+  happyPath: 'get-resources-200',
+  noAuth: 'get-resources-no-auth',
+} as const
+
+test(`[${EXPECT.noAuth}] GET without Authorization`, async ({ request }) => {
+  const res = await request.get('/api/resources')
+  expect(res.status()).toBe(EXPECT.noAuth)
+})</code></pre>
+          </section>
+
+          <section>
+            <h2>Route modules + exchange helpers</h2>
+            <div class="two-col">
+              <pre class="fragment fade-up"><code class="language-typescript">// core/routes.ts
+export const AUTH_LOGIN_PATH = '/api/auth/login'
+export function authLoginUrl(base: string) {
+  return `${base}${AUTH_LOGIN_PATH}`
+}
+
+// helpers/authExchange.helpers.ts
+export async function postLoginExchange(
+  request, testInfo, label, body
+) {
+  const response = await request.post(AUTH_LOGIN_PATH, { data: body })
+  return attachHttpExchangeReport(testInfo, {
+    label, method: 'POST', url: AUTH_LOGIN_PATH, response,
+  })
+}</code></pre>
+              <ul class="fragment fade-up" style="font-size: 0.72em;">
+                <li>URLs centralizadas — sem strings espalhadas</li>
+                <li>Exchange helper = request + attach report</li>
+                <li>Assertion helper valida shape do JSON</li>
+                <li>Path aliases: <code>@pw/core/*</code>, <code>@pw/helpers/*</code></li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>attachHttpExchangeReport</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// helpers/apiExchange.ts — debug no HTML report
+await attachHttpExchangeReport(testInfo, {
+  label: 'login-200',
+  method: 'POST',
+  url: '/api/auth/login',
+  requestHeaders: { Authorization: 'Bearer …' },  // mascarado
+  response,
+})
+// Anexa: status, headers, body JSON, curl reproduzível</code></pre>
+            <div class="command-tags fragment fade-up">
+              <span class="cmd-tag">testInfo.attach</span>
+              <span class="cmd-tag">curl replay</span>
+              <span class="cmd-tag">mask Authorization</span>
+              <span class="cmd-tag">mask passwords</span>
+            </div>
+          </section>
+
+          <section>
+            <h2>Tags, grep &amp; modo serial</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">test.describe('Happy path suite @needs-browser', () => {
+  test.describe.configure({ mode: 'serial', timeout: 150_000 })
+
+  test.beforeAll(async () => { /* setup MFA / OAuth once */ })
+  test.afterAll(async () => { /* teardown */ })
+
+  for (const scope of SCOPES) {
+    test(`initiate + confirm [${scope}]`, async ({ request }) => { /* … */ })
+  }
+})
+
+test.describe('Negative testing', { tag: '@negative-testing' }, () => { /* … */ })</code></pre>
+            <pre class="fragment fade-up" style="margin-top: 0.6em;"><code class="language-bash"># CI — jobs separados por tag
+npx playwright test --grep-invert '@needs-browser'   # API only, Alpine
+npx playwright test --grep '@needs-browser'          # OAuth browser flow
+npx playwright test --grep '@negative-testing'</code></pre>
+          </section>
+
+          <section>
+            <h2>globalSetup — cache de sessão</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// playwright.config.ts
+export default defineConfig({
+  globalSetup: require.resolve('./globalSetup'),
+})
+
+// globalSetup.ts — roda uma vez antes de todos os workers
+// 1. Reutiliza token em .playwright/token-cache.json
+// 2. Tenta refresh_token grant
+// 3. Fallback: browser OAuth PKCE (Identity Provider)
+// 4. Limpa estado MFA entre runs</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              Equivalente ao <code>cy.session</code> — login pesado uma vez, reutilizado em N specs.
+            </p>
+          </section>
+        </section>
+
+        <!-- API enterprise — padrões de migração Cypress → Playwright (anonimizado) -->
+        <section>
+          <section>
+            <h2>API enterprise — visão geral</h2>
+            <p style="font-size: 0.72em; color: var(--pw-muted);">
+              Suíte API-only: sem browser, sem UI — foco em contratos REST, OAuth e sync entre serviços.
+            </p>
+            <div class="feature-grid fragment fade-up" style="font-size: 0.58em;">
+              <div class="feature-card">
+                <h4>Legado Cypress</h4>
+                <p>Service Objects + <code>cy.request</code> + localStorage token</p>
+              </div>
+              <div class="feature-card">
+                <h4>Playwright atual</h4>
+                <p><code>request</code> fixture + helpers + JWT cache</p>
+              </div>
+              <div class="feature-card">
+                <h4>Organização</h4>
+                <p><code>api/gets/</code> · <code>api/patch/</code> · fixtures JSON</p>
+              </div>
+              <div class="feature-card">
+                <h4>CI</h4>
+                <p><code>PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1</code></p>
+              </div>
+            </div>
+            <pre class="fragment fade-up" style="font-size: 0.48em;"><code class="hljs">profile-api-playwright/
+├── fixtures.ts          # authToken + testUser override
+├── auth.ts              # OAuth + JWT cache
+├── env.ts               # sit / uat / dual gateway
+├── headers.ts           # context headers obrigatórios
+├── test-users.json      # usuários nomeados por community
+└── api/
+    ├── gets/lookups/    # golden JSON contracts
+    └── patch/           # data-driven PATCH suites</code></pre>
+          </section>
+
+          <section>
+            <h2>Service Objects — Cypress legado</h2>
+            <p style="font-size: 0.65em; color: var(--pw-muted);">
+              Equivalente a POM, mas para API — encapsula URLs, auth e métodos HTTP.
+            </p>
+            <pre class="fragment fade-up"><code class="language-typescript">// cypress/models/ProfileApiClient.ts
+export class ProfileApiClient {
+  flushProfile() {
+    return cy.request({
+      method: 'PUT',
+      url: this.url.flushProfile,
+      headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
+    }).its('status').should('eq', 204)
+  }
+
+  getCountries() {
+    return cy.request({ method: 'GET', url: this.url.countries, headers: { /* … */ } })
+  }
+
+  patchCustomerName(body) {
+    return cy.request({ method: 'PATCH', url: this.url.name, body, headers: { /* … */ } })
+  }
+}
+
+// spec — alias no before()
+cy.wrap(new ProfileApiClient()).as('profileApi')
+cy.wrap(new LifecyclePlatformClient({ userId })).as('lifecycleApi')</code></pre>
+          </section>
+
+          <section>
+            <h2>Auth cache — Cypress → Playwright</h2>
+            <div class="two-col">
+              <pre class="fragment fade-up"><code class="language-typescript">// Cypress — localStorage plugin
+before(() => {
+  preCondition.loginByApi({ username, password })
+  cy.saveLocalStorage()
+})
+beforeEach(() => cy.restoreLocalStorage())</code></pre>
+              <pre class="fragment fade-up"><code class="language-typescript">// Playwright — JWT parse + Map cache
+export async function getOrRefreshToken(user) {
+  const cached = tokenCache.get(user.username)
+  if (cached && isTokenValid(cached)) return cached
+  const token = await fetchTokenFromOAuth(user)
+  tokenCache.set(user.username, token)
+  return token
+}
+
+// bypass total via env
+if (process.env.AUTH_TOKEN) return process.env.AUTH_TOKEN</code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h2>test.use — override de usuário por suite</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// fixtures.ts
+export const test = base.extend&lt;{
+  authToken: string
+  testUser: TestUserCredentials | null
+}&gt;({
+  testUser: [null, { option: true }],
+  authToken: async ({ testUser }, use) => {
+    const token = testUser
+      ? await getOrRefreshTokenForUser(testUser)
+      : await getOrRefreshBusinessToken()
+    await use(token)
+  },
+})
+
+// lending-partner.spec.ts — community diferente
+import { getTestUser } from '../test-users'
+test.use({ testUser: getTestUser('lendingPartner') })
+
+test.describe('PATCH profile @patch @lending', () => { /* … */ })</code></pre>
+            <div class="command-tags fragment fade-up">
+              <span class="cmd-tag">test-users.json</span>
+              <span class="cmd-tag">tokenEndpoint override</span>
+              <span class="cmd-tag">communityId claim</span>
+              <span class="cmd-tag">cache por usuário</span>
+            </div>
+          </section>
+
+          <section>
+            <h2>Headers de contexto obrigatórios</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// headers.ts — espelha Postman pre-request script
+export function buildApiHeaders(options: {
+  profileContext: 'KYC' | 'OAA'
+  lineOfBusiness?: 'Brokerage' | 'ConsumerLending'
+}) {
+  return {
+    'X-Profile-Context': options.profileContext,
+    'Correlation-Id': uuid(),
+    'Session-Id': uuid(),
+    'Client-Ip': '192.168.1.1',
+    LineOfBusiness: options.lineOfBusiness ?? 'Brokerage',
+    SourceLob: 'playwright-automation',
+  }
+}
+
+// uso no spec
+const headers = {
+  Authorization: `Bearer ${authToken}`,
+  ...buildApiHeaders({ profileContext: 'KYC', lineOfBusiness: 'ConsumerLending' }),
+}
+await request.patch('/v1/customers/me/profile/employment/employer', { headers, data })</code></pre>
+          </section>
+
+          <section>
+            <h2>Golden fixtures — contrato sem JSON Schema</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// api/gets/lookups/helpers.ts
+export async function fetchLookup(request, authToken, path, testInfo) {
+  await testInfo.attach('request-headers', { body: JSON.stringify(headers) })
+  const response = await request.get(path, { headers: { Authorization: `Bearer ${authToken}` } })
+  await testInfo.attach('response-body', { body: await response.text() })
+  return { response, body: await response.json() }
+}
+
+export function withoutId(arr) {
+  return arr.map(({ id, ...rest }) => rest)  // ignora id dinâmico
+}
+
+export function expectSameMembers(expected, received) {
+  // compara arrays ignorando ordem — diff legível no report
+}</code></pre>
+            <pre class="fragment fade-up" style="margin-top: 0.6em;"><code class="language-typescript">// spec
+const { body } = await fetchLookup(request, authToken, '/v1/lookups/countries', testInfo)
+expect(response.status()).toBe(200)
+expect(withoutId(body)).toEqual(expectedCountriesFixture)</code></pre>
+          </section>
+
+          <section>
+            <h2>Data-driven — runPatchTests()</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// employment-status-shared.ts
+export function runPatchTests(context, { payloads, tag }) {
+  for (const [label, payload] of Object.entries(payloads)) {
+    test.describe(label, () => {
+      test(`204 — PATCH accepted, GET profile matches`, async ({ request, authToken }) => {
+        const headers = {
+          Authorization: `Bearer ${authToken}`,
+          ...buildApiHeaders({ profileContext: context }),
+        }
+        const patchRes = await request.patch(PATCH_PATH, { headers, data: payload })
+        expect(patchRes.status()).toBe(204)
+
+        const profile = await pollGetUntilMatch(request, GET_PATH, headers, payload)
+        expect(profile).toMatchObject(normalizePayload(payload))
+      })
+    })
+  }
+}
+
+// spec — gera dezenas de testes a partir de um mapa de payloads
+runPatchTests('KYC', { payloads: EMPLOYED_PAYLOADS, tag: 'employmentCode' })</code></pre>
+          </section>
+
+          <section>
+            <h2>PATCH → poll GET — eventual consistency</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">async function pollGetUntilMatch(request, path, headers, expected, deadlineMs = 10_000) {
+  const start = Date.now()
+  while (Date.now() - start &lt; deadlineMs) {
+    const res = await request.get(path, { headers })
+    if (res.status() === 200) {
+      const body = normalizeProfile(await res.json())
+      if (matchesExpected(body, expected)) return body
+    }
+    await new Promise((r) => setTimeout(r, 500))
+  }
+  throw new Error('GET did not match PATCH payload within deadline')
+}</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              Backend assíncrono — não assert imediato após PATCH; poll com intervalo de 500ms.
+            </p>
+          </section>
+
+          <section>
+            <h2>Verificação dual write + read</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// Cypress legado — valida sync entre dois serviços
+profileApi.patchCustomerName(nameBody).should(r => expect(r.status).to.eq(204))
+profileApi.getBasicProfile().should(r => {
+  expect(r.body.pendingProfile.customerName).to.deep.include(nameBody)
+})
+lifecycleApi.getBasicProfile().should(r => {
+  expect(r.body.pendingProfile).to.deep.include(nameBody)
+})</code></pre>
+            <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted);">
+              PATCH no Profile API + GET no Lifecycle Platform confirma propagação do estado pendente.
+            </p>
+          </section>
+
+          <section>
+            <h2>Diff + curl no report de falha</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">function diffForMatchObject(expected, received, path = '') {
+  const lines = []
+  for (const [key, exp] of Object.entries(expected)) {
+    const recv = received[key]
+    if (JSON.stringify(exp) !== JSON.stringify(recv)) {
+      lines.push(`- ${path}.${key}: expected ${JSON.stringify(exp)}, got ${JSON.stringify(recv)}`)
+    }
+  }
+  return lines
+}
+
+// em falha de GET pós-PATCH
+await testInfo.attach('comparison-diff', {
+  body: buildValidationReport(label, expected, received),
+  contentType: 'text/markdown',
+})
+await testInfo.attach('curl-replay', { body: buildCurl('PATCH', url, headers, body) })</code></pre>
+          </section>
+
+          <section>
+            <h2>Postman → Playwright migration</h2>
+            <div class="two-col">
+              <ul class="fragment fade-up" style="font-size: 0.72em;">
+                <li><code>postman/AUTH.md</code> documenta fluxo OAuth</li>
+                <li>Pre-request script → <code>buildApiHeaders()</code></li>
+                <li>Tests tab assertions → <code>expect()</code> + golden fixtures</li>
+                <li>Collection env vars → <code>.env</code> + GitLab CI/CD variables</li>
+                <li>JWT validation → <code>isTokenValid(token, claims)</code></li>
+              </ul>
+              <pre class="fragment fade-up"><code class="language-typescript">export function isTokenValid(token, conditions) {
+  const payload = parseJwt(token)
+  if (payload.typ !== 'at+jwt') return false
+  if (payload.exp * 1000 &lt; Date.now() + 60_000) return false
+  if (conditions.preferred_username)
+    return payload.preferred_username === conditions.preferred_username
+  return true
+}</code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h2>CI — env diagnostics &amp; skip condicional</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">// api/ci/env-diagnostics.spec.ts
+test('required CI variables are set', async () => {
+  expect(process.env.CLIENT_ID, 'CLIENT_ID').toBeTruthy()
+  expect(process.env.CLIENT_SECRET, 'CLIENT_SECRET').toBeTruthy()
+  expect(process.env.API_BASE_URL, 'API_BASE_URL').toBeTruthy()
+})
+
+// skip quando credencial ausente
+test.beforeAll(async () => {
+  test.skip(!process.env.OAUTH_CLIENT_ID, 'OAuth client not configured in CI')
+})</code></pre>
+            <pre class="fragment fade-up" style="margin-top: 0.6em;"><code class="language-yaml"># .gitlab-ci.yml
+playwright-api-tests:
+  variables:
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+  script:
+    - npx playwright test
+  artifacts:
+    reports:
+      junit: test-results/junit.xml</code></pre>
+          </section>
+        </section>
+
+        <!-- POM (vertical stack) -->
+        <section>
+          <section>
+            <h2>Page Object Model (POM)</h2>
+            <p class="fragment fade-up" style="font-size: 0.75em;">
+              Encapsula seletores, ações e assertions — o spec descreve o <em>cenário</em>, não o DOM.
+              Para API-only: use <strong>Service Objects</strong> ou helpers (ver seção anterior).
+            </p>
+            <div class="pom-diagram fragment fade-up">
+              <div class="pom-box">
+                <h4>Spec (.spec.ts)</h4>
+                <ul>
+                  <li>Given / When / Then</li>
+                  <li>Sem seletores espalhados</li>
+                  <li>Um cenário por <code>test()</code></li>
+                </ul>
+              </div>
+              <div class="pom-arrow">→</div>
+              <div class="pom-box">
+                <h4>Page Object</h4>
+                <ul>
+                  <li><code>getByTestId</code> locators</li>
+                  <li>Actions (<code>loginWith</code>)</li>
+                  <li>Assertions (<code>shouldRedirect…</code>)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Anatomia — LoginPage.ts</h2>
+            <pre class="fragment fade-up"><code class="language-typescript">export class LoginPage {
+  constructor(private readonly page: Page) {}
+
+  emailInput() { return this.page.getByTestId('login-email') }
+  submitBtn()  { return this.page.getByTestId('login-submit') }
+
+  async visit() {
+    await this.page.goto('/web/login.html')
+    return this
+  }
+
+  async loginWith(email: string, password: string) {
+    await this.emailInput().fill(email)
+    await this.passwordInput().fill(password)
+    await this.submitBtn().click()
+    return this
+  }
+
+  async shouldRedirectToDashboard() {
+    await expect(this.page.getByTestId('page-dashboard')).toBeVisible()
+    await expect(this.page).toHaveURL(/\/web\/dashboard\.html/)
+  }
+}</code></pre>
+          </section>
+
+          <section>
+            <h2>TeamPage — locators &amp; ações</h2>
+            <table class="compare-table compact fragment fade-up">
+              <tbody>
+                <tr class="group-row"><td colspan="2">Locators</td></tr>
+                <tr><td><code>tableRows()</code></td><td><code>users-table tbody tr</code></td></tr>
+                <tr><td><code>nameCell(id)</code></td><td><code>cell-name-{id}</code></td></tr>
+                <tr><td><code>inviteModal()</code></td><td>Modal de convite</td></tr>
+                <tr class="group-row"><td colspan="2">Actions</td></tr>
+                <tr><td><code>search(term)</code></td><td>Filtrar tabela</td></tr>
+                <tr><td><code>filterByRole(role)</code></td><td>Select de role</td></tr>
+                <tr><td><code>goToNextPage()</code></td><td>Paginação</td></tr>
+                <tr><td><code>openInviteModal()</code></td><td>Abrir + assert visible</td></tr>
+                <tr><td><code>startEdit(id)</code></td><td>Inline edit row</td></tr>
+                <tr class="group-row"><td colspan="2">Assertions</td></tr>
+                <tr><td><code>shouldHaveRowCount(n)</code></td><td>Contagem de linhas</td></tr>
+                <tr><td><code>shouldShowInviteError(text)</code></td><td>Validação do modal</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section>
+            <h2>Page Objects do TestFlow</h2>
+            <div class="page-map fragment fade-up">
+              <div class="page-map-item">LoginPage.ts <span>auth, validação, API toggle</span></div>
+              <div class="page-map-item">DashboardPage.ts <span>KPIs, activity, new run modal</span></div>
+              <div class="page-map-item">TeamPage.ts <span>tabela, invite, inline edit</span></div>
+              <div class="page-map-item">SettingsPage.ts <span>forms, toggles, save</span></div>
+            </div>
+            <pre class="fragment fade-up" style="margin-top: 0.8em;"><code class="language-typescript">// dashboard.spec.ts — POM + auth helper
+test.beforeEach(async ({ page, request }) => {
+  await loginViaApi(page, request)
+  await new DashboardPage(page).shouldBeLoaded()
+})
+
+test('shows a percentage in the pass rate card', async ({ page }) => {
+  await expect(new DashboardPage(page).kpiValue('passrate'))
+    .toHaveText(/^\d+(\.\d+)?%$/)
+})</code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Cobertura da suíte</h2>
+          <table class="compare-table fragment fade-up" style="font-size: 0.58em;">
+            <thead>
+              <tr><th>Project</th><th>Spec</th><th>O que cobre</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>smoke</code></td><td>navigation.spec.ts</td><td>Páginas, sidebar, health API, logout</td></tr>
+              <tr><td><code>auth</code></td><td>login.spec.ts</td><td>Login UI, sessionStorage, erros</td></tr>
+              <tr><td><code>dashboard</code></td><td>dashboard.spec.ts</td><td>KPIs, activity, modal new run</td></tr>
+              <tr><td><code>team</code></td><td>team.spec.ts</td><td>Busca, filtros, paginação, invite</td></tr>
+              <tr><td><code>settings</code></td><td>settings.spec.ts</td><td>Formulário de configurações</td></tr>
+              <tr><td><code>components</code></td><td>components.spec.ts</td><td>Biblioteca de UI + ComponentsPage</td></tr>
+              <tr><td><code>widgets</code></td><td>widgets/widgets.spec.ts</td><td>Classic Widgets — upload, jobs, selects</td></tr>
+              <tr><td><code>wizard</code></td><td>wizard/wizard.spec.ts</td><td>Multi-step, validação, review</td></tr>
+              <tr><td><code>activity</code></td><td>activity/activity.spec.ts</td><td>API mocks, counter, pipeline</td></tr>
+              <tr><td><code>advanced</code></td><td>advanced/advanced.spec.ts</td><td>Shadow DOM, iframe, mobile</td></tr>
+              <tr><td><code>states</code></td><td>states/states.spec.ts</td><td>Skeleton, empty, error states</td></tr>
+              <tr><td><code>layout</code></td><td>layout/shell.spec.ts</td><td>Nav, notificações, theme, mobile</td></tr>
+              <tr><td><code>a11y</code></td><td>a11y/a11y.spec.ts</td><td>axe-core em páginas-chave</td></tr>
+              <tr><td><code>api</code></td><td>api/*.spec.ts</td><td>REST, rules/PATCH, env diagnostics</td></tr>
+            </tbody>
+          </table>
+          <p class="fragment fade-up badge">~265 testes · 14 projects · espelho completo do testflow-cypress + extras</p>
+        </section>
+
+        <section>
+          <h2>Como executar</h2>
+          <div class="two-col">
+            <div class="feature-card fragment fade-up">
+              <h4>🖥️ UI Mode — explorar no browser</h4>
+              <pre><code class="language-bash">npm run test:ui
+npm run test:auth -- --ui</code></pre>
+            </div>
+            <div class="feature-card fragment fade-up">
+              <h4>👁 Headed — ver execução</h4>
+              <pre><code class="language-bash">npm run test:headed
+npm run test:team -- --headed</code></pre>
+            </div>
+          </div>
+          <pre class="fragment fade-up" style="margin-top: 0.8em;"><code class="language-bash">npm test                    # todos os projects
+npm run test:smoke          # só smoke
+npm run test:api            # só API
+npm run report              # relatório HTML</code></pre>
+        </section>
+
+        <section>
+          <h2>CI — GitHub Actions</h2>
+          <div class="feature-grid fragment fade-up" style="font-size: 0.62em;">
+            <div class="feature-card">
+              <h4>Matrix paralela</h4>
+              <p>7 jobs — um por project (api, smoke, auth…)</p>
+            </div>
+            <div class="feature-card">
+              <h4>Service container</h4>
+              <p><code>qaschool/testflow:latest</code> na porta 5050</p>
+            </div>
+            <div class="feature-card">
+              <h4>Artefatos</h4>
+              <p>HTML report + screenshots em falha</p>
+            </div>
+            <div class="feature-card">
+              <h4>Retries</h4>
+              <p>2 retries no CI · trace on first retry</p>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted); margin-top: 0.8em;">
+            Workflow: <code>.github/workflows/playwright.yml</code>
+          </p>
+        </section>
+
+        <section>
+          <h2>Boas práticas</h2>
+          <ul style="font-size: 0.68em;">
+            <li class="fragment fade-up"><strong>Page Objects</strong> em <code>pages/</code> — locators, actions e assertions isolados</li>
+            <li class="fragment fade-up"><code>getByTestId</code> + <code>data-testid</code> — mesma convenção do testflow-cypress</li>
+            <li class="fragment fade-up"><code>loginViaApi</code> no <code>beforeEach</code> — specs de feature sem repetir login UI</li>
+            <li class="fragment fade-up"><code>beforeAll</code> + resposta compartilhada — contratos API sem N requests idênticos</li>
+            <li class="fragment fade-up"><code>validateSchema</code> — tipos da resposta REST de forma declarativa</li>
+            <li class="fragment fade-up"><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
+            <li class="fragment fade-up">Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
+            <li class="fragment fade-up">Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
+            <li class="fragment fade-up"><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
+            <li class="fragment fade-up"><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
+            <li class="fragment fade-up"><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
+            <li class="fragment fade-up">Tags <code>@needs-browser</code> / <code>@negative-testing</code> — filtrar jobs no CI</li>
+            <li class="fragment fade-up"><code>globalSetup</code> + cache de token — setup pesado uma vez por run</li>
+            <li class="fragment fade-up"><strong>Service Objects</strong> (API) — encapsular <code>cy.request</code> / <code>request</code> por domínio</li>
+            <li class="fragment fade-up"><code>test.use({ testUser })</code> — override de credencial por suite / community</li>
+            <li class="fragment fade-up"><code>buildApiHeaders()</code> — headers de contexto espelhando Postman pre-script</li>
+            <li class="fragment fade-up">Golden fixtures + <code>expectSameMembers</code> — contrato sem JSON Schema</li>
+            <li class="fragment fade-up"><code>runPatchTests()</code> — data-driven a partir de mapa de payloads</li>
+            <li class="fragment fade-up">Poll GET pós-PATCH — eventual consistency com deadline</li>
+            <li class="fragment fade-up">Diff + curl attachments — debug de falha no HTML report</li>
+            <li class="fragment fade-up">Verificação dual — PATCH Profile API + GET Lifecycle Platform</li>
+            <li class="fragment fade-up"><code>env-diagnostics.spec.ts</code> — validar vars de CI antes da suite</li>
+            <li class="fragment fade-up"><code>npm run test:ui</code> no dev — feedback visual imediato</li>
+          </ul>
+        </section>
+
+        <section class="slide-cta">
+          <h2>Próximos passos</h2>
+          <p>Você já sabe instalar, configurar e escrever testes E2E e API com Playwright no TestFlow.</p>
+          <div class="links">
+            <a class="link-card fragment fade-up" href="https://playwright.dev/docs/intro" target="_blank" rel="noopener">
+              <strong>📚 Documentação</strong>
+              playwright.dev
+            </a>
+            <a class="link-card fragment fade-up" href="https://playwright.dev/docs/test-ui-mode" target="_blank" rel="noopener">
+              <strong>🖥️ UI Mode</strong>
+              Debug interativo
+            </a>
+            <a class="link-card fragment fade-up" href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener">
+              <strong>🧪 TestFlow</strong>
+              App sob teste
+            </a>
+          </div>
+          <p class="fragment fade-up badge" style="margin-top: 2em;">
+            ← → slides &nbsp;|&nbsp; ↓ ↑ sub-slides &nbsp;|&nbsp; F tela cheia &nbsp;|&nbsp; ESC overview
+          </p>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="../../node_modules/reveal.js/dist/reveal.js"></script>
+    <script src="../../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script>
+      const isPrintPdf = window.location.search.match(/print-pdf/gi)
+
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        progress: true,
+        controls: true,
+        center: true,
+        transition: 'slide',
+        transitionSpeed: 'default',
+        backgroundTransition: 'fade',
+        width: 1280,
+        height: 720,
+        margin: 0.08,
+        pdfMaxPagesPerSlide: 1,
+        pdfSeparateFragments: false,
+        plugins: [RevealHighlight],
+      }).then(() => {
+        if (isPrintPdf) {
+          document.querySelectorAll('.fragment').forEach((el) => {
+            el.classList.add('visible', 'current-fragment')
+          })
+        }
+      })
+    </script>
+  </body>
+</html>

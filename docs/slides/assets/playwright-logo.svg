@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Playwright">
+  <defs>
+    <linearGradient id="pw-g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#45ba4b"/>
+      <stop offset="100%" stop-color="#2ead33"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="#0d1117"/>
+  <g fill="url(#pw-g)">
+    <path d="M34 78c0-18 12-32 30-32s30 14 30 32v8H34v-8z" opacity=".35"/>
+    <ellipse cx="48" cy="58" rx="14" ry="18"/>
+    <ellipse cx="80" cy="58" rx="14" ry="18"/>
+    <circle cx="48" cy="58" r="5" fill="#0d1117"/>
+    <circle cx="80" cy="58" r="5" fill="#0d1117"/>
+    <path d="M44 92c8 10 32 10 40 0" stroke="url(#pw-g)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
