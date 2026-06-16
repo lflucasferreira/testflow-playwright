@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { ActivityPage } from '../../pages/ActivityPage'
 import { visitAuthenticated } from '../../support/auth'
+import { readFixture } from '../../support/helpers/fixtures'
 
 test.describe('Activity — dynamic UI & API interactions', () => {
   test.describe.configure({ timeout: 15_000 })
@@ -152,7 +153,6 @@ test.describe('Activity — dynamic UI & API interactions', () => {
 
   test.describe('Fixture data', () => {
     test('countries lookup fixture exposes expected codes', async () => {
-      const { readFixture } = await import('../../support/helpers/fixtures')
       const data = readFixture<{ countries: Array<{ code: string; name: string }> }>(
         'lookups/countries.json',
       )
