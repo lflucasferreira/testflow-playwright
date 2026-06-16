@@ -11,7 +11,6 @@ function uiProject(
   return {
     name,
     testMatch,
-    dependencies: ['setup'] as const,
     use: {
       storageState: AUTH_STATE,
       ...deviceUse,
@@ -49,7 +48,6 @@ export default defineConfig({
     video: 'off',
   },
   projects: [
-    { name: 'setup', testMatch: /auth\.setup\.ts/ },
     { name: 'api', testMatch: /tests\/api\/.*\.spec\.ts/ },
     uiProject('smoke', /tests\/smoke\/.*\.spec\.ts/),
     uiProject('auth', /tests\/auth\/.*\.spec\.ts/),

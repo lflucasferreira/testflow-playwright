@@ -21,7 +21,6 @@ Playwright E2E automation suite for [TestFlow](https://github.com/qaschoolbr/tes
 | `a11y` | `tests/a11y/a11y.spec.ts` | axe-core on dashboard, login, wizard, components, settings, states, modal |
 | `visual` | `tests/visual/visual.spec.ts` | `toHaveScreenshot()` baselines (login, sidebar, components) |
 | `api` | `tests/api/*.spec.ts` | REST, golden roles, `runPatchTests()`, rules/PATCH |
-| `setup` | `tests/auth/auth.setup.ts` | Persists session + `storageState` before UI projects |
 | `smoke-firefox` | `tests/smoke/navigation.spec.ts` | Smoke suite on Firefox |
 | `smoke-webkit` | `tests/smoke/navigation.spec.ts` | Smoke suite on WebKit |
 
@@ -74,7 +73,6 @@ npm run test:ui
 npm run test:headed
 
 # By project
-npm run test:setup
 npm run test:smoke
 npm run test:auth
 npm run test:dashboard
@@ -108,17 +106,16 @@ npm run report
 testflow-playwright/
 ├── fixtures/              # JSON fixtures + sample upload file
 ├── fixtures.ts            # Custom test fixture (authToken)
-├── globalSetup.ts         # Auth token + session cache (runs once per test run)
+├── globalSetup.ts         # Auth token, session + storageState (API only, no browser)
 ├── pages/                 # Page Object Model
 ├── support/
 │   ├── api/               # Rules API client
 │   ├── constants/         # EXPECT status codes, viewports
 │   ├── factories/         # Test data factories
 │   ├── helpers/           # API exchange, headers, contract, readFixture
-│   ├── sessionStore.ts    # Persisted session for setup project
+│   ├── sessionStore.ts    # Persisted session + storageState paths
 │   └── utilities/         # JSON Patch, retry/poll, runPatchTests()
 ├── tests/
-│   ├── auth/auth.setup.ts # Setup project — storageState + session.json
 │   ├── visual/            # toHaveScreenshot baselines
 │   ├── components/
 │   ├── dashboard/

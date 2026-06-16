@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { request, type FullConfig } from '@playwright/test'
 import { DEMO_EMAIL, DEMO_PASSWORD } from './support/helpers'
-import { writeSession } from './support/sessionStore'
+import { writeSession, writeStorageState } from './support/sessionStore'
 
 const CACHE_DIR = path.join(__dirname, '.playwright')
 const CACHE_FILE = path.join(CACHE_DIR, 'token-cache.json')
@@ -29,6 +29,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
       name: body.user?.name ?? 'Demo User',
       token: body.token,
     })
+    writeStorageState()
   } finally {
     await api.dispose()
   }

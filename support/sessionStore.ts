@@ -9,10 +9,19 @@ export interface StoredSession {
 
 const AUTH_DIR = path.join(__dirname, '../.playwright/.auth')
 export const SESSION_FILE = path.join(AUTH_DIR, 'session.json')
+export const STORAGE_STATE_FILE = path.join(AUTH_DIR, 'user.json')
 
 export function writeSession(session: StoredSession): void {
   fs.mkdirSync(AUTH_DIR, { recursive: true })
   fs.writeFileSync(SESSION_FILE, JSON.stringify({ ...session, cachedAt: Date.now() }))
+}
+
+export function writeStorageState(): void {
+  fs.mkdirSync(AUTH_DIR, { recursive: true })
+  fs.writeFileSync(
+    STORAGE_STATE_FILE,
+    JSON.stringify({ cookies: [], origins: [] }, null, 2),
+  )
 }
 
 export function readSession(): StoredSession | null {
