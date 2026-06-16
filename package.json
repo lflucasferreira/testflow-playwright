@@ -28,7 +28,7 @@
     "test:layout": "playwright test --project=layout",
     "test:widgets": "playwright test --project=widgets",
     "test:a11y": "playwright test --project=a11y",
-    "test:grep:smoke": "playwright test --grep @smoke",
+    "test:grep:smoke": "playwright test --grep @smoke --project=smoke --project=api",
     "test:grep:regression": "playwright test --grep @regression",
     "report": "playwright show-report",
     "install:browsers": "NODE_TLS_REJECT_UNAUTHORIZED=0 playwright install chromium firefox webkit"
