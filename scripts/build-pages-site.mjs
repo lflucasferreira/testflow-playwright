@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const siteDir = path.join(root, 'site')
 const docsSrc = path.join(root, 'docs')
-const docsDest = path.join(siteDir, 'docs')
 const allureReport = path.join(root, 'allure-report')
 const allureStaging = path.join(root, 'pages-allure-staging')
 const playwrightReport = path.join(root, 'playwright-report')
@@ -20,21 +19,6 @@ const NO_REPORT_HTML = `<!DOCTYPE html>
   <body>
     <h1>No test report generated</h1>
     <p>Check workflow logs.</p>
-  </body>
-</html>
-`
-
-const ROOT_REDIRECT_HTML = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=docs/" />
-    <link rel="canonical" href="docs/" />
-    <title>testflow-playwright</title>
-    <script>location.replace('docs/')</script>
-  </head>
-  <body>
-    <p><a href="docs/">testflow-playwright documentation</a></p>
   </body>
 </html>
 `
@@ -57,11 +41,40 @@ function writeLegacyRedirect(destFile, target) {
     <script>location.replace('${target}')</script>
   </head>
   <body>
-    <p>Moved — <a href="${target}">open the guide</a>.</p>
+    <p>Moved — <a href="${target}">continue</a>.</p>
   </body>
 </html>
 `,
   )
+}
+
+function patchFileInPlace(filePath, replacements) {
+  if (!fs.existsSync(filePath)) return
+
+  let html = fs.readFileSync(filePath, 'utf8')
+  for (const [from, to] of replacements) {
+    html = html.replaceAll(from, to)
+  }
+  fs.writeFileSync(filePath, html)
+}
+
+function patchSlidesForPages(slidesDir) {
+  patchFileInPlace(path.join(slidesDir, 'index.html'), [
+    ['../../node_modules/', '../node_modules/'],
+    ['data-base="../../"', 'data-base="../"'],
+  ])
+  console.log('Patched slides/index.html paths for GitHub Pages')
+}
+
+function patchGuideForPages(filePath) {
+  patchFileInPlace(filePath, [
+    ['../node_modules/', 'node_modules/'],
+    ['data-base="../"', 'data-base="./"'],
+  ])
+}
+
+function patchHubForPages(filePath) {
+  patchFileInPlace(filePath, [['data-base="../"', 'data-base="./"']])
 }
 
 function copyPagesVendorAssets() {
@@ -94,25 +107,28 @@ function copyPagesVendorAssets() {
 }
 
 fs.rmSync(siteDir, { recursive: true, force: true })
-fs.mkdirSync(docsDest, { recursive: true })
+fs.mkdirSync(siteDir, { recursive: true })
 
-fs.copyFileSync(path.join(docsSrc, 'index.html'), path.join(docsDest, 'index.html'))
-copyDir(path.join(docsSrc, 'slides'), path.join(docsDest, 'slides'))
+fs.copyFileSync(path.join(docsSrc, 'index.html'), path.join(siteDir, 'index.html'))
+copyDir(path.join(docsSrc, 'slides'), path.join(siteDir, 'slides'))
+patchSlidesForPages(path.join(siteDir, 'slides'))
 
 for (const guide of ['guia-completo.html', 'complete-guide.html']) {
   const src = path.join(docsSrc, guide)
   if (fs.existsSync(src)) {
-    fs.copyFileSync(src, path.join(docsDest, guide))
+    const dest = path.join(siteDir, guide)
+    fs.copyFileSync(src, dest)
+    patchGuideForPages(dest)
   }
 }
 
-fs.writeFileSync(path.join(siteDir, 'index.html'), ROOT_REDIRECT_HTML)
-
-writeLegacyRedirect(path.join(siteDir, 'slides', 'index.html'), '../docs/slides/')
-writeLegacyRedirect(path.join(siteDir, 'slides', 'complete-guide.html'), '../docs/complete-guide.html')
-writeLegacyRedirect(path.join(siteDir, 'slides', 'guia-completo.html'), '../docs/guia-completo.html')
-
+patchHubForPages(path.join(siteDir, 'index.html'))
 copyPagesVendorAssets()
+
+writeLegacyRedirect(path.join(siteDir, 'docs', 'index.html'), '../')
+writeLegacyRedirect(path.join(siteDir, 'docs', 'complete-guide.html'), '../complete-guide.html')
+writeLegacyRedirect(path.join(siteDir, 'docs', 'guia-completo.html'), '../guia-completo.html')
+writeLegacyRedirect(path.join(siteDir, 'docs', 'slides', 'index.html'), '../../slides/')
 
 const reportDest = path.join(siteDir, 'report')
 if (fs.existsSync(path.join(allureStaging, 'index.html'))) {
