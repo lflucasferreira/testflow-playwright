@@ -4,17 +4,18 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const siteDir = path.join(root, 'site')
-const reportSource = path.join(root, 'playwright-report')
+const allureReport = path.join(root, 'allure-report')
+const playwrightReport = path.join(root, 'playwright-report')
 const fallbackReport = path.join(root, 'docs', 'report')
 
 const NO_REPORT_HTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Playwright Report</title>
+    <title>Allure Report</title>
   </head>
   <body>
-    <h1>No Playwright report generated</h1>
+    <h1>No test report generated</h1>
     <p>Check workflow logs.</p>
   </body>
 </html>
@@ -31,9 +32,12 @@ fs.copyFileSync(path.join(root, 'docs', 'index.html'), path.join(siteDir, 'index
 copyDir(path.join(root, 'docs', 'slides'), path.join(siteDir, 'slides'))
 
 const reportDest = path.join(siteDir, 'report')
-if (fs.existsSync(path.join(reportSource, 'index.html'))) {
-  copyDir(reportSource, reportDest)
-  console.log('Using playwright-report/ for site/report/')
+if (fs.existsSync(path.join(allureReport, 'index.html'))) {
+  copyDir(allureReport, reportDest)
+  console.log('Using allure-report/ for site/report/')
+} else if (fs.existsSync(path.join(playwrightReport, 'index.html'))) {
+  copyDir(playwrightReport, reportDest)
+  console.log('Using playwright-report/ fallback for site/report/')
 } else if (fs.existsSync(path.join(fallbackReport, 'index.html'))) {
   copyDir(fallbackReport, reportDest)
   console.log('Using docs/report/ fallback for site/report/')

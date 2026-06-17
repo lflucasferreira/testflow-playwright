@@ -52,6 +52,11 @@ jobs:
         run: npm test
         continue-on-error: true
 
+      - name: Generate Allure report
+        if: always()
+        run: npm run report:allure
+        continue-on-error: true
+
       - name: Build GitHub Pages site
         run: npm run pages:build
 
@@ -66,6 +71,8 @@ jobs:
         with:
           name: playwright-report-pages
           path: |
+            allure-report/
+            allure-results/
             playwright-report/
             site/report/
           if-no-files-found: ignore

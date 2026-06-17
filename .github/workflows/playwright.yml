@@ -95,6 +95,14 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
 
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: allure-results-${{ matrix.suite }}
+          path: allure-results/
+          if-no-files-found: ignore
+
       - name: Upload test results on failure
         if: failure()
         uses: actions/upload-artifact@v6

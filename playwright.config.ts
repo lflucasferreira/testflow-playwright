@@ -38,6 +38,7 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'playwright-report/results.json' }],
+    ['allure-playwright', { resultsDir: 'allure-results', detail: true, suiteTitle: false }],
   ],
   use: {
     baseURL: BASE_URL,

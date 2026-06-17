@@ -96,8 +96,11 @@ npm run test:api
 npm run test:grep:smoke
 npm run test:grep:regression
 
-# HTML report
-npm run report
+# Reports
+npm run report              # Playwright HTML report (local)
+npm run report:allure         # Generate Allure report from allure-results/
+npm run report:allure:open    # Open Allure report in browser
+npm run report:allure:serve   # Generate + open Allure report
 ```
 
 ## Project structure
@@ -132,7 +135,7 @@ testflow-playwright/
 
 GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (17 matrix jobs + `@smoke` grep job), including Firefox/WebKit smoke and visual regression.
 
-**GitHub Pages** (`.github/workflows/pages.yml`): on every push to `main`, runs the full suite, builds the docs landing + Playwright HTML report, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
+**GitHub Pages** (`.github/workflows/pages.yml`): on every push to `main`, runs the full suite, generates an Allure report, builds the docs landing, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
 
 ## Slides & interview prep
 
