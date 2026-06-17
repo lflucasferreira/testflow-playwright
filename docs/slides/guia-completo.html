@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playwright — Guia Completo (Instalação &amp; Comandos)</title>
+    <meta name="description" content="Passo a passo: o que é Playwright, instalação, estrutura de projeto e referência de todos os comandos dos slides." />
+    <link rel="icon" href="assets/playwright-logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <link rel="stylesheet" href="css/guide.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <img src="assets/playwright-logo.svg" alt="Playwright" width="28" height="28" />
+        Playwright — Guia Completo
+      </a>
+      <nav class="header-links">
+        <a href="index.html">Slides</a>
+        <a href="complete-guide.html">English</a>
+        <a href="https://playwright.dev/docs/intro" target="_blank" rel="noopener">Docs oficiais</a>
+      </nav>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="Índice">
+        <h2>Introdução</h2>
+        <ul>
+          <li><a href="#o-que-e">O que é Playwright</a></li>
+          <li><a href="#por-que">Por que usar</a></li>
+          <li><a href="#pre-requisitos">Pré-requisitos</a></li>
+          <li><a href="#ambiente-so">Ambiente por SO</a></li>
+          <li><a href="#instalacao">Instalação</a></li>
+          <li><a href="#estrutura">Estrutura do projeto</a></li>
+          <li><a href="#config">Configuração</a></li>
+          <li><a href="#primeiro-teste">Primeiro teste</a></li>
+        </ul>
+        <h2>Comandos E2E</h2>
+        <ul>
+          <li><a href="#locators">Locators &amp; navegação</a></li>
+          <li><a href="#interacoes">Interações</a></li>
+          <li><a href="#assertions">Assertions</a></li>
+          <li><a href="#helpers">Helpers compartilhados</a></li>
+          <li><a href="#seletores">Estratégia de seletores</a></li>
+        </ul>
+        <h2>Suites especializadas</h2>
+        <ul>
+          <li><a href="#a11y-axe">Acessibilidade (axe)</a></li>
+          <li><a href="#visual-regression">Regressão visual</a></li>
+          <li><a href="#layout-shell">App shell / layout</a></li>
+          <li><a href="#widgets-patterns">Classic Widgets</a></li>
+          <li><a href="#factories-fixtures">Factories &amp; fixtures</a></li>
+        </ul>
+        <h2>Estrutura de testes</h2>
+        <ul>
+          <li><a href="#estrutura-specs">Estrutura de specs</a></li>
+          <li><a href="#hooks">beforeEach vs beforeAll</a></li>
+          <li><a href="#data-driven">Data-driven tests</a></li>
+          <li><a href="#test-step">test.step</a></li>
+        </ul>
+        <h2>API &amp; rede</h2>
+        <ul>
+          <li><a href="#api-request">request fixture</a></li>
+          <li><a href="#validate-schema">validateSchema</a></li>
+          <li><a href="#page-route">page.route — spy &amp; mock</a></li>
+          <li><a href="#intercept-ui">Intercept na UI</a></li>
+          <li><a href="#auth-helpers">Auth helpers</a></li>
+        </ul>
+        <h2>Padrões avançados</h2>
+        <ul>
+          <li><a href="#fixtures-custom">Fixtures customizadas</a></li>
+          <li><a href="#expect-constants">EXPECT constants</a></li>
+          <li><a href="#route-modules">Route modules</a></li>
+          <li><a href="#attach-exchange">attachHttpExchangeReport</a></li>
+          <li><a href="#tags-grep">Tags &amp; grep</a></li>
+          <li><a href="#global-setup">globalSetup</a></li>
+        </ul>
+        <h2>API enterprise</h2>
+        <ul>
+          <li><a href="#api-enterprise">Visão geral</a></li>
+          <li><a href="#service-objects">Service Objects</a></li>
+          <li><a href="#auth-cache">Auth cache</a></li>
+          <li><a href="#test-use">test.use override</a></li>
+          <li><a href="#api-headers">buildApiHeaders</a></li>
+          <li><a href="#golden-fixtures">Golden fixtures</a></li>
+          <li><a href="#run-patch">runPatchTests()</a></li>
+          <li><a href="#poll-get">Poll GET pós-PATCH</a></li>
+          <li><a href="#dual-write">Dual write + read</a></li>
+          <li><a href="#diff-curl">Diff + curl no report</a></li>
+          <li><a href="#postman">Postman → Playwright</a></li>
+          <li><a href="#ci-diagnostics">CI diagnostics</a></li>
+        </ul>
+        <h2>Page Objects</h2>
+        <ul>
+          <li><a href="#pom">Page Object Model</a></li>
+          <li><a href="#login-page">LoginPage</a></li>
+          <li><a href="#team-page">TeamPage</a></li>
+          <li><a href="#page-map">Page Objects TestFlow</a></li>
+        </ul>
+        <h2>Encerramento</h2>
+        <ul>
+          <li><a href="#docs-treinamento">Docs de treinamento</a></li>
+          <li><a href="#cobertura">Cobertura da suíte</a></li>
+          <li><a href="#executar">Como executar</a></li>
+          <li><a href="#ci">CI GitHub Actions</a></li>
+          <li><a href="#boas-praticas">Boas práticas</a></li>
+          <li><a href="#proximos-passos">Próximos passos</a></li>
+        </ul>
+      </aside>
+
+      <main>
+        <header class="hero">
+          <h1>Playwright — Guia passo a passo</h1>
+          <p class="subtitle">
+            Do zero à referência completa: instalação, locators, Page Objects, API testing,
+            intercepts, padrões enterprise e todos os comandos apresentados nos slides.
+          </p>
+          <span class="badge">E2E · API · POM · page.route · testflow-playwright</span>
+        </header>
+
+        <section id="o-que-e">
+          <h2>O que é o Playwright?</h2>
+          <p>
+            O Playwright é um framework de automação da <strong>Microsoft</strong> para testes
+            end-to-end e API — com suporte nativo a Chromium, Firefox e WebKit.
+          </p>
+          <ul>
+            <li>Escrito em <strong>TypeScript</strong> / JavaScript</li>
+            <li>API moderna com <strong>auto-wait</strong> — menos flakiness</li>
+            <li>Fixtures <code>page</code>, <code>request</code>, <code>context</code> por teste</li>
+            <li>UI Mode, trace viewer, screenshots e relatório HTML</li>
+            <li>Paralelismo nativo e isolamento entre workers</li>
+          </ul>
+          <div class="callout">
+            Diferente do Cypress, o Playwright usa <strong>WebDriver BiDi</strong> / protocolos nativos
+            do browser e roda fora do contexto da aplicação — suportando múltiplos browsers e
+            testes API sem UI no mesmo runner.
+          </div>
+        </section>
+
+        <section id="por-que">
+          <h2>Por que usar Playwright?</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4>⚡ Velocidade &amp; paralelismo</h4>
+              <p>Workers paralelos e browser contexts isolados por teste.</p>
+            </div>
+            <div class="feature-card">
+              <h4>🎯 Locators resilientes</h4>
+              <p><code>getByTestId</code>, role, text — recomendados pela doc oficial.</p>
+            </div>
+            <div class="feature-card">
+              <h4>🔍 Debug rico</h4>
+              <p>UI Mode, headed, Inspector e trace on retry.</p>
+            </div>
+            <div class="feature-card">
+              <h4>🌐 E2E + API unificados</h4>
+              <p><code>page</code> para UI e <code>request</code> para contratos REST.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="pre-requisitos">
+          <h2>Pré-requisitos</h2>
+          <div class="two-col">
+            <div>
+              <h3>Ambiente</h3>
+              <ul>
+                <li><strong>Node.js</strong> 20+</li>
+                <li><strong>npm</strong> (ou pnpm / yarn)</li>
+                <li>App TestFlow na porta <code>5050</code></li>
+                <li>Editor: VS Code / Cursor (extensão Playwright opcional)</li>
+              </ul>
+            </div>
+            <div class="terminal">
+              <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <div><span class="prompt">$</span> node --version</div>
+                <div>v20.x.x</div>
+                <br />
+                <div><span class="prompt">$</span> docker run -p 5050:5050 qaschool/testflow:latest</div>
+                <div class="comment"># app disponível em localhost:5050</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ambiente-so">
+          <h2>Instalação do ambiente por SO</h2>
+          <p>
+            Antes de clonar o repositório, instale <strong>Node.js 20+</strong>, <strong>Git</strong> e
+            <strong>Docker</strong> (para subir o TestFlow na porta <code>5050</code>).
+            Os passos do projeto (<code>npm install</code>, browsers) são iguais em todos os sistemas.
+          </p>
+
+          <div class="feature-grid platform-grid">
+            <div class="feature-card">
+              <h4>🍎 macOS</h4>
+              <pre><code class="language-bash"># Homebrew — https://brew.sh
+brew install node@20 git
+brew link --overwrite node@20
+brew install --cask docker
+
+node --version   # v20+
+git --version</code></pre>
+              <p><strong>nvm:</strong> <code>curl -o- …/nvm/install.sh | bash</code> → <code>nvm install 20</code></p>
+            </div>
+            <div class="feature-card">
+              <h4>🪟 Windows</h4>
+              <pre><code class="language-powershell">winget install OpenJS.NodeJS.LTS
+winget install Git.Git
+winget install Docker.DockerDesktop
+
+node --version</code></pre>
+              <p>Use <strong>PowerShell</strong> ou <strong>Git Bash</strong>. Instaladores: <a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a>, <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a>, <a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a>.</p>
+            </div>
+            <div class="feature-card">
+              <h4>🐧 Linux</h4>
+              <pre><code class="language-bash"># Debian / Ubuntu
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs git docker.io
+sudo usermod -aG docker $USER
+
+node --version</code></pre>
+              <p>Após <code>npm install</code>: <code>npx playwright install-deps</code> (libs dos browsers). Fedora: <code>dnf install nodejs git docker</code>.</p>
+            </div>
+          </div>
+
+          <pre><code class="language-bash"># TestFlow — igual em macOS, Windows e Linux
+docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
+        </section>
+
+        <section id="instalacao">
+          <h2>Instalação — testflow-playwright</h2>
+          <ol class="steps">
+            <li>
+              <div>
+                <strong>Clone o repositório</strong><br />
+                <code>git clone https://github.com/lflucasferreira/testflow-playwright.git</code><br />
+                <code>cd testflow-playwright</code>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Instale dependências</strong><br />
+                <code>npm install</code>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Instale os browsers</strong><br />
+                <code>npm run install:browsers</code>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Execute os testes</strong><br />
+                <code>npm test</code> ou <code>npm run test:ui</code>
+              </div>
+            </li>
+          </ol>
+          <div class="callout">
+            Proxy corporativo (Zscaler)? O script <code>install:browsers</code> contorna erro SSL.
+            Veja também <code>NODE_EXTRA_CA_CERTS</code> no README do projeto.
+          </div>
+        </section>
+
+        <section id="estrutura">
+          <h2>Estrutura do projeto</h2>
+          <div class="two-col">
+            <pre><code class="language-plaintext">testflow-playwright/
+├── docs/
+│   ├── en/tests/       # walkthroughs EN (bloco a bloco)
+│   └── pt/tests/       # walkthroughs PT
+├── fixtures/           # credentials.json, sample-upload.txt
+├── fixtures.ts         # test.extend — authToken customizado
+├── pages/              # Page Object Model (11 classes)
+├── support/
+│   ├── auth.ts         # loginViaApi, visitAuthenticated
+│   ├── helpers.ts      # validateSchema, readFixture
+│   └── factories/      # wizard, user patch payloads
+├── tests/
+│   ├── api/            # auth, users, rules, env-diagnostics
+│   ├── auth/ smoke/ dashboard/ team/ settings/
+│   ├── components/ wizard/ activity/ advanced/ states/
+│   ├── layout/ widgets/ visual/ a11y/
+├── globalSetup.ts      # token cache + storageState
+├── playwright.config.ts
+└── package.json</code></pre>
+            <ul>
+              <li><code>pages/</code> — seletores, ações e assertions por tela</li>
+              <li><code>support/auth.ts</code> — login via API ou UI</li>
+              <li><code>docs/en/tests/</code> — explicação bloco a bloco de cada spec</li>
+              <li><code>tests/*.spec.ts</code> — 18 specs · ~288 testes</li>
+              <li><code>data-testid</code> — convenção de seletores estáveis</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="config">
+          <h2>Configuração — playwright.config.ts</h2>
+          <pre><code class="language-typescript">import { defineConfig, devices } from '@playwright/test'
+
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:5050'
+
+export default defineConfig({
+  testDir: './tests',
+  globalSetup: require.resolve('./globalSetup'),
+  timeout: 8000,
+  use: {
+    baseURL: BASE_URL,
+    viewport: { width: 1280, height: 800 },
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    { name: 'api', testMatch: /tests\/api\/.*\.spec\.ts/ },
+    { name: 'smoke', testMatch: /tests\/smoke\/.*\.spec\.ts/ },
+    { name: 'auth', testMatch: /tests\/auth\/.*\.spec\.ts/ },
+    { name: 'smoke-firefox', use: devices['Desktop Firefox'] },
+    { name: 'smoke-webkit', use: devices['Desktop Safari'] },
+    // dashboard, team, settings, components, wizard…
+  ],
+})</code></pre>
+          <p>
+            <code>projects</code> permitem rodar suites em paralelo no CI — mesmo padrão do
+            <code>testflow-cypress</code>.
+          </p>
+        </section>
+
+        <section id="primeiro-teste">
+          <h2>Seu primeiro teste</h2>
+          <pre><code class="language-typescript">// tests/auth/login.spec.ts
+import { test, expect } from '@playwright/test'
+import { LoginPage } from '../../pages/LoginPage'
+import { DEMO_EMAIL, DEMO_PASSWORD } from '../../support/helpers'
+
+test.describe('Authentication', () => {
+  test.beforeEach(async ({ page }) => {
+    await new LoginPage(page).visit()
+  })
+
+  test('logs in via UI and redirects to dashboard', async ({ page }) => {
+    const login = new LoginPage(page)
+    await login.loginWith(DEMO_EMAIL, DEMO_PASSWORD)
+    await login.shouldRedirectToDashboard()
+  })
+})</code></pre>
+          <p>
+            Convenção: <code>data-testid="login-email"</code> →
+            <code>page.getByTestId('login-email')</code>
+          </p>
+        </section>
+
+        <section id="locators">
+          <h2>Locators &amp; navegação</h2>
+          <p>API Playwright usada na suíte TestFlow — seletores via <code>data-testid</code>.</p>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>API</th><th>Uso no TestFlow</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>page.goto(path)</code></td><td>Abrir login, dashboard, team…</td></tr>
+              <tr><td><code>page.getByTestId(id)</code></td><td>Selector padrão — <code>login-email</code>, <code>page-team</code></td></tr>
+              <tr><td><code>page.getByRole(...)</code></td><td>Botões, links acessíveis</td></tr>
+              <tr><td><code>page.getByText(...)</code></td><td>Labels visíveis, mensagens de erro</td></tr>
+              <tr><td><code>locator.locator(...)</code></td><td><code>tbody tr</code>, células, colunas</td></tr>
+              <tr><td><code>locator.nth(i)</code></td><td>Linha n da tabela, item de activity</td></tr>
+              <tr><td><code>page.waitForRequest(...)</code></td><td>Spy POST login, GET users, PUT/PATCH row</td></tr>
+              <tr><td><code>page.waitForResponse(...)</code></td><td>Validar status após ação na UI</td></tr>
+              <tr><td><code>page.evaluate(...)</code></td><td>sessionStorage pós-login</td></tr>
+              <tr><td><code>page.addInitScript(...)</code></td><td>Injetar token antes do <code>goto</code></td></tr>
+              <tr><td><code>page.reload()</code></td><td>Recarregar após <code>page.route</code> mock</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="interacoes">
+          <h2>Interações</h2>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>Ação</th><th>Exemplo TestFlow</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>.fill(text)</code></td><td>Email, senha, busca na tabela</td></tr>
+              <tr><td><code>.clear()</code></td><td>Limpar busca antes de novo filtro</td></tr>
+              <tr><td><code>.click()</code></td><td>Submit, sidebar, paginação, modais</td></tr>
+              <tr><td><code>.selectOption(value)</code></td><td>Role filter, invite role, run suite</td></tr>
+              <tr><td><code>.check() / .uncheck()</code></td><td>Remember me, API toggle</td></tr>
+              <tr><td><code>.press('Escape')</code></td><td>Fechar modal de invite / new run</td></tr>
+              <tr><td><code>.innerText()</code></td><td>Extrair valor numérico de KPI</td></tr>
+              <tr><td><code>.isVisible()</code></td><td>Condicional — toast ou result msg</td></tr>
+              <tr><td><code>.evaluate(el =&gt; el.click())</code></td><td>Checkbox coberto por label custom</td></tr>
+              <tr><td><code>page.keyboard.press(...)</code></td><td>Atalhos de teclado na UI</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="assertions">
+          <h2>Assertions — expect()</h2>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>Assertion</th><th>Exemplo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>toBeVisible()</code></td><td>Page root, modais, KPIs, toast</td></tr>
+              <tr><td><code>not.toBeVisible()</code></td><td>Modal fechado após submit</td></tr>
+              <tr><td><code>toHaveURL(...)</code></td><td>Redirect pós-login</td></tr>
+              <tr><td><code>toContainText(...)</code></td><td>Erros, greeting, row count label</td></tr>
+              <tr><td><code>toHaveAttribute(...)</code></td><td>type=password, placeholder</td></tr>
+              <tr><td><code>toHaveCount(n)</code></td><td>Linhas visíveis, colunas, activity items</td></tr>
+              <tr><td><code>toHaveText(/regex/)</code></td><td>Pass rate <code>^\d+%$</code></td></tr>
+              <tr><td><code>toMatchObject({…})</code></td><td>Payload do invite POST</td></tr>
+              <tr><td><code>expect(res.status()).toBe(200)</code></td><td>Contratos API</td></tr>
+              <tr><td><code>expect(duration).toBeLessThan(ms)</code></td><td>SLA de resposta API</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            Playwright <strong>aguarda automaticamente</strong> até a condição ser verdadeira — sem waits manuais na UI.
+          </div>
+        </section>
+
+        <section id="helpers">
+          <h2>Helpers compartilhados</h2>
+          <table class="compare-table compact">
+            <tbody>
+              <tr class="group-row"><td colspan="2">support/helpers.ts</td></tr>
+              <tr><td><code>DEMO_EMAIL</code> · <code>DEMO_PASSWORD</code></td><td>Credenciais demo via env</td></tr>
+              <tr><td><code>validateSchema(obj, schema)</code></td><td>Tipos da resposta REST</td></tr>
+              <tr><td><code>getTableRows(page)</code></td><td>Linhas de <code>users-table</code></td></tr>
+              <tr><td><code>getCell(page, rowId, field)</code></td><td>Célula por id de linha</td></tr>
+              <tr class="group-row"><td colspan="2">support/auth.ts</td></tr>
+              <tr><td><code>loginViaApi(page, request)</code></td><td>Auth programática + goto dashboard</td></tr>
+              <tr><td><code>visitAuthenticated(page, request, path)</code></td><td>Navegar já autenticado</td></tr>
+              <tr><td><code>visitWithToken(page, path, token)</code></td><td>Smoke — token do beforeAll</td></tr>
+              <tr><td><code>loginViaUi(page)</code></td><td>Auth via formulário</td></tr>
+              <tr><td><code>authenticatedRequest(request, opts)</code></td><td>HTTP com Bearer token</td></tr>
+              <tr><td><code>getAuthToken(request)</code></td><td>Token para specs paralelos</td></tr>
+              <tr class="group-row"><td colspan="2">fixtures/</td></tr>
+              <tr><td><code>credentials.json</code></td><td>valid / invalid email e password</td></tr>
+              <tr><td><code>team-member.json</code></td><td>Payload do modal invite</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="seletores">
+          <h2>Estratégia de seletores</h2>
+          <p>
+            Este projeto usa exclusivamente <code>data-testid</code> no app TestFlow — sem component tests.
+            Veja também <a href="../selector-strategy.md">docs/selector-strategy.md</a>.
+          </p>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>Contexto</th><th>Locator preferido</th><th>Notas</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Elementos TestFlow</td><td><code>page.getByTestId(...)</code></td><td>Estratégia principal — estável, definido pelo app</td></tr>
+              <tr><td>Modais, tabs (ARIA)</td><td><code>page.getByRole(...)</code></td><td>Complementa test IDs em checks de a11y</td></tr>
+              <tr><td>Estado interno (CSS)</td><td><code>page.locator('.class')</code></td><td>Só quando não há test ID (<code>.active</code>, <code>.spinner</code>)</td></tr>
+              <tr><td>Shadow DOM / iframes</td><td><code>frameLocator()</code> + test ID</td><td>Ver <code>advanced.spec.ts</code></td></tr>
+              <tr><td>Select2, SweetAlert2</td><td>CSS vendor</td><td><code>.select2-container</code>, <code>.swal2-popup</code> — último recurso</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            Page Objects em <code>pages/</code> são a fonte única de locators — nunca espalhe seletores nos specs.
+          </div>
+        </section>
+
+        <section id="estrutura-specs">
+          <h2>Estrutura de specs</h2>
+          <pre><code class="language-typescript">test.describe('Team', () => {
+  test.beforeEach(async ({ page, request }) => {
+    await visitAuthenticated(page, request, '/web/team.html')
+    await expect(new TeamPage(page).pageRoot()).toBeVisible()
+  })
+
+  test.describe('Search', () => {
+    test('filters rows by member name', async ({ page }) => {
+      const team = new TeamPage(page)
+      await team.search('Alice')
+      await team.shouldHaveRowCount(1)
+    })
+  })
+
+  test.describe('Invite modal', () => { /* … */ })
+})</code></pre>
+          <div class="command-tags">
+            <span class="cmd-tag">describe aninhado</span>
+            <span class="cmd-tag">beforeEach setup</span>
+            <span class="cmd-tag">1 cenário / test()</span>
+          </div>
+        </section>
+
+        <section id="hooks">
+          <h2>beforeEach vs beforeAll</h2>
+          <div class="two-col">
+            <pre><code class="language-typescript">// beforeEach — estado fresco por teste
+test.beforeEach(async ({ page, request }) => {
+  await loginViaApi(page, request)
+  await new DashboardPage(page).shouldBeLoaded()
+})</code></pre>
+            <pre><code class="language-typescript">// beforeAll — resposta API compartilhada
+let res: APIResponse
+let body: { users: User[] }
+
+test.beforeAll(async ({ request }) => {
+  const start = Date.now()
+  res = await request.get('/api/users')
+  duration = Date.now() - start
+  body = await res.json()
+})
+
+test('returns status 200', () => {
+  expect(res.status()).toBe(200)
+})</code></pre>
+          </div>
+          <p>
+            <code>beforeAll</code> evita N chamadas idênticas;
+            <code>beforeEach</code> isola estado de UI.
+          </p>
+        </section>
+
+        <section id="data-driven">
+          <h2>Data-driven tests</h2>
+          <pre><code class="language-typescript">// tests/smoke/navigation.spec.ts
+const PAGES = [
+  { path: '/web/dashboard.html', testId: 'page-dashboard', title: 'Dashboard' },
+  { path: '/web/team.html', testId: 'page-team', title: 'Team' },
+  // settings, components, activity, wizard…
+]
+
+for (const { path, testId, title } of PAGES) {
+  test(`${title} page loads without error`, async ({ page }) => {
+    await visitWithToken(page, path, authToken)
+    await expect(page.getByTestId(testId)).toBeVisible()
+    await expect(page).toHaveTitle(new RegExp(title))
+  })
+}</code></pre>
+          <p>Um loop gera N testes nomeados — smoke cobre todas as rotas com um único padrão.</p>
+        </section>
+
+        <section id="test-step">
+          <h2>test.step — relatório legível</h2>
+          <pre><code class="language-typescript">test('GET /resources — Authorization header omitted', async ({ playwright }, testInfo) => {
+  await test.step('New context without Authorization header', async () => {
+    const ctx = await playwright.request.newContext({ baseURL })
+    try {
+      const response = await ctx.get('/api/resources')
+      await attachHttpExchangeReport(testInfo, {
+        label: 'resources-no-auth',
+        method: 'GET',
+        url: '/api/resources',
+        response,
+      })
+      expect(response.status()).toBe(403)
+    } finally {
+      await ctx.dispose()
+    }
+  })
+})</code></pre>
+          <p>Equivalente ao <code>cy.step</code> — útil em testes negativos de API com múltiplas fases.</p>
+        </section>
+
+        <section id="api-request">
+          <h2>API testing — request fixture</h2>
+          <pre><code class="language-typescript">// tests/api/auth.api.spec.ts
+const ENDPOINT = '/api/auth/login'
+const VALID = { email: DEMO_EMAIL, password: DEMO_PASSWORD }
+
+test.describe('Valid credentials', () => {
+  test.beforeAll(async ({ request }) => {
+    res = await request.post(ENDPOINT, { data: VALID })
+    body = await res.json()
+  })
+
+  test('returns status 200', () => expect(res.status()).toBe(200))
+  test('body has token as non-empty string', () => {
+    expect(typeof body.token).toBe('string')
+  })
+  test('responds within 2000ms', () => expect(duration).toBeLessThan(2000))
+})</code></pre>
+        </section>
+
+        <section id="validate-schema">
+          <h2>validateSchema — contrato REST</h2>
+          <pre><code class="language-typescript">export function validateSchema(obj, schema: Schema) {
+  for (const [key, type] of Object.entries(schema)) {
+    expect(obj).toHaveProperty(key)
+    expect(typeof obj[key]).toBe(type)
+  }
+}
+
+for (const user of body.users) {
+  validateSchema(user, { name: 'string', email: 'string', role: 'string' })
+}</code></pre>
+          <div class="command-tags">
+            <span class="cmd-tag">GET /api/users</span>
+            <span class="cmd-tag">GET /health</span>
+            <span class="cmd-tag">GET /api/errors/404</span>
+            <span class="cmd-tag">GET /api/errors/422</span>
+          </div>
+        </section>
+
+        <section id="page-route">
+          <h2>page.route — spy &amp; mock</h2>
+          <pre><code class="language-typescript">// Spy — payload e status do login API
+const loginCall = page.waitForRequest(
+  (req) =&gt; req.url().includes('/api/auth/login') &amp;&amp; req.method() === 'POST',
+)
+await login.toggleUseApi()
+await login.loginWith(DEMO_EMAIL, DEMO_PASSWORD)
+const req = await loginCall
+expect(req.postDataJSON().email).toBe(DEMO_EMAIL)
+expect((await req.response())?.status()).toBe(200)
+
+// Mock — lista vazia de users
+await page.route(/\/api\/users/, (route) =&gt;
+  route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ users: [] }),
+  }),
+)
+await page.reload()</code></pre>
+          <p>Equivalente ao <code>cy.intercept</code> do Cypress.</p>
+        </section>
+
+        <section id="intercept-ui">
+          <h2>Intercept na UI — Team &amp; Invite</h2>
+          <pre><code class="language-typescript">// Spy POST invite
+const inviteRequest = page.waitForRequest(
+  (req) =&gt; req.method() === 'POST' &amp;&amp; req.url().includes('/api/'),
+).catch(() =&gt; null)
+
+await team.openInviteModal()
+await team.fillInviteForm(teamMember.new)
+await team.submitInvite()
+
+const req = await inviteRequest
+if (req) {
+  expect(req.postDataJSON().email).toBe(teamMember.new.email)
+}
+
+// Spy PUT ou PATCH inline edit
+const writeReq = Promise.race([
+  page.waitForRequest((r) =&gt; r.method() === 'PUT' &amp;&amp; r.url().includes('/api/')),
+  page.waitForRequest((r) =&gt; r.method() === 'PATCH' &amp;&amp; r.url().includes('/api/')),
+])</code></pre>
+        </section>
+
+        <section id="auth-helpers">
+          <h2>Auth helpers — setup rápido</h2>
+          <pre><code class="language-typescript">async function injectAuth(page, session) {
+  await page.addInitScript((auth) =&gt; {
+    sessionStorage.setItem('sandbox-auth', JSON.stringify(auth))
+    sessionStorage.setItem('sandbox-token', auth.token)
+  }, session)
+}
+
+export async function loginViaApi(page, request) {
+  const session = await fetchAuthToken(request)
+  await injectAuth(page, session)
+  await page.goto('/web/dashboard.html')
+  await page.getByTestId('page-dashboard').waitFor()
+}</code></pre>
+          <p>Usado em dashboard, team, settings — specs focam na feature, não no login.</p>
+        </section>
+
+        <section id="fixtures-custom">
+          <h2>Fixtures customizadas</h2>
+          <p>Substitui comandos globais — injeta token e headers em todo <code>request</code>.</p>
+          <pre><code class="language-typescript">export const test = base.extend&lt;{
+  authToken: string
+  userAccessToken: string
+}&gt;({
+  authToken: async ({}, use) =&gt; {
+    const token = await getOrRefreshSystemToken()
+    await use(token)
+  },
+  request: async ({ request }, use) =&gt; {
+    await use(wrapRequestWithDefaultHeaders(request, DEFAULT_HEADERS))
+  },
+})
+
+test.afterEach(async ({}, testInfo) =&gt; {
+  if (testInfo.status === 'failed') {
+    await testInfo.attach('failure-details', { body: formatError(testInfo) })
+  }
+})</code></pre>
+        </section>
+
+        <section id="expect-constants">
+          <h2>EXPECT — status codes tipados</h2>
+          <pre><code class="language-typescript">export const EXPECT = {
+  happy: 200,
+  noAuth: 403,
+  invalidBearer: 401,
+  notFound: 404,
+  validationError: 422,
+} as const
+
+test(`[${EXPECT.noAuth}] GET without Authorization`, async ({ request }) =&gt; {
+  const res = await request.get('/api/resources')
+  expect(res.status()).toBe(EXPECT.noAuth)
+})</code></pre>
+        </section>
+
+        <section id="route-modules">
+          <h2>Route modules + exchange helpers</h2>
+          <div class="two-col">
+            <pre><code class="language-typescript">export const AUTH_LOGIN_PATH = '/api/auth/login'
+
+export async function postLoginExchange(
+  request, testInfo, label, body
+) {
+  const response = await request.post(AUTH_LOGIN_PATH, { data: body })
+  return attachHttpExchangeReport(testInfo, {
+    label, method: 'POST', url: AUTH_LOGIN_PATH, response,
+  })
+}</code></pre>
+            <ul>
+              <li>URLs centralizadas — sem strings espalhadas</li>
+              <li>Exchange helper = request + attach report</li>
+              <li>Path aliases: <code>@pw/core/*</code>, <code>@pw/helpers/*</code></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="attach-exchange">
+          <h2>attachHttpExchangeReport</h2>
+          <pre><code class="language-typescript">await attachHttpExchangeReport(testInfo, {
+  label: 'login-200',
+  method: 'POST',
+  url: '/api/auth/login',
+  requestHeaders: { Authorization: 'Bearer …' },  // mascarado
+  response,
+})
+// Anexa: status, headers, body JSON, curl reproduzível</code></pre>
+          <div class="command-tags">
+            <span class="cmd-tag">testInfo.attach</span>
+            <span class="cmd-tag">curl replay</span>
+            <span class="cmd-tag">mask Authorization</span>
+          </div>
+        </section>
+
+        <section id="tags-grep">
+          <h2>Tags, grep &amp; modo serial</h2>
+          <pre><code class="language-typescript">test.describe('Happy path suite @needs-browser', () =&gt; {
+  test.describe.configure({ mode: 'serial', timeout: 150_000 })
+  test.beforeAll(async () =&gt; { /* setup MFA / OAuth once */ })
+})
+
+test.describe('Negative testing', { tag: '@negative-testing' }, () =&gt; { /* … */ })</code></pre>
+          <pre><code class="language-bash"># CI — jobs separados por tag
+npx playwright test --grep-invert '@needs-browser'   # API only
+npx playwright test --grep '@needs-browser'          # OAuth browser flow
+npx playwright test --grep '@negative-testing'
+npm run test:grep:smoke                              # @smoke (Chromium)</code></pre>
+        </section>
+
+        <section id="global-setup">
+          <h2>globalSetup — cache de sessão</h2>
+          <pre><code class="language-typescript">export default defineConfig({
+  globalSetup: require.resolve('./globalSetup'),
+})
+
+// globalSetup.ts — roda uma vez antes de todos os workers
+// 1. Reutiliza token em .playwright/token-cache.json
+// 2. Login via API
+// 3. Grava storageState em .playwright/.auth/user.json</code></pre>
+          <p>Equivalente ao <code>cy.session</code> — login pesado uma vez, reutilizado em N specs.</p>
+        </section>
+
+        <section id="api-enterprise">
+          <h2>API enterprise — visão geral</h2>
+          <p>Suíte API-only: sem browser, sem UI — foco em contratos REST, OAuth e sync entre serviços.</p>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4>Legado Cypress</h4>
+              <p>Service Objects + <code>cy.request</code> + localStorage token</p>
+            </div>
+            <div class="feature-card">
+              <h4>Playwright atual</h4>
+              <p><code>request</code> fixture + helpers + JWT cache</p>
+            </div>
+            <div class="feature-card">
+              <h4>Organização</h4>
+              <p><code>api/gets/</code> · <code>api/patch/</code> · fixtures JSON</p>
+            </div>
+            <div class="feature-card">
+              <h4>CI</h4>
+              <p><code>PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1</code></p>
+            </div>
+          </div>
+        </section>
+
+        <section id="service-objects">
+          <h2>Service Objects — Cypress legado</h2>
+          <p>Equivalente a POM, mas para API — encapsula URLs, auth e métodos HTTP.</p>
+          <pre><code class="language-typescript">export class ProfileApiClient {
+  flushProfile() {
+    return cy.request({
+      method: 'PUT',
+      url: this.url.flushProfile,
+      headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
+    }).its('status').should('eq', 204)
+  }
+
+  getCountries() {
+    return cy.request({ method: 'GET', url: this.url.countries, headers: { /* … */ } })
+  }
+}
+
+cy.wrap(new ProfileApiClient()).as('profileApi')</code></pre>
+        </section>
+
+        <section id="auth-cache">
+          <h2>Auth cache — Cypress → Playwright</h2>
+          <div class="two-col">
+            <pre><code class="language-typescript">// Cypress — localStorage plugin
+before(() =&gt; {
+  preCondition.loginByApi({ username, password })
+  cy.saveLocalStorage()
+})
+beforeEach(() =&gt; cy.restoreLocalStorage())</code></pre>
+            <pre><code class="language-typescript">// Playwright — JWT parse + Map cache
+export async function getOrRefreshToken(user) {
+  const cached = tokenCache.get(user.username)
+  if (cached &amp;&amp; isTokenValid(cached)) return cached
+  const token = await fetchTokenFromOAuth(user)
+  tokenCache.set(user.username, token)
+  return token
+}
+
+if (process.env.AUTH_TOKEN) return process.env.AUTH_TOKEN</code></pre>
+          </div>
+        </section>
+
+        <section id="test-use">
+          <h2>test.use — override de usuário por suite</h2>
+          <pre><code class="language-typescript">export const test = base.extend&lt;{
+  authToken: string
+  testUser: TestUserCredentials | null
+}&gt;({
+  testUser: [null, { option: true }],
+  authToken: async ({ testUser }, use) =&gt; {
+    const token = testUser
+      ? await getOrRefreshTokenForUser(testUser)
+      : await getOrRefreshBusinessToken()
+    await use(token)
+  },
+})
+
+test.use({ testUser: getTestUser('lendingPartner') })</code></pre>
+        </section>
+
+        <section id="api-headers">
+          <h2>Headers de contexto obrigatórios</h2>
+          <pre><code class="language-typescript">export function buildApiHeaders(options: {
+  profileContext: 'KYC' | 'OAA'
+  lineOfBusiness?: 'Brokerage' | 'ConsumerLending'
+}) {
+  return {
+    'X-Profile-Context': options.profileContext,
+    'Correlation-Id': uuid(),
+    'Session-Id': uuid(),
+    'Client-Ip': '192.168.1.1',
+    LineOfBusiness: options.lineOfBusiness ?? 'Brokerage',
+    SourceLob: 'playwright-automation',
+  }
+}</code></pre>
+        </section>
+
+        <section id="golden-fixtures">
+          <h2>Golden fixtures — contrato sem JSON Schema</h2>
+          <pre><code class="language-typescript">export function withoutId(arr) {
+  return arr.map(({ id, ...rest }) =&gt; rest)
+}
+
+export function expectSameMembers(expected, received) {
+  // compara arrays ignorando ordem — diff legível no report
+}
+
+const { body } = await fetchLookup(request, authToken, '/v1/lookups/countries', testInfo)
+expect(response.status()).toBe(200)
+expect(withoutId(body)).toEqual(expectedCountriesFixture)</code></pre>
+        </section>
+
+        <section id="run-patch">
+          <h2>Data-driven — runPatchTests()</h2>
+          <pre><code class="language-typescript">export function runPatchTests(context, { payloads, tag }) {
+  for (const [label, payload] of Object.entries(payloads)) {
+    test.describe(label, () =&gt; {
+      test(`204 — PATCH accepted, GET profile matches`, async ({ request, authToken }) =&gt; {
+        const patchRes = await request.patch(PATCH_PATH, { headers, data: payload })
+        expect(patchRes.status()).toBe(204)
+        const profile = await pollGetUntilMatch(request, GET_PATH, headers, payload)
+        expect(profile).toMatchObject(normalizePayload(payload))
+      })
+    })
+  }
+}
+
+runPatchTests('KYC', { payloads: EMPLOYED_PAYLOADS, tag: 'employmentCode' })</code></pre>
+        </section>
+
+        <section id="poll-get">
+          <h2>PATCH → poll GET — eventual consistency</h2>
+          <pre><code class="language-typescript">async function pollGetUntilMatch(request, path, headers, expected, deadlineMs = 10_000) {
+  const start = Date.now()
+  while (Date.now() - start &lt; deadlineMs) {
+    const res = await request.get(path, { headers })
+    if (res.status() === 200) {
+      const body = normalizeProfile(await res.json())
+      if (matchesExpected(body, expected)) return body
+    }
+    await new Promise((r) =&gt; setTimeout(r, 500))
+  }
+  throw new Error('GET did not match PATCH payload within deadline')
+}</code></pre>
+        </section>
+
+        <section id="dual-write">
+          <h2>Verificação dual write + read</h2>
+          <pre><code class="language-typescript">profileApi.patchCustomerName(nameBody).should(r =&gt; expect(r.status).to.eq(204))
+profileApi.getBasicProfile().should(r =&gt; {
+  expect(r.body.pendingProfile.customerName).to.deep.include(nameBody)
+})
+lifecycleApi.getBasicProfile().should(r =&gt; {
+  expect(r.body.pendingProfile).to.deep.include(nameBody)
+})</code></pre>
+          <p>PATCH no Profile API + GET no Lifecycle Platform confirma propagação do estado pendente.</p>
+        </section>
+
+        <section id="diff-curl">
+          <h2>Diff + curl no report de falha</h2>
+          <pre><code class="language-typescript">await testInfo.attach('comparison-diff', {
+  body: buildValidationReport(label, expected, received),
+  contentType: 'text/markdown',
+})
+await testInfo.attach('curl-replay', { body: buildCurl('PATCH', url, headers, body) })</code></pre>
+        </section>
+
+        <section id="postman">
+          <h2>Postman → Playwright migration</h2>
+          <ul>
+            <li>Pre-request script → <code>buildApiHeaders()</code></li>
+            <li>Tests tab assertions → <code>expect()</code> + golden fixtures</li>
+            <li>Collection env vars → <code>.env</code> + CI/CD variables</li>
+            <li>JWT validation → <code>isTokenValid(token, claims)</code></li>
+          </ul>
+        </section>
+
+        <section id="ci-diagnostics">
+          <h2>CI — env diagnostics &amp; skip condicional</h2>
+          <pre><code class="language-typescript">test('required CI variables are set', async () =&gt; {
+  expect(process.env.CLIENT_ID, 'CLIENT_ID').toBeTruthy()
+  expect(process.env.API_BASE_URL, 'API_BASE_URL').toBeTruthy()
+})
+
+test.beforeAll(async () =&gt; {
+  test.skip(!process.env.OAUTH_CLIENT_ID, 'OAuth client not configured in CI')
+})</code></pre>
+        </section>
+
+        <section id="pom">
+          <h2>Page Object Model (POM)</h2>
+          <p>
+            Encapsula seletores, ações e assertions — o spec descreve o <em>cenário</em>, não o DOM.
+            Para API-only: use <strong>Service Objects</strong> ou helpers.
+          </p>
+          <div class="pom-diagram">
+            <div class="pom-box">
+              <h4>Spec (.spec.ts)</h4>
+              <ul>
+                <li>Given / When / Then</li>
+                <li>Sem seletores espalhados</li>
+                <li>Um cenário por <code>test()</code></li>
+              </ul>
+            </div>
+            <div class="pom-arrow">→</div>
+            <div class="pom-box">
+              <h4>Page Object</h4>
+              <ul>
+                <li><code>getByTestId</code> locators</li>
+                <li>Actions (<code>loginWith</code>)</li>
+                <li>Assertions (<code>shouldRedirect…</code>)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="login-page">
+          <h2>Anatomia — LoginPage.ts</h2>
+          <pre><code class="language-typescript">export class LoginPage {
+  constructor(private readonly page: Page) {}
+
+  emailInput() { return this.page.getByTestId('login-email') }
+  submitBtn()  { return this.page.getByTestId('login-submit') }
+
+  async visit() {
+    await this.page.goto('/web/login.html')
+    return this
+  }
+
+  async loginWith(email: string, password: string) {
+    await this.emailInput().fill(email)
+    await this.passwordInput().fill(password)
+    await this.submitBtn().click()
+    return this
+  }
+
+  async shouldRedirectToDashboard() {
+    await expect(this.page.getByTestId('page-dashboard')).toBeVisible()
+    await expect(this.page).toHaveURL(/\/web\/dashboard\.html/)
+  }
+}</code></pre>
+        </section>
+
+        <section id="team-page">
+          <h2>TeamPage — locators &amp; ações</h2>
+          <table class="compare-table compact">
+            <tbody>
+              <tr class="group-row"><td colspan="2">Locators</td></tr>
+              <tr><td><code>tableRows()</code></td><td><code>users-table tbody tr</code></td></tr>
+              <tr><td><code>nameCell(id)</code></td><td><code>cell-name-{id}</code></td></tr>
+              <tr><td><code>inviteModal()</code></td><td>Modal de convite</td></tr>
+              <tr class="group-row"><td colspan="2">Actions</td></tr>
+              <tr><td><code>search(term)</code></td><td>Filtrar tabela</td></tr>
+              <tr><td><code>filterByRole(role)</code></td><td>Select de role</td></tr>
+              <tr><td><code>openInviteModal()</code></td><td>Abrir + assert visible</td></tr>
+              <tr class="group-row"><td colspan="2">Assertions</td></tr>
+              <tr><td><code>shouldHaveRowCount(n)</code></td><td>Contagem de linhas</td></tr>
+              <tr><td><code>shouldShowInviteError(text)</code></td><td>Validação do modal</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="page-map">
+          <h2>Page Objects do TestFlow</h2>
+          <div class="page-map-item">LoginPage.ts <span>auth, validação, API toggle</span></div>
+          <div class="page-map-item">DashboardPage.ts <span>KPIs, activity, new run modal</span></div>
+          <div class="page-map-item">TeamPage.ts <span>tabela, invite, inline edit</span></div>
+          <div class="page-map-item">SettingsPage.ts <span>forms, toggles, save</span></div>
+          <div class="page-map-item">ComponentsPage.ts <span>buttons, modal, tabs, accordion</span></div>
+          <div class="page-map-item">WizardPage.ts <span>multi-step, validação, review</span></div>
+          <div class="page-map-item">ActivityPage.ts <span>API fetch, counter, pipeline, drop zone</span></div>
+          <div class="page-map-item">AdvancedPage.ts <span>shadow DOM, iframe, viewport</span></div>
+          <div class="page-map-item">StatesPage.ts <span>skeleton, empty, error, partial load</span></div>
+          <div class="page-map-item">ShellPage.ts <span>landmarks, nav, notifications, theme</span></div>
+          <div class="page-map-item">WidgetsPage.ts <span>upload, Select2, SweetAlert2, drag</span></div>
+        </section>
+
+        <section id="a11y-axe">
+          <h2>Acessibilidade — axe-core</h2>
+          <p>Suite <code>a11y</code> — scans com <code>@axe-core/playwright</code> em páginas-chave. Doc: <a href="../en/tests/a11y/a11y.md">a11y.md</a></p>
+          <pre><code class="language-typescript">import AxeBuilder from '@axe-core/playwright'
+
+async function assertNoCriticalViolations(page, scope?: string) {
+  let builder = new AxeBuilder({ page }).disableRules(['color-contrast'])
+  if (scope) builder = builder.include(scope)
+  const results = await builder.analyze()
+  const critical = results.violations.filter((v) =&gt; v.impact === 'critical')
+  expect(critical).toEqual([])
+}
+
+// Data-driven: Dashboard, Login, Wizard, Components, Settings, UI States
+for (const { path, name, scope } of A11Y_PAGES) {
+  test(`${name} has no critical a11y violations`, async ({ page, request }) =&gt; {
+    await loginViaApi(page, request)
+    await page.goto(path)
+    await assertNoCriticalViolations(page, scope)
+  })
+}</code></pre>
+          <div class="command-tags">
+            <span class="cmd-tag">@a11y</span>
+            <span class="cmd-tag">@regression</span>
+            <span class="cmd-tag">npm run test:a11y</span>
+          </div>
+        </section>
+
+        <section id="visual-regression">
+          <h2>Regressão visual — toHaveScreenshot</h2>
+          <p>Suite <code>visual</code> — compara screenshots de regiões estáveis. Doc: <a href="../en/tests/visual/visual.md">visual.md</a></p>
+          <pre><code class="language-typescript">const SCREENSHOT_OPTS = { animations: 'disabled', maxDiffPixelRatio: 0.05 }
+
+test('login form matches baseline', async ({ page }) =&gt; {
+  await page.goto('/web/login.html')
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.evaluate(() =&gt; document.fonts.ready)
+  await expect(page.getByTestId('login-form')).toHaveScreenshot('login-form.png', SCREENSHOT_OPTS)
+})
+
+// Baselines em tests/visual/visual.spec.ts-snapshots/
+// Atualizar: npm run test:visual:update</code></pre>
+          <div class="command-tags">
+            <span class="cmd-tag">@visual</span>
+            <span class="cmd-tag">@regression</span>
+            <span class="cmd-tag">maxDiffPixelRatio: 0.05</span>
+          </div>
+        </section>
+
+        <section id="layout-shell">
+          <h2>App shell — layout &amp; navegação</h2>
+          <p>Suite <code>layout</code> — sidebar, topbar, notificações, theme toggle. Doc: <a href="../en/tests/layout/shell.md">shell.md</a></p>
+          <pre><code class="language-typescript">test.beforeEach(async ({ page, request }) =&gt; {
+  await loginViaApi(page, request)
+  await new ShellPage(page).shouldShowAppShell()
+})
+
+// Navegação data-driven via ShellPage.navItems()
+for (const { testId, path, label } of ShellPage.navItems()) {
+  test(`sidebar navigates to ${label}`, async ({ page }) =&gt; {
+    await new ShellPage(page).navigateViaSidebar(testId)
+    await expect(page).toHaveURL(new RegExp(path))
+  })
+}
+
+// Theme persiste em localStorage
+await shell.toggleTheme()
+await expect.poll(() =&gt; page.evaluate(() =&gt; localStorage.getItem('theme'))).toBe('dark')</code></pre>
+        </section>
+
+        <section id="widgets-patterns">
+          <h2>Classic Widgets — padrões QA School</h2>
+          <p>Suite <code>widgets</code> — upload, Select2, SweetAlert2, drag-and-drop, popups. Doc: <a href="../en/tests/widgets/widgets.md">widgets.md</a></p>
+          <pre><code class="language-typescript">// Upload com fixture
+await widgets.uploadFile('fixtures/sample-upload.txt')
+
+// Popup / nova aba
+const popupPromise = page.context().waitForEvent('page')
+await widgets.openNewTabLink()
+const popup = await popupPromise
+await expect(popup).toHaveURL(/example\.com/)
+
+// Select2 (DOM vendor — último recurso)
+await widgets.openSelect2()
+await page.locator('.select2-results__option').first().click()
+
+// Drag-and-drop HTML5
+await widgets.dragCardAToSlotB()</code></pre>
+        </section>
+
+        <section id="factories-fixtures">
+          <h2>Factories &amp; fixtures de dados</h2>
+          <table class="compare-table compact">
+            <tbody>
+              <tr class="group-row"><td colspan="2">fixtures/ (JSON)</td></tr>
+              <tr><td><code>credentials.json</code></td><td>Email/senha válidos e inválidos — login negativo</td></tr>
+              <tr><td><code>team-member.json</code></td><td>Payload do modal invite</td></tr>
+              <tr><td><code>wizard.json</code></td><td>Dados do wizard multi-step</td></tr>
+              <tr class="group-row"><td colspan="2">support/factories/</td></tr>
+              <tr><td><code>wizard.ts</code></td><td><code>createPersonalStep()</code>, <code>createPreferencesStep()</code></td></tr>
+              <tr><td><code>userPatch.ts</code></td><td>Payloads PATCH para <code>rules.api.spec.ts</code></td></tr>
+              <tr class="group-row"><td colspan="2">fixtures.ts (Playwright extend)</td></tr>
+              <tr><td><code>authToken</code></td><td>Token JWT injetado em specs API enterprise</td></tr>
+              <tr><td><code>readFixture()</code></td><td>Carrega JSON golden para contratos API</td></tr>
+              <tr><td><code>expectSameMembers()</code></td><td>Compara arrays ignorando ordem</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="docs-treinamento">
+          <h2>Documentação de treinamento (bloco a bloco)</h2>
+          <p>
+            Cada spec tem um walkthrough detalhado com Given/When/Then, tags e comandos de execução.
+            Escolha o idioma:
+            <a href="../en/README.md">English</a> ·
+            <a href="../pt/README.md">Português</a>
+          </p>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>Suite</th><th>Doc EN</th><th>Doc PT</th><th>Comando</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Smoke</td><td><a href="../en/tests/smoke/navigation.md">navigation.md</a></td><td><a href="../pt/tests/smoke/navigation.md">navigation.md</a></td><td><code>npm run test:smoke</code></td></tr>
+              <tr><td>Auth</td><td><a href="../en/tests/auth/login.md">login.md</a></td><td><a href="../pt/tests/auth/login.md">login.md</a></td><td><code>npm run test:auth</code></td></tr>
+              <tr><td>Dashboard</td><td><a href="../en/tests/dashboard/dashboard.md">dashboard.md</a></td><td><a href="../pt/tests/dashboard/dashboard.md">dashboard.md</a></td><td><code>npm run test:dashboard</code></td></tr>
+              <tr><td>Team</td><td><a href="../en/tests/team/team.md">team.md</a></td><td><a href="../pt/tests/team/team.md">team.md</a></td><td><code>npm run test:team</code></td></tr>
+              <tr><td>Settings</td><td><a href="../en/tests/settings/settings.md">settings.md</a></td><td><a href="../pt/tests/settings/settings.md">settings.md</a></td><td><code>npm run test:settings</code></td></tr>
+              <tr><td>Components</td><td><a href="../en/tests/components/components.md">components.md</a></td><td><a href="../pt/tests/components/components.md">components.md</a></td><td><code>npm run test:components</code></td></tr>
+              <tr><td>Wizard</td><td><a href="../en/tests/wizard/wizard.md">wizard.md</a></td><td><a href="../pt/tests/wizard/wizard.md">wizard.md</a></td><td><code>npm run test:wizard</code></td></tr>
+              <tr><td>Activity</td><td><a href="../en/tests/activity/activity.md">activity.md</a></td><td><a href="../pt/tests/activity/activity.md">activity.md</a></td><td><code>npm run test:activity</code></td></tr>
+              <tr><td>Advanced</td><td><a href="../en/tests/advanced/advanced.md">advanced.md</a></td><td><a href="../pt/tests/advanced/advanced.md">advanced.md</a></td><td><code>npm run test:advanced</code></td></tr>
+              <tr><td>UI States</td><td><a href="../en/tests/states/states.md">states.md</a></td><td><a href="../pt/tests/states/states.md">states.md</a></td><td><code>npm run test:states</code></td></tr>
+              <tr><td>Layout</td><td><a href="../en/tests/layout/shell.md">shell.md</a></td><td><a href="../pt/tests/layout/shell.md">shell.md</a></td><td><code>npm run test:layout</code></td></tr>
+              <tr><td>Widgets</td><td><a href="../en/tests/widgets/widgets.md">widgets.md</a></td><td><a href="../pt/tests/widgets/widgets.md">widgets.md</a></td><td><code>npm run test:widgets</code></td></tr>
+              <tr><td>Visual</td><td><a href="../en/tests/visual/visual.md">visual.md</a></td><td><a href="../pt/tests/visual/visual.md">visual.md</a></td><td><code>npm run test:visual</code></td></tr>
+              <tr><td>A11y</td><td><a href="../en/tests/a11y/a11y.md">a11y.md</a></td><td><a href="../pt/tests/a11y/a11y.md">a11y.md</a></td><td><code>npm run test:a11y</code></td></tr>
+              <tr><td>API auth</td><td><a href="../en/tests/api/auth.api.md">auth.api.md</a></td><td><a href="../pt/tests/api/auth.api.md">auth.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>API users</td><td><a href="../en/tests/api/users.api.md">users.api.md</a></td><td><a href="../pt/tests/api/users.api.md">users.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>API rules</td><td><a href="../en/tests/api/rules.api.md">rules.api.md</a></td><td><a href="../pt/tests/api/rules.api.md">rules.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>CI diagnostics</td><td><a href="../en/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><a href="../pt/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><code>npm run test:api</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="cobertura">
+          <h2>Cobertura da suíte</h2>
+          <table class="compare-table compact">
+            <thead>
+              <tr><th>Project</th><th>Spec</th><th>Tags</th><th>O que cobre</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>smoke</code></td><td>navigation.spec.ts</td><td><code>@smoke</code> <code>@api</code></td><td>Páginas, sidebar, health API, logout</td></tr>
+              <tr><td><code>smoke-firefox</code></td><td>navigation.spec.ts</td><td><code>@smoke</code></td><td>Smoke cross-browser Firefox</td></tr>
+              <tr><td><code>smoke-webkit</code></td><td>navigation.spec.ts</td><td><code>@smoke</code></td><td>Smoke cross-browser WebKit</td></tr>
+              <tr><td><code>auth</code></td><td>login.spec.ts</td><td>—</td><td>Login UI, sessionStorage, erros, logout</td></tr>
+              <tr><td><code>dashboard</code></td><td>dashboard.spec.ts</td><td>—</td><td>KPIs, activity, modal new run</td></tr>
+              <tr><td><code>team</code></td><td>team.spec.ts</td><td>—</td><td>Busca, filtros, paginação, invite, inline edit</td></tr>
+              <tr><td><code>settings</code></td><td>settings.spec.ts</td><td>—</td><td>Profile, notifications, security, integrations</td></tr>
+              <tr><td><code>components</code></td><td>components.spec.ts</td><td><code>@regression</code></td><td>Buttons, modal, tabs, accordion</td></tr>
+              <tr><td><code>wizard</code></td><td>wizard.spec.ts</td><td>—</td><td>Multi-step, validação, review, a11y</td></tr>
+              <tr><td><code>activity</code></td><td>activity.spec.ts</td><td>—</td><td>API mocks, counter, pipeline, file drop</td></tr>
+              <tr><td><code>advanced</code></td><td>advanced.spec.ts</td><td><code>@regression</code></td><td>Shadow DOM, iframe, mobile viewport</td></tr>
+              <tr><td><code>states</code></td><td>states.spec.ts</td><td>—</td><td>Skeleton, empty, error, partial load</td></tr>
+              <tr><td><code>layout</code></td><td>shell.spec.ts</td><td><code>@regression</code></td><td>Landmarks, nav, notifications, theme</td></tr>
+              <tr><td><code>widgets</code></td><td>widgets.spec.ts</td><td><code>@regression</code></td><td>Upload, Select2, SweetAlert2, drag</td></tr>
+              <tr><td><code>visual</code></td><td>visual.spec.ts</td><td><code>@visual</code> <code>@regression</code></td><td>Screenshot baselines</td></tr>
+              <tr><td><code>a11y</code></td><td>a11y.spec.ts</td><td><code>@a11y</code> <code>@regression</code></td><td>axe-core scans</td></tr>
+              <tr><td><code>api</code></td><td>auth.api.spec.ts</td><td>—</td><td>POST /api/auth/login contracts</td></tr>
+              <tr><td><code>api</code></td><td>users.api.spec.ts</td><td>—</td><td>GET /api/users, health, intercepts</td></tr>
+              <tr><td><code>api</code></td><td>rules.api.spec.ts</td><td><code>@api</code> <code>@regression</code></td><td>JSON Patch, runPatchTests()</td></tr>
+              <tr><td><code>api</code></td><td>env-diagnostics.spec.ts</td><td><code>@api</code></td><td>CI env vars + /health check</td></tr>
+            </tbody>
+          </table>
+          <p class="badge">~288 testes · 18 specs · 18 projects · multi-browser + visual + a11y</p>
+        </section>
+
+        <section id="executar">
+          <h2>Como executar</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4>🖥️ UI Mode</h4>
+              <pre><code class="language-bash">npm run test:ui
+npm run test:auth -- --ui</code></pre>
+            </div>
+            <div class="feature-card">
+              <h4>👁 Headed</h4>
+              <pre><code class="language-bash">npm run test:headed
+npm run test:team -- --headed</code></pre>
+            </div>
+          </div>
+          <pre><code class="language-bash">npm test                         # todos os projects
+npm run test:smoke               # smoke (Chromium)
+npm run test:smoke-firefox       # smoke Firefox
+npm run test:smoke-webkit        # smoke WebKit
+npm run test:auth                # login UI
+npm run test:dashboard           # dashboard
+npm run test:team                # team table
+npm run test:settings            # settings forms
+npm run test:components          # UI library
+npm run test:wizard              # multi-step wizard
+npm run test:activity            # dynamic activity page
+npm run test:advanced            # shadow DOM / iframe
+npm run test:states              # loading / empty / error
+npm run test:layout              # app shell
+npm run test:widgets             # classic widgets
+npm run test:api                 # todos os specs API
+npm run test:grep:smoke          # tag @smoke (Chromium)
+npm run test:grep:regression     # tag @regression
+npm run test:visual              # regressão visual
+npm run test:visual:update       # atualizar snapshots
+npm run test:a11y                # axe-core scans
+npm run report                   # relatório HTML</code></pre>
+        </section>
+
+        <section id="ci">
+          <h2>CI — GitHub Actions</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4>Matrix paralela</h4>
+              <p>17+ projects — Chromium, Firefox, WebKit e visual</p>
+            </div>
+            <div class="feature-card">
+              <h4>Service container</h4>
+              <p><code>qaschool/testflow:latest</code> na porta 5050</p>
+            </div>
+            <div class="feature-card">
+              <h4>Artefatos</h4>
+              <p>HTML report + screenshots em falha</p>
+            </div>
+            <div class="feature-card">
+              <h4>Retries</h4>
+              <p>2 retries no CI · trace on first retry</p>
+            </div>
+          </div>
+          <p>Workflow: <code>.github/workflows/playwright.yml</code></p>
+        </section>
+
+        <section id="boas-praticas">
+          <h2>Boas práticas</h2>
+          <ul>
+            <li><strong>Page Objects</strong> em <code>pages/</code> — locators, actions e assertions isolados</li>
+            <li><code>getByTestId</code> + <code>data-testid</code> — mesma convenção do testflow-cypress</li>
+            <li><code>loginViaApi</code> no <code>beforeEach</code> — specs de feature sem repetir login UI</li>
+            <li><code>beforeAll</code> + resposta compartilhada — contratos API sem N requests idênticos</li>
+            <li><code>validateSchema</code> — tipos da resposta REST de forma declarativa</li>
+            <li><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
+            <li>Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
+            <li>Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
+            <li><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
+            <li><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
+            <li><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
+            <li>Tags <code>@smoke</code> / <code>@regression</code> — filtrar jobs no CI</li>
+            <li><code>globalSetup</code> + cache de token — setup pesado uma vez por run</li>
+            <li><code>visitAuthenticated</code> — navega autenticado para qualquer rota</li>
+            <li><code>AxeBuilder</code> + <code>@a11y</code> — scans de acessibilidade sem violações críticas</li>
+            <li><code>toHaveScreenshot</code> + <code>@visual</code> — baselines com <code>maxDiffPixelRatio: 0.05</code></li>
+            <li><code>ShellPage.navItems()</code> — navegação data-driven no app shell</li>
+            <li>Factories em <code>support/factories/</code> — payloads wizard e PATCH reutilizáveis</li>
+            <li><code>readFixture</code> + <code>expectSameMembers</code> — contratos golden sem JSON Schema</li>
+            <li><code>JsonPatchBuilder</code> + <code>runPatchTests()</code> — PATCH data-driven enterprise</li>
+            <li>Leia o walkthrough bloco a bloco em <a href="../pt/README.md">docs/pt/</a> ou <a href="../en/README.md">docs/en/</a></li>
+            <li><code>npm run test:ui</code> no dev — feedback visual imediato</li>
+          </ul>
+        </section>
+
+        <section id="proximos-passos">
+          <h2>Próximos passos</h2>
+          <div class="feature-grid">
+            <a class="feature-card" href="../pt/README.md" style="text-decoration:none;color:inherit;">
+              <h4>📖 Docs PT — walkthroughs</h4>
+              <p>Explicação bloco a bloco de cada spec (18 arquivos).</p>
+            </a>
+            <a class="feature-card" href="../en/README.md" style="text-decoration:none;color:inherit;">
+              <h4>📖 Docs EN — walkthroughs</h4>
+              <p>Block-by-block explanation of every spec file.</p>
+            </a>
+            <a class="feature-card" href="index.html" style="text-decoration:none;color:inherit;">
+              <h4>📽️ Slides interativos</h4>
+              <p>Apresentação Reveal.js com animações e navegação por teclado.</p>
+            </a>
+            <a class="feature-card" href="../selector-strategy.md" style="text-decoration:none;color:inherit;">
+              <h4>🎯 Estratégia de seletores</h4>
+              <p><code>data-testid</code> via <code>getByTestId</code> — convenção TestFlow.</p>
+            </a>
+            <a class="feature-card" href="https://playwright.dev/docs/intro" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+              <h4>📚 Documentação oficial</h4>
+              <p>playwright.dev — referência completa da API.</p>
+            </a>
+            <a class="feature-card" href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+              <h4>🧪 TestFlow</h4>
+              <p>App sob teste — qaschool/testflow.</p>
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      TestFlow Playwright — Guia completo · Junho 2026 ·
+      <a href="index.html">Voltar aos slides</a>
+    </footer>
+
+    <script src="../../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script>hljs.highlightAll()</script>
+    <script>
+      const links = document.querySelectorAll('.sidebar a')
+      const sections = [...links].map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean)
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return
+            links.forEach((l) => l.classList.remove('active'))
+            const active = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`)
+            if (active) active.classList.add('active')
+          })
+        },
+        { rootMargin: '-20% 0px -70% 0px' }
+      )
+
+      sections.forEach((s) => observer.observe(s))
+    </script>
+  </body>
+</html>

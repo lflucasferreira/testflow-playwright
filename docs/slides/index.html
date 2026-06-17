@@ -108,6 +108,105 @@
         </section>
 
         <section>
+          <section>
+            <h2>Instalação do ambiente por SO</h2>
+            <p style="font-size: 0.75em; color: var(--pw-muted);">
+              Antes de clonar o projeto: <strong>Node.js 20+</strong>, <strong>Git</strong> e
+              <strong>Docker</strong> (para o TestFlow na porta 5050).
+            </p>
+            <p style="font-size: 0.65em; color: var(--pw-muted); margin-top: 1em;">
+              ↓ macOS · Windows · Linux
+            </p>
+          </section>
+
+          <section>
+            <h2>macOS</h2>
+            <div class="two-col" style="font-size: 0.62em;">
+              <div>
+                <h3>Homebrew (recomendado)</h3>
+                <pre><code class="hljs bash"># Homebrew — https://brew.sh
+brew install node@20 git
+brew link --overwrite node@20
+
+# Docker Desktop — https://docker.com/products/docker-desktop
+brew install --cask docker
+
+node --version   # v20+
+git --version
+docker --version</code></pre>
+              </div>
+              <div>
+                <h3>Alternativa: nvm</h3>
+                <pre><code class="hljs bash">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 20
+nvm use 20
+
+# TestFlow
+docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
+                <p style="font-size: 0.9em; color: var(--pw-muted); margin-top: 0.5em;">
+                  Terminal: Terminal.app, iTerm ou integrado do VS Code / Cursor.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Windows</h2>
+            <div class="two-col" style="font-size: 0.62em;">
+              <div>
+                <h3>winget (Windows 10/11)</h3>
+                <pre><code class="hljs powershell">winget install OpenJS.NodeJS.LTS
+winget install Git.Git
+winget install Docker.DockerDesktop
+
+node --version
+git --version</code></pre>
+                <p style="font-size: 0.9em; color: var(--pw-muted); margin-top: 0.5em;">
+                  Use <strong>PowerShell</strong> ou <strong>Git Bash</strong> para os comandos npm.
+                </p>
+              </div>
+              <div>
+                <h3>Instaladores manuais</h3>
+                <ul style="font-size: 0.95em;">
+                  <li><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a> — LTS 20+</li>
+                  <li><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">git-scm.com</a></li>
+                  <li><a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a></li>
+                </ul>
+                <pre><code class="hljs bash">docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Linux</h2>
+            <div class="two-col" style="font-size: 0.62em;">
+              <div>
+                <h3>Debian / Ubuntu</h3>
+                <pre><code class="hljs bash">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs git
+
+# Docker (engine)
+sudo apt-get install -y docker.io
+sudo usermod -aG docker $USER   # relogar depois
+
+node --version</code></pre>
+              </div>
+              <div>
+                <h3>Dependências do Playwright</h3>
+                <pre><code class="hljs bash"># Após npm install — libs do Chromium/Firefox/WebKit
+npx playwright install-deps
+
+docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
+                <p style="font-size: 0.9em; color: var(--pw-muted); margin-top: 0.5em;">
+                  Fedora/RHEL: <code>sudo dnf install nodejs git docker</code> ·
+                  Arch: <code>sudo pacman -S nodejs npm git docker</code>
+                </p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section>
           <h2>Instalação — testflow-playwright</h2>
           <ol class="steps">
             <li class="fragment fade-up">
