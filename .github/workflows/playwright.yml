@@ -96,8 +96,7 @@ jobs:
   publish:
     name: Build Allure report & publish GitHub Pages
     runs-on: ubuntu-latest
-    needs: test
-    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 15
     permissions:
       contents: read
@@ -116,6 +115,7 @@ jobs:
         run: npm ci
 
       - name: Download Allure results
+        if: always()
         uses: actions/download-artifact@v7
         with:
           pattern: allure-results-*
@@ -124,6 +124,7 @@ jobs:
         continue-on-error: true
 
       - name: Generate Allure report
+        if: always()
         run: npm run report:allure
         continue-on-error: true
 
@@ -149,7 +150,7 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: publish
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.publish.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
