@@ -11,7 +11,7 @@ Apresentação Reveal.js sobre Playwright (E2E, API, POM, testflow-playwright).
 | `complete-guide.html` | Step-by-step guide in English (setup + all commands) |
 | `playwright-intro-slides.pdf` | Versão PDF (~58 slides) |
 | `css/theme-playwright.css` | Tema visual Playwright |
-| `assets/playwright-logo.svg` | Logo |
+| `assets/playwright-logo.svg` | Official Playwright logo ([playwright.dev](https://playwright.dev/img/playwright-logo.svg)) |
 
 ## Other materials
 

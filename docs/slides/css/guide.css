@@ -175,6 +175,31 @@ main {
   margin-bottom: 3rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--pw-border);
+  text-align: center;
+}
+
+.hero-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-logo img {
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 0 20px var(--pw-green-glow));
+}
+
+.hero-logo .wordmark {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #fff 30%, var(--pw-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero h1 {
@@ -318,6 +343,13 @@ pre code {
 
 .feature-card h4 {
   margin-top: 0;
+}
+
+.feature-card .card-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0.65rem;
 }
 
 .feature-card p {
