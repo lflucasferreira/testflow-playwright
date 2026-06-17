@@ -1,0 +1,992 @@
+{
+  "config": {
+    "configFile": "/Users/lferreira/Personal/automations/testflow-playwright/playwright.config.ts",
+    "rootDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "/Users/lferreira/Personal/automations/testflow-playwright/globalSetup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "api",
+        "name": "api",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/api\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "smoke",
+        "name": "smoke",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/smoke\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "auth",
+        "name": "auth",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/auth\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "dashboard",
+        "name": "dashboard",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/dashboard\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "team",
+        "name": "team",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/team\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "settings",
+        "name": "settings",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/settings\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "components",
+        "name": "components",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/components\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "wizard",
+        "name": "wizard",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/wizard\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "activity",
+        "name": "activity",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/activity\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "advanced",
+        "name": "advanced",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/advanced\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "states",
+        "name": "states",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/states\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "layout",
+        "name": "layout",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/layout\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "widgets",
+        "name": "widgets",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/widgets\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "a11y",
+        "name": "a11y",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/a11y\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "visual",
+        "name": "visual",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/visual\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "smoke-firefox",
+        "name": "smoke-firefox",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/smoke\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      },
+      {
+        "outputDir": "/Users/lferreira/Personal/automations/testflow-playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "smoke-webkit",
+        "name": "smoke-webkit",
+        "testDir": "/Users/lferreira/Personal/automations/testflow-playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/smoke\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 8000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 6,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "smoke/navigation.spec.ts",
+      "file": "smoke/navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Smoke — page navigation",
+          "file": "smoke/navigation.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Dashboard page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 749,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:39.058Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-d32b82c7fc1c73c6d2b0",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Team page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 368,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:40.648Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-07b854baab579b257f50",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Settings page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 787,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:39.085Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-e91ffeab84803c121963",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Classic Widgets page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2825,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:40.630Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-060983edb3dd902a3427",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Components page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 581,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:39.120Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-b77f8989aa9f3fdd5a6e",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Activity page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 334,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:40.628Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-19d3b8a55689a7b8959f",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Advanced page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 283,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:40.689Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-6af641710164026484f7",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "Wizard page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 157,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:41.016Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-c9d8cbed42965595635c",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            },
+            {
+              "title": "UI States page loads without error",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 212,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:40.866Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-9f1f737d90d53a0934df",
+              "file": "smoke/navigation.spec.ts",
+              "line": 25,
+              "column": 9
+            }
+          ]
+        },
+        {
+          "title": "Smoke — sidebar navigation",
+          "file": "smoke/navigation.spec.ts",
+          "line": 33,
+          "column": 6,
+          "specs": [
+            {
+              "title": "navigates from dashboard to team via sidebar",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 935,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.901Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-ffba1dd3c2b25933664a",
+              "file": "smoke/navigation.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "highlights the active nav link",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 841,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.898Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-5699f21d1c2a3bc01e2a",
+              "file": "smoke/navigation.spec.ts",
+              "line": 45,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Smoke — logout",
+          "file": "smoke/navigation.spec.ts",
+          "line": 50,
+          "column": 6,
+          "specs": [
+            {
+              "title": "logout clears session and redirects to login",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1765,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.898Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-f63605e43222a68743f3",
+              "file": "smoke/navigation.spec.ts",
+              "line": 51,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Smoke — API health",
+          "file": "smoke/navigation.spec.ts",
+          "line": 64,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GET /health returns 200",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "api"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 89,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.906Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-abda19899c25163516f5",
+              "file": "smoke/navigation.spec.ts",
+              "line": 65,
+              "column": 7
+            },
+            {
+              "title": "POST /api/auth/login returns token",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "api"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 99,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.914Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-e543e40d115c73b62656",
+              "file": "smoke/navigation.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "GET /api/users returns user array",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "api"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 106,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:38.898Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-15ec407cd476f7e9cf5d",
+              "file": "smoke/navigation.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "GET /api/errors/404 returns 404 status",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "api"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 52,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:39.044Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-3b95c59bc169395a4a60",
+              "file": "smoke/navigation.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "GET /api/errors/422 returns 422 status",
+              "ok": true,
+              "tags": [
+                "smoke",
+                "api"
+              ],
+              "tests": [
+                {
+                  "timeout": 8000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "smoke",
+                  "projectName": "smoke",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 18,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-17T16:00:39.053Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b742480c9c15ea7d033a-b37e9ab84347e98c0395",
+              "file": "smoke/navigation.spec.ts",
+              "line": 93,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-17T16:00:38.196Z",
+    "duration": 5308.982,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

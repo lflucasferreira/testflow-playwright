@@ -6,19 +6,57 @@
     <title>Playwright — Complete Guide (Setup &amp; Commands)</title>
     <meta name="description" content="Step-by-step: what Playwright is, installation, project structure, and every command from the slides." />
     <link rel="icon" href="assets/playwright-logo.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <script>
+      (function () {
+        var path = location.pathname
+        var last = path.split('/').filter(Boolean).pop() || ''
+        if (/\.html?$/i.test(last)) return
+
+        var base
+        var slidesIdx = path.indexOf('/slides')
+        if (slidesIdx !== -1) {
+          base = path.substring(0, slidesIdx + '/slides'.length) + '/'
+        } else {
+          base = path.replace(/\/index$/i, '')
+          if (!base.endsWith('/')) base += '/'
+        }
+
+        var b = document.createElement('base')
+        b.href = base
+        document.head.appendChild(b)
+      })()
+    </script>
+    <script>
+      (function () {
+        var k = 'pw-docs-theme'
+        var t = localStorage.getItem(k)
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.setAttribute('data-theme', t)
+      })()
+    </script>
+    <link id="hljs-theme" rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/theme-toggle.css" />
     <link rel="stylesheet" href="css/guide.css" />
+    <link rel="stylesheet" href="css/icons.css" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="index.html">
+      <a class="brand" href="../index.html">
         <img src="assets/playwright-logo.svg" alt="Playwright" width="28" height="28" />
         Playwright — Complete Guide
       </a>
       <nav class="header-links">
-        <a href="index.html">Slides</a>
-        <a href="guia-completo.html">Português</a>
-        <a href="https://playwright.dev/docs/intro" target="_blank" rel="noopener">Official docs</a>
+        <a class="nav-github" href="https://github.com/lflucasferreira/testflow-playwright" target="_blank" rel="noopener">
+          <img src="assets/icons/github.svg" alt="" width="18" height="18" aria-hidden="true" />
+          GitHub
+        </a>
+        <button type="button" class="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☀</span>
+          <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☾</span>
+        </button>
       </nav>
     </header>
 
@@ -125,18 +163,21 @@
         <section id="what-is">
           <h2>What is Playwright?</h2>
           <p>
-            Playwright is a <strong>Microsoft</strong> automation framework for end-to-end and API
-            testing — with native support for Chromium, Firefox, and WebKit.
+            Playwright is a
+            <span class="tool-inline"><img src="assets/icons/microsoft.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Microsoft</strong></span>
+            automation framework for end-to-end and API testing — with native support for
+            <span class="browser-icons"><img src="assets/icons/googlechrome.svg" alt="Chromium" class="tool-icon" width="18" height="18" /><img src="assets/icons/firefox.svg" alt="Firefox" class="tool-icon" width="18" height="18" /><img src="assets/icons/safari.svg" alt="WebKit" class="tool-icon" width="18" height="18" /></span>
+            Chromium, Firefox, and WebKit.
           </p>
           <ul>
-            <li>Written in <strong>TypeScript</strong> / JavaScript</li>
+            <li>Written in <span class="tool-inline"><img src="assets/icons/typescript.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>TypeScript</strong></span> / JavaScript</li>
             <li>Modern API with <strong>auto-wait</strong> — less flakiness</li>
             <li>Fixtures <code>page</code>, <code>request</code>, <code>context</code> per test</li>
             <li>UI Mode, trace viewer, screenshots, and HTML report</li>
             <li>Native parallelism and isolation between workers</li>
           </ul>
           <div class="callout">
-            Unlike Cypress, Playwright uses <strong>WebDriver BiDi</strong> / native browser protocols
+            Unlike <span class="tool-inline"><img src="assets/icons/cypress.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />Cypress</span>, Playwright uses <strong>WebDriver BiDi</strong> / native browser protocols
             and runs outside the application context — supporting multiple browsers and API-only tests
             in the same runner.
           </div>
@@ -146,19 +187,19 @@
           <h2>Why use Playwright?</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4>⚡ Speed &amp; parallelism</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Speed &amp; parallelism</h4>
               <p>Parallel workers and isolated browser contexts per test.</p>
             </div>
             <div class="feature-card">
-              <h4>🎯 Resilient locators</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Resilient locators</h4>
               <p><code>getByTestId</code>, role, text — recommended by official docs.</p>
             </div>
             <div class="feature-card">
-              <h4>🔍 Rich debugging</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Rich debugging</h4>
               <p>UI Mode, headed, Inspector, and trace on retry.</p>
             </div>
             <div class="feature-card">
-              <h4>🌐 Unified E2E + API</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Unified E2E + API</h4>
               <p><code>page</code> for UI and <code>request</code> for REST contracts.</p>
             </div>
           </div>
@@ -169,11 +210,23 @@
           <div class="two-col">
             <div>
               <h3>Environment</h3>
-              <ul>
-                <li><strong>Node.js</strong> 20+</li>
-                <li><strong>npm</strong> (or pnpm / yarn)</li>
-                <li>TestFlow app on port <code>5050</code></li>
-                <li>Editor: VS Code / Cursor (Playwright extension optional)</li>
+              <ul class="tool-list">
+                <li>
+                  <img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <span><strong>Node.js</strong> 20+</span>
+                </li>
+                <li>
+                  <img src="assets/icons/npm.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <span><strong>npm</strong> (or pnpm / yarn)</span>
+                </li>
+                <li>
+                  <img src="assets/icons/testflow.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <span><strong>TestFlow</strong> app on port <code>5050</code></span>
+                </li>
+                <li>
+                  <img src="assets/icons/visualstudiocode.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <span>Editor: <strong>VS Code</strong> / <img src="assets/icons/cursor.svg" alt="" class="tool-icon tool-icon--sm" width="16" height="16" aria-hidden="true" style="vertical-align:-0.15em" /> <strong>Cursor</strong> (Playwright extension optional)</span>
+                </li>
               </ul>
             </div>
             <div class="terminal">
@@ -196,14 +249,17 @@
         <section id="platform-setup">
           <h2>Environment setup by platform</h2>
           <p>
-            Before cloning the repository, install <strong>Node.js 20+</strong>, <strong>Git</strong>, and
-            <strong>Docker</strong> (to run TestFlow on port <code>5050</code>).
+            Before cloning the repository, install
+            <span class="tool-inline"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Node.js 20+</strong></span>,
+            <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Git</strong></span>, and
+            <span class="tool-inline"><img src="assets/icons/docker.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Docker</strong></span>
+            (to run <span class="tool-inline"><img src="assets/icons/testflow.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />TestFlow</span> on port <code>5050</code>).
             Project steps (<code>npm install</code>, browsers) are the same on every OS.
           </p>
 
           <div class="feature-grid platform-grid">
             <div class="feature-card">
-              <h4>🍎 macOS</h4>
+              <h4 class="icon-heading"><img src="assets/icons/apple.svg" alt="" class="tool-icon" aria-hidden="true" /> macOS</h4>
               <pre><code class="language-bash"># Homebrew — https://brew.sh
 brew install node@20 git
 brew link --overwrite node@20
@@ -211,25 +267,39 @@ brew install --cask docker
 
 node --version   # v20+
 git --version</code></pre>
-              <p><strong>nvm:</strong> <code>curl -o- …/nvm/install.sh | bash</code> → <code>nvm install 20</code></p>
+              <div class="platform-tools">
+                <span class="tool-chip"><img src="assets/icons/homebrew.svg" alt="" class="tool-icon" aria-hidden="true" /> Homebrew</span>
+                <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> nvm</span>
+                <span class="tool-chip"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker Desktop</span>
+              </div>
             </div>
             <div class="feature-card">
-              <h4>🪟 Windows</h4>
+              <h4 class="icon-heading"><img src="assets/icons/windows.svg" alt="" class="tool-icon" aria-hidden="true" /> Windows</h4>
               <pre><code class="language-powershell">winget install OpenJS.NodeJS.LTS
 winget install Git.Git
 winget install Docker.DockerDesktop
 
 node --version</code></pre>
-              <p>Use <strong>PowerShell</strong> or <strong>Git Bash</strong>. Installers: <a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a>, <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a>, <a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a>.</p>
+              <div class="platform-tools">
+                <span class="tool-chip"><img src="assets/icons/winget.svg" alt="" class="tool-icon" aria-hidden="true" /> winget</span>
+                <span class="tool-chip"><img src="assets/icons/powershell.svg" alt="" class="tool-icon" aria-hidden="true" /> PowerShell</span>
+                <span class="tool-chip"><img src="assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git Bash</span>
+              </div>
+              <p>Installers: <span class="tool-inline"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a></span>, <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a></span>, <span class="tool-inline"><img src="assets/icons/docker.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a></span>.</p>
             </div>
             <div class="feature-card">
-              <h4>🐧 Linux</h4>
+              <h4 class="icon-heading"><img src="assets/icons/linux.svg" alt="" class="tool-icon" aria-hidden="true" /> Linux</h4>
               <pre><code class="language-bash"># Debian / Ubuntu
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs git docker.io
 sudo usermod -aG docker $USER
 
 node --version</code></pre>
+              <div class="platform-tools">
+                <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> NodeSource</span>
+                <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> install-deps</span>
+                <span class="tool-chip"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker</span>
+              </div>
               <p>After <code>npm install</code>: <code>npx playwright install-deps</code> (browser system libs). Fedora: <code>dnf install nodejs git docker</code>.</p>
             </div>
           </div>
@@ -246,24 +316,41 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
                 <strong>Clone the repository</strong><br />
                 <code>git clone https://github.com/lflucasferreira/testflow-playwright.git</code><br />
                 <code>cd testflow-playwright</code>
+                <div class="install-step-tools">
+                  <span class="tool-chip"><img src="assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git</span>
+                  <span class="tool-chip"><img src="assets/icons/github.svg" alt="" class="tool-icon" aria-hidden="true" /> GitHub</span>
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <strong>Install dependencies</strong><br />
                 <code>npm install</code>
+                <div class="install-step-tools">
+                  <span class="tool-chip"><img src="assets/icons/npm.svg" alt="" class="tool-icon" aria-hidden="true" /> npm</span>
+                  <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> Node.js</span>
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <strong>Install browsers</strong><br />
                 <code>npm run install:browsers</code>
+                <div class="install-step-tools">
+                  <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Playwright</span>
+                  <span class="tool-chip"><img src="assets/icons/googlechrome.svg" alt="" class="tool-icon" aria-hidden="true" /> Chromium</span>
+                  <span class="tool-chip"><img src="assets/icons/firefox.svg" alt="" class="tool-icon" aria-hidden="true" /> Firefox</span>
+                  <span class="tool-chip"><img src="assets/icons/safari.svg" alt="" class="tool-icon" aria-hidden="true" /> WebKit</span>
+                </div>
               </div>
             </li>
             <li>
               <div>
                 <strong>Run tests</strong><br />
                 <code>npm test</code> or <code>npm run test:ui</code>
+                <div class="install-step-tools">
+                  <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</span>
+                </div>
               </div>
             </li>
           </ol>
@@ -784,19 +871,19 @@ npm run test:grep:smoke                              # @smoke (Chromium)</code><
           <p>API-only suite: no browser, no UI — focus on REST contracts, OAuth, and cross-service sync.</p>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4>Cypress legacy</h4>
+              <h4 class="icon-heading"><img src="assets/icons/cypress.svg" alt="" class="tool-icon" aria-hidden="true" /> Cypress legacy</h4>
               <p>Service Objects + <code>cy.request</code> + localStorage token</p>
             </div>
             <div class="feature-card">
-              <h4>Current Playwright</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Current Playwright</h4>
               <p><code>request</code> fixture + helpers + JWT cache</p>
             </div>
             <div class="feature-card">
-              <h4>Organization</h4>
+              <h4 class="icon-heading"><img src="assets/icons/typescript.svg" alt="" class="tool-icon" aria-hidden="true" /> Organization</h4>
               <p><code>api/gets/</code> · <code>api/patch/</code> · JSON fixtures</p>
             </div>
             <div class="feature-card">
-              <h4>CI</h4>
+              <h4 class="icon-heading"><img src="assets/icons/githubactions.svg" alt="" class="tool-icon" aria-hidden="true" /> CI</h4>
               <p><code>PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1</code></p>
             </div>
           </div>
@@ -950,7 +1037,7 @@ await testInfo.attach('curl-replay', { body: buildCurl('PATCH', url, headers, bo
         </section>
 
         <section id="postman">
-          <h2>Postman → Playwright migration</h2>
+          <h2 class="icon-heading"><img src="assets/icons/postman.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Postman → Playwright migration</h2>
           <ul>
             <li>Pre-request script → <code>buildApiHeaders()</code></li>
             <li>Tests tab assertions → <code>expect()</code> + golden fixtures</li>
@@ -1060,7 +1147,7 @@ test.beforeAll(async () =&gt; {
         </section>
 
         <section id="a11y-axe">
-          <h2>Accessibility — axe-core</h2>
+          <h2 class="icon-heading"><img src="assets/icons/axe.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Accessibility — axe-core</h2>
           <p><code>a11y</code> suite — scans with <code>@axe-core/playwright</code> on key pages. Doc: <a href="../en/tests/a11y/a11y.md">a11y.md</a></p>
           <pre><code class="language-typescript">import AxeBuilder from '@axe-core/playwright'
 
@@ -1239,7 +1326,7 @@ await widgets.dragCardAToSlotB()</code></pre>
           <h2>How to run</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4>🖥️ UI Mode</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</h4>
               <pre><code class="language-bash">npm run test:ui
 npm run test:auth -- --ui</code></pre>
             </div>
@@ -1274,22 +1361,24 @@ npm run report                   # HTML report</code></pre>
         </section>
 
         <section id="ci">
-          <h2>CI — GitHub Actions</h2>
+          <h2 class="icon-heading"><img src="assets/icons/githubactions.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> CI — GitHub Actions</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4>Parallel matrix</h4>
-              <p>17+ projects — Chromium, Firefox, WebKit, and visual</p>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Parallel matrix</h4>
+              <p>17+ projects —
+                <span class="browser-icons"><img src="assets/icons/googlechrome.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/firefox.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/safari.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /></span>
+                Chromium, Firefox, WebKit, and visual</p>
             </div>
             <div class="feature-card">
-              <h4>Service container</h4>
+              <h4 class="icon-heading"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Service container</h4>
               <p><code>qaschool/testflow:latest</code> on port 5050</p>
             </div>
             <div class="feature-card">
-              <h4>Artifacts</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Artifacts</h4>
               <p>HTML report + screenshots on failure</p>
             </div>
             <div class="feature-card">
-              <h4>Retries</h4>
+              <h4 class="icon-heading"><img src="assets/icons/github.svg" alt="" class="tool-icon" aria-hidden="true" /> Retries</h4>
               <p>2 retries in CI · trace on first retry</p>
             </div>
           </div>
@@ -1328,20 +1417,23 @@ npm run report                   # HTML report</code></pre>
           <h2>Next steps</h2>
           <div class="feature-grid">
             <a class="feature-card" href="../en/README.md" style="text-decoration:none;color:inherit;">
-              <h4>📖 Docs EN — walkthroughs</h4>
+              <img class="card-logo" src="assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <h4>Docs EN — walkthroughs</h4>
               <p>Block-by-block explanation of every spec file (18 files).</p>
             </a>
             <a class="feature-card" href="../pt/README.md" style="text-decoration:none;color:inherit;">
-              <h4>📖 Docs PT — walkthroughs</h4>
+              <img class="card-logo" src="assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <h4>Docs PT — walkthroughs</h4>
               <p>Explicação bloco a bloco de cada spec (18 arquivos).</p>
             </a>
             <a class="feature-card" href="index.html" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <img class="card-logo" src="assets/icons/revealjs.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Interactive slides</h4>
               <p>Reveal.js presentation with animations and keyboard navigation.</p>
             </a>
             <a class="feature-card" href="../selector-strategy.md" style="text-decoration:none;color:inherit;">
-              <h4>🎯 Selector strategy</h4>
+              <img class="card-logo" src="assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <h4>Selector strategy</h4>
               <p><code>data-testid</code> via <code>getByTestId</code> — TestFlow convention.</p>
             </a>
             <a class="feature-card" href="https://playwright.dev/docs/intro" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
@@ -1355,7 +1447,8 @@ npm run report                   # HTML report</code></pre>
               <p>Interactive debug with time-travel.</p>
             </a>
             <a class="feature-card" href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-              <h4>🧪 TestFlow</h4>
+              <img class="card-logo" src="assets/icons/testflow.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <h4>TestFlow</h4>
               <p>App under test — qaschool/testflow.</p>
             </a>
           </div>
@@ -1368,6 +1461,7 @@ npm run report                   # HTML report</code></pre>
       <a href="index.html">Back to slides</a>
     </footer>
 
+    <script src="js/theme.js" data-base="../../"></script>
     <script src="../../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
     <script>hljs.highlightAll()</script>
     <script>

@@ -132,9 +132,12 @@ testflow-playwright/
 
 GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (17 matrix jobs + `@smoke` grep job), including Firefox/WebKit smoke and visual regression.
 
+**GitHub Pages** (`.github/workflows/pages.yml`): on every push to `main`, runs the full suite, builds the docs landing + Playwright HTML report, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
+
 ## Slides & interview prep
 
-- Slides: `npm run slides` → http://localhost:3335/docs/slides/
+- **Docs hub:** `npm run slides` → http://localhost:3335/docs/ (guides, slides, light/dark theme)
+- Slides only: http://localhost:3335/docs/slides/
 - Interview questions: [`docs/playwright-technical-interview-questions.md`](docs/playwright-technical-interview-questions.md)
 
 ## Technologies

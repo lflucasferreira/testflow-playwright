@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>testflow-playwright — Playwright Automation Suite</title>
+    <meta name="description" content="Playwright E2E + API automation for TestFlow. Guides, slides, walkthroughs, and CI setup." />
+    <link rel="icon" href="slides/assets/playwright-logo.svg" type="image/svg+xml" />
+    <script>
+      (function () {
+        var path = location.pathname
+        var last = path.split('/').filter(Boolean).pop() || ''
+        if (/\.html?$/i.test(last)) return
+
+        var base
+        var slidesIdx = path.indexOf('/slides')
+        if (slidesIdx !== -1) {
+          base = path.substring(0, slidesIdx + '/slides'.length) + '/'
+        } else {
+          base = path.replace(/\/index$/i, '')
+          if (!base.endsWith('/')) base += '/'
+        }
+
+        var b = document.createElement('base')
+        b.href = base
+        document.head.appendChild(b)
+      })()
+    </script>
+    <script>
+      (function () {
+        var k = 'pw-docs-theme'
+        var t = localStorage.getItem(k)
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.setAttribute('data-theme', t)
+      })()
+    </script>
+    <link rel="stylesheet" href="slides/css/themes.css" />
+    <link rel="stylesheet" href="slides/css/theme-toggle.css" />
+    <link rel="stylesheet" href="slides/css/landing.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href=".">
+        <img src="slides/assets/playwright-logo.svg" alt="Playwright" />
+        testflow-playwright
+      </a>
+      <nav>
+        <a class="nav-github" href="https://github.com/lflucasferreira/testflow-playwright" target="_blank" rel="noopener">
+          <img src="slides/assets/icons/github.svg" alt="" width="18" height="18" aria-hidden="true" />
+          GitHub
+        </a>
+        <button type="button" class="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☀</span>
+          <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☾</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <img class="hero-logo" src="slides/assets/playwright-logo.svg" alt="Playwright" />
+        <h1>Playwright <span>Automation Suite</span></h1>
+        <p>E2E + API test suite for TestFlow — smoke, auth, dashboard, API, a11y, visual regression. Multi-browser CI with GitHub Actions.</p>
+        <div class="badges">
+          <a href="https://github.com/lflucasferreira/testflow-playwright/actions/workflows/playwright.yml" target="_blank" rel="noopener">
+            <img src="https://github.com/lflucasferreira/testflow-playwright/actions/workflows/playwright.yml/badge.svg" alt="CI" />
+          </a>
+          <a href="https://github.com/lflucasferreira/testflow-playwright/actions/workflows/pages.yml" target="_blank" rel="noopener">
+            <img src="https://github.com/lflucasferreira/testflow-playwright/actions/workflows/pages.yml/badge.svg" alt="Pages deploy" />
+          </a>
+        </div>
+      </section>
+
+      <div class="cards cards--inline" aria-label="Documentation">
+        <a class="card" href="slides/complete-guide.html">
+          <img class="card-icon" src="slides/assets/playwright-logo.svg" alt="" aria-hidden="true" />
+          <h2>Complete Guide</h2>
+          <p>Setup, project structure, all Playwright commands and patterns.</p>
+          <span class="card-arrow">↗ complete-guide.html</span>
+        </a>
+
+        <a class="card" href="slides/index.html">
+          <img class="card-icon" src="slides/assets/icons/revealjs.svg" alt="" aria-hidden="true" />
+          <h2>Slides</h2>
+          <p>Interactive Reveal.js presentation — Playwright fundamentals, E2E, API, POM, CI/CD.</p>
+          <span class="card-arrow">↗ slides/index.html</span>
+        </a>
+
+        <a class="card" href="https://lflucasferreira.github.io/testflow-playwright/report/index.html" target="_blank" rel="noopener">
+          <img class="card-icon" src="slides/assets/icons/allure.svg" alt="" aria-hidden="true" />
+          <h2>Report</h2>
+          <p>Full-suite E2E + API results from CI — updated on every push to main.</p>
+          <span class="card-arrow">↗ GitHub Pages · report</span>
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        <a href="https://github.com/lflucasferreira/testflow-playwright" target="_blank" rel="noopener">lflucasferreira/testflow-playwright</a>
+        &nbsp;·&nbsp;
+        Target app: <a href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener">qaschool/testflow</a>
+      </p>
+    </footer>
+
+    <script src="slides/js/theme.js" data-base="../"></script>
+  </body>
+</html>

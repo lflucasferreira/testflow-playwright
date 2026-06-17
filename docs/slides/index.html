@@ -7,10 +7,43 @@
     <meta name="description" content="Apresentação introdutória sobre Playwright: o que é, como instalar, testes E2E, API, POM e testflow-playwright." />
 
     <link rel="icon" href="assets/playwright-logo.svg" type="image/svg+xml" />
+    <script>
+      (function () {
+        var path = location.pathname
+        var last = path.split('/').filter(Boolean).pop() || ''
+        if (/\.html?$/i.test(last)) return
+
+        var base
+        var slidesIdx = path.indexOf('/slides')
+        if (slidesIdx !== -1) {
+          base = path.substring(0, slidesIdx + '/slides'.length) + '/'
+        } else {
+          base = path.replace(/\/index$/i, '')
+          if (!base.endsWith('/')) base += '/'
+        }
+
+        var b = document.createElement('base')
+        b.href = base
+        document.head.appendChild(b)
+      })()
+    </script>
+    <script>
+      (function () {
+        var k = 'pw-docs-theme'
+        var t = localStorage.getItem(k)
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.setAttribute('data-theme', t)
+      })()
+    </script>
     <link rel="stylesheet" href="../../node_modules/reveal.js/dist/reveal.css" />
-    <link rel="stylesheet" href="../../node_modules/reveal.js/dist/theme/black.css" />
-    <link rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <link id="reveal-theme" rel="stylesheet" href="../../node_modules/reveal.js/dist/theme/black.css" />
+    <link id="hljs-theme" rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/theme-toggle.css" />
     <link rel="stylesheet" href="css/theme-playwright.css" />
+    <link rel="stylesheet" href="css/icons.css" />
     <script>
       if (window.location.search.match(/print-pdf/gi)) {
         const link = document.createElement('link')
@@ -22,6 +55,10 @@
     </script>
   </head>
   <body>
+    <button type="button" class="theme-toggle theme-toggle--floating" aria-label="Toggle theme">
+      <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☀</span>
+      <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☾</span>
+    </button>
     <div class="footer-bar" aria-hidden="true"></div>
 
     <div class="reveal">
@@ -40,7 +77,9 @@
         <section>
           <h2>O que é o Playwright?</h2>
           <p class="fragment fade-up">
-            Framework de automação da <strong>Microsoft</strong> para testes end-to-end e API —
+            Framework de automação da
+            <span class="tool-inline"><img src="assets/icons/microsoft.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><strong>Microsoft</strong></span>
+            para testes end-to-end e API —
             com suporte nativo a Chromium, Firefox e WebKit.
           </p>
           <ul class="fragment fade-up">
@@ -56,23 +95,19 @@
           <h2>Por que usar Playwright?</h2>
           <div class="feature-grid">
             <div class="feature-card fragment fade-up">
-              <div class="icon">⚡</div>
-              <h4>Velocidade &amp; paralelismo</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Velocidade &amp; paralelismo</h4>
               <p>Workers paralelos e browser contexts isolados por teste.</p>
             </div>
             <div class="feature-card fragment fade-up">
-              <div class="icon">🎯</div>
-              <h4>Locators resilientes</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Locators resilientes</h4>
               <p><code>getByTestId</code>, role, text — recomendados pela doc oficial.</p>
             </div>
             <div class="feature-card fragment fade-up">
-              <div class="icon">🔍</div>
-              <h4>Debug rico</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Debug rico</h4>
               <p>UI Mode, headed, Inspector e trace on retry.</p>
             </div>
             <div class="feature-card fragment fade-up">
-              <div class="icon">🌐</div>
-              <h4>E2E + API unificados</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> E2E + API unificados</h4>
               <p><code>page</code> para UI e <code>request</code> para contratos REST.</p>
             </div>
           </div>
@@ -83,11 +118,23 @@
           <div class="two-col">
             <div>
               <h3>Ambiente</h3>
-              <ul>
-                <li class="fragment fade-up"><strong>Node.js</strong> 20+</li>
-                <li class="fragment fade-up"><strong>npm</strong> (ou pnpm / yarn)</li>
-                <li class="fragment fade-up">App TestFlow na porta <code>5050</code></li>
-                <li class="fragment fade-up">Editor: VS Code / Cursor (extensão Playwright opcional)</li>
+              <ul class="tool-list" style="font-size:0.85em;">
+                <li class="fragment fade-up">
+                  <img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" />
+                  <span><strong>Node.js</strong> 20+</span>
+                </li>
+                <li class="fragment fade-up">
+                  <img src="assets/icons/npm.svg" alt="" class="tool-icon" aria-hidden="true" />
+                  <span><strong>npm</strong> (ou pnpm / yarn)</span>
+                </li>
+                <li class="fragment fade-up">
+                  <img src="assets/icons/testflow.svg" alt="" class="tool-icon" aria-hidden="true" />
+                  <span>App <strong>TestFlow</strong> na porta <code>5050</code></span>
+                </li>
+                <li class="fragment fade-up">
+                  <img src="assets/icons/visualstudiocode.svg" alt="" class="tool-icon" aria-hidden="true" />
+                  <span>Editor: <strong>VS Code</strong> / <img src="assets/icons/cursor.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /> <strong>Cursor</strong></span>
+                </li>
               </ul>
             </div>
             <div class="terminal fragment fade-up">
@@ -111,19 +158,24 @@
           <section>
             <h2>Instalação do ambiente por SO</h2>
             <p style="font-size: 0.75em; color: var(--pw-muted);">
-              Antes de clonar o projeto: <strong>Node.js 20+</strong>, <strong>Git</strong> e
-              <strong>Docker</strong> (para o TestFlow na porta 5050).
+              Antes de clonar o projeto:
+              <span class="tool-inline"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" />Node.js 20+</span>,
+              <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" />Git</span> e
+              <span class="tool-inline"><img src="assets/icons/docker.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" />Docker</span>
+              (TestFlow na porta 5050).
             </p>
             <p style="font-size: 0.65em; color: var(--pw-muted); margin-top: 1em;">
-              ↓ macOS · Windows · Linux
+              <span class="tool-inline"><img src="assets/icons/apple.svg" alt="" class="tool-icon" width="14" height="14" aria-hidden="true" /> macOS</span> ·
+              <span class="tool-inline"><img src="assets/icons/windows.svg" alt="" class="tool-icon" width="14" height="14" aria-hidden="true" /> Windows</span> ·
+              <span class="tool-inline"><img src="assets/icons/linux.svg" alt="" class="tool-icon" width="14" height="14" aria-hidden="true" /> Linux</span>
             </p>
           </section>
 
           <section>
-            <h2>macOS</h2>
+            <h2 class="icon-heading"><img src="assets/icons/apple.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> macOS</h2>
             <div class="two-col" style="font-size: 0.62em;">
               <div>
-                <h3>Homebrew (recomendado)</h3>
+                <h3 class="icon-heading"><img src="assets/icons/homebrew.svg" alt="" class="tool-icon" aria-hidden="true" /> Homebrew (recomendado)</h3>
                 <pre><code class="hljs bash"># Homebrew — https://brew.sh
 brew install node@20 git
 brew link --overwrite node@20
@@ -136,7 +188,7 @@ git --version
 docker --version</code></pre>
               </div>
               <div>
-                <h3>Alternativa: nvm</h3>
+                <h3 class="icon-heading"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> Alternativa: nvm</h3>
                 <pre><code class="hljs bash">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 nvm install 20
 nvm use 20
@@ -151,10 +203,10 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
           </section>
 
           <section>
-            <h2>Windows</h2>
+            <h2 class="icon-heading"><img src="assets/icons/windows.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Windows</h2>
             <div class="two-col" style="font-size: 0.62em;">
               <div>
-                <h3>winget (Windows 10/11)</h3>
+                <h3 class="icon-heading"><img src="assets/icons/winget.svg" alt="" class="tool-icon" aria-hidden="true" /> winget (Windows 10/11)</h3>
                 <pre><code class="hljs powershell">winget install OpenJS.NodeJS.LTS
 winget install Git.Git
 winget install Docker.DockerDesktop
@@ -162,7 +214,8 @@ winget install Docker.DockerDesktop
 node --version
 git --version</code></pre>
                 <p style="font-size: 0.9em; color: var(--pw-muted); margin-top: 0.5em;">
-                  Use <strong>PowerShell</strong> ou <strong>Git Bash</strong> para os comandos npm.
+                  Use <span class="tool-inline"><img src="assets/icons/powershell.svg" alt="" class="tool-icon" width="14" height="14" aria-hidden="true" /><strong>PowerShell</strong></span> ou
+                  <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon" width="14" height="14" aria-hidden="true" /><strong>Git Bash</strong></span> para os comandos npm.
                 </p>
               </div>
               <div>
@@ -178,10 +231,10 @@ git --version</code></pre>
           </section>
 
           <section>
-            <h2>Linux</h2>
+            <h2 class="icon-heading"><img src="assets/icons/linux.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Linux</h2>
             <div class="two-col" style="font-size: 0.62em;">
               <div>
-                <h3>Debian / Ubuntu</h3>
+                <h3 class="icon-heading"><img src="assets/icons/linux.svg" alt="" class="tool-icon" aria-hidden="true" /> Debian / Ubuntu</h3>
                 <pre><code class="hljs bash">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs git
 
@@ -192,7 +245,7 @@ sudo usermod -aG docker $USER   # relogar depois
 node --version</code></pre>
               </div>
               <div>
-                <h3>Dependências do Playwright</h3>
+                <h3 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Dependências do Playwright</h3>
                 <pre><code class="hljs bash"># Após npm install — libs do Chromium/Firefox/WebKit
 npx playwright install-deps
 
@@ -1179,7 +1232,7 @@ test('shows a percentage in the pass rate card', async ({ page }) => {
           <h2>Como executar</h2>
           <div class="two-col">
             <div class="feature-card fragment fade-up">
-              <h4>🖥️ UI Mode — explorar no browser</h4>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode — explorar no browser</h4>
               <pre><code class="language-bash">npm run test:ui
 npm run test:auth -- --ui</code></pre>
             </div>
@@ -1221,32 +1274,42 @@ npm run report              # relatório HTML</code></pre>
         </section>
 
         <section>
-          <h2>Boas práticas</h2>
-          <ul style="font-size: 0.68em;">
-            <li class="fragment fade-up"><strong>Page Objects</strong> em <code>pages/</code> — locators, actions e assertions isolados</li>
-            <li class="fragment fade-up"><code>getByTestId</code> + <code>data-testid</code> — mesma convenção do testflow-cypress</li>
-            <li class="fragment fade-up"><code>loginViaApi</code> no <code>beforeEach</code> — specs de feature sem repetir login UI</li>
-            <li class="fragment fade-up"><code>beforeAll</code> + resposta compartilhada — contratos API sem N requests idênticos</li>
-            <li class="fragment fade-up"><code>validateSchema</code> — tipos da resposta REST de forma declarativa</li>
-            <li class="fragment fade-up"><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
-            <li class="fragment fade-up">Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
-            <li class="fragment fade-up">Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
-            <li class="fragment fade-up"><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
-            <li class="fragment fade-up"><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
-            <li class="fragment fade-up"><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
-            <li class="fragment fade-up">Tags <code>@needs-browser</code> / <code>@negative-testing</code> — filtrar jobs no CI</li>
-            <li class="fragment fade-up"><code>globalSetup</code> + cache de token — setup pesado uma vez por run</li>
-            <li class="fragment fade-up"><strong>Service Objects</strong> (API) — encapsular <code>cy.request</code> / <code>request</code> por domínio</li>
-            <li class="fragment fade-up"><code>test.use({ testUser })</code> — override de credencial por suite / community</li>
-            <li class="fragment fade-up"><code>buildApiHeaders()</code> — headers de contexto espelhando Postman pre-script</li>
-            <li class="fragment fade-up">Golden fixtures + <code>expectSameMembers</code> — contrato sem JSON Schema</li>
-            <li class="fragment fade-up"><code>runPatchTests()</code> — data-driven a partir de mapa de payloads</li>
-            <li class="fragment fade-up">Poll GET pós-PATCH — eventual consistency com deadline</li>
-            <li class="fragment fade-up">Diff + curl attachments — debug de falha no HTML report</li>
-            <li class="fragment fade-up">Verificação dual — PATCH Profile API + GET Lifecycle Platform</li>
-            <li class="fragment fade-up"><code>env-diagnostics.spec.ts</code> — validar vars de CI antes da suite</li>
-            <li class="fragment fade-up"><code>npm run test:ui</code> no dev — feedback visual imediato</li>
-          </ul>
+          <section>
+            <h2>Boas práticas</h2>
+            <p style="font-size: 0.62em; color: var(--pw-muted); margin-bottom: 0.6em;">E2E, estrutura e CI</p>
+            <ul style="font-size: 0.68em;">
+              <li class="fragment fade-up"><strong>Page Objects</strong> em <code>pages/</code> — locators, actions e assertions isolados</li>
+              <li class="fragment fade-up"><code>getByTestId</code> + <code>data-testid</code> — mesma convenção do testflow-cypress</li>
+              <li class="fragment fade-up"><code>loginViaApi</code> no <code>beforeEach</code> — specs de feature sem repetir login UI</li>
+              <li class="fragment fade-up"><code>beforeAll</code> + resposta compartilhada — contratos API sem N requests idênticos</li>
+              <li class="fragment fade-up"><code>validateSchema</code> — tipos da resposta REST de forma declarativa</li>
+              <li class="fragment fade-up"><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
+              <li class="fragment fade-up">Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
+              <li class="fragment fade-up">Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
+              <li class="fragment fade-up"><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
+              <li class="fragment fade-up"><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
+              <li class="fragment fade-up"><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
+              <li class="fragment fade-up">Tags <code>@needs-browser</code> / <code>@negative-testing</code> — filtrar jobs no CI</li>
+            </ul>
+            <p class="fragment fade-up" style="font-size: 0.55em; color: var(--pw-muted); margin-top: 0.8em;">↓ continuação — API enterprise</p>
+          </section>
+          <section>
+            <h2>Boas práticas</h2>
+            <p style="font-size: 0.62em; color: var(--pw-muted); margin-bottom: 0.6em;">API enterprise e desenvolvimento</p>
+            <ul style="font-size: 0.68em;">
+              <li class="fragment fade-up"><code>globalSetup</code> + cache de token — setup pesado uma vez por run</li>
+              <li class="fragment fade-up"><strong>Service Objects</strong> (API) — encapsular <code>cy.request</code> / <code>request</code> por domínio</li>
+              <li class="fragment fade-up"><code>test.use({ testUser })</code> — override de credencial por suite / community</li>
+              <li class="fragment fade-up"><code>buildApiHeaders()</code> — headers de contexto espelhando Postman pre-script</li>
+              <li class="fragment fade-up">Golden fixtures + <code>expectSameMembers</code> — contrato sem JSON Schema</li>
+              <li class="fragment fade-up"><code>runPatchTests()</code> — data-driven a partir de mapa de payloads</li>
+              <li class="fragment fade-up">Poll GET pós-PATCH — eventual consistency com deadline</li>
+              <li class="fragment fade-up">Diff + curl attachments — debug de falha no HTML report</li>
+              <li class="fragment fade-up">Verificação dual — PATCH Profile API + GET Lifecycle Platform</li>
+              <li class="fragment fade-up"><code>env-diagnostics.spec.ts</code> — validar vars de CI antes da suite</li>
+              <li class="fragment fade-up"><code>npm run test:ui</code> no dev — feedback visual imediato</li>
+            </ul>
+          </section>
         </section>
 
         <section class="slide-cta">
@@ -1274,7 +1337,8 @@ npm run report              # relatório HTML</code></pre>
               Debug interativo
             </a>
             <a class="link-card fragment fade-up" href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener">
-              <strong>🧪 TestFlow</strong>
+              <img src="assets/icons/testflow.svg" alt="" width="24" height="24" aria-hidden="true" />
+              <strong>TestFlow</strong>
               App sob teste
             </a>
           </div>
@@ -1286,6 +1350,7 @@ npm run report              # relatório HTML</code></pre>
       </div>
     </div>
 
+    <script src="js/theme.js" data-base="../../"></script>
     <script src="../../node_modules/reveal.js/dist/reveal.js"></script>
     <script src="../../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
     <script>

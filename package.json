@@ -5,7 +5,7 @@
   "description": "Playwright E2E automation for TestFlow web app",
   "scripts": {
     "slides": "npx serve . -p 3335",
-    "slides:open": "npx serve . -p 3335 & sleep 1 && open http://localhost:3335/docs/slides/",
+    "slides:open": "npx serve . -p 3335 & sleep 1 && open http://localhost:3335/docs/",
     "slides:pdf": "node scripts/export-slides-pdf.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
@@ -30,7 +30,11 @@
     "test:a11y": "playwright test --project=a11y",
     "test:grep:smoke": "playwright test --grep @smoke --project=smoke --project=api",
     "test:grep:regression": "playwright test --grep @regression",
-    "report": "playwright show-report",
+    "report": "playwright show-report playwright-report",
+    "report:pages": "node scripts/publish-report-pages.mjs",
+    "pages:build": "node scripts/build-pages-site.mjs",
+    "hooks:install": "node scripts/install-githooks.mjs",
+    "prepare": "node scripts/install-githooks.mjs",
     "install:browsers": "NODE_TLS_REJECT_UNAUTHORIZED=0 playwright install chromium firefox webkit"
   },
   "devDependencies": {

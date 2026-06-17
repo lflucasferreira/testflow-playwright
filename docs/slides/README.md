@@ -9,9 +9,11 @@ Apresentação Reveal.js sobre Playwright (E2E, API, POM, testflow-playwright).
 | `index.html` | Apresentação interativa (Reveal.js) |
 | `guia-completo.html` | Guia passo a passo em português (instalação + todos os comandos) |
 | `complete-guide.html` | Step-by-step guide in English (setup + all commands) |
-| `playwright-intro-slides.pdf` | Versão PDF (~58 slides) |
+| `playwright-intro-slides.pdf` | Versão PDF (53 páginas — inclui sub-slides verticais) |
 | `css/theme-playwright.css` | Tema visual Playwright |
 | `assets/playwright-logo.svg` | Official Playwright logo ([playwright.dev](https://playwright.dev/img/playwright-logo.svg)) |
+| `assets/icons/` | Brand icons (macOS, Windows, Linux, Node, Docker, Git, etc.) via [Simple Icons](https://simpleicons.org/) |
+| `css/icons.css` | Shared styles for tool/platform icons in guides and slides |
 
 ## Other materials
 
@@ -39,6 +41,8 @@ npm run slides:pdf
 ```
 
 Gera `docs/slides/playwright-intro-slides.pdf` via [decktape](https://github.com/astefanutti/decktape) (1280×720, todos os fragments visíveis).
+
+O script usa uma **porta livre** e valida que o HTML servido é Playwright (evita exportar slides de outro projeto na mesma porta, ex.: Appium na 3336).
 
 ## Export manual (Chrome)
 

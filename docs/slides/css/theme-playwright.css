@@ -1,21 +1,11 @@
 /**
  * Playwright-branded Reveal.js theme
- * Colors: #45ba4b (primary), #2ead33 (accent), #0d1117 (bg)
+ * Semantic colors: css/themes.css
  */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --pw-green: #45ba4b;
-  --pw-green-dark: #2ead33;
-  --pw-green-glow: rgba(69, 186, 75, 0.35);
-  --pw-bg: #0d1117;
-  --pw-surface: #161b22;
-  --pw-surface-2: #21262d;
-  --pw-border: #30363d;
-  --pw-text: #e6edf3;
-  --pw-muted: #8b949e;
-  --pw-code-bg: #0d1117;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
@@ -23,8 +13,8 @@
 .reveal-viewport {
   background: var(--pw-bg);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(69, 186, 75, 0.12), transparent),
-    radial-gradient(circle at 100% 100%, rgba(46, 173, 51, 0.06), transparent 40%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--pw-gradient-a), transparent),
+    radial-gradient(circle at 100% 100%, var(--pw-gradient-b), transparent 40%);
 }
 
 .reveal {
@@ -48,7 +38,7 @@
 
 .reveal h1 {
   font-size: 2.4em;
-  background: linear-gradient(135deg, #fff 0%, var(--pw-green) 100%);
+  background: linear-gradient(135deg, var(--pw-h1-gradient-start) 0%, var(--pw-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -124,7 +114,7 @@
 .reveal pre {
   width: 100%;
   margin: 0.8em 0;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 32px var(--pw-shadow);
   border-radius: 10px;
   border: 1px solid var(--pw-border);
 }
@@ -133,7 +123,7 @@
   display: block;
   padding: 1em 1.2em;
   background: var(--pw-code-bg);
-  color: #c9d1d9;
+  color: var(--pw-code-text);
   border: none;
   font-size: 0.55em;
   line-height: 1.6;
@@ -210,7 +200,7 @@
   font-size: 3.2em;
   font-weight: 700;
   letter-spacing: -0.04em;
-  background: linear-gradient(135deg, #fff 30%, var(--pw-green) 100%);
+  background: linear-gradient(135deg, var(--pw-h1-gradient-start) 30%, var(--pw-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -351,7 +341,7 @@
 
 .terminal-body {
   padding: 1em 1.2em;
-  color: #c9d1d9;
+  color: var(--pw-code-text);
   line-height: 1.7;
 }
 
@@ -384,7 +374,7 @@
 }
 
 .compare-table tr:hover td {
-  background: rgba(69, 186, 75, 0.06);
+  background: var(--pw-table-hover);
 }
 
 .compare-table.compact {
@@ -516,6 +506,28 @@
   width: 28px;
   height: 28px;
   margin: 0 auto 0.5rem;
+}
+
+.reveal .icon-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.reveal h3.icon-heading {
+  justify-content: flex-start;
+  font-size: 0.95em;
+}
+
+.reveal .feature-card .icon-heading {
+  justify-content: flex-start;
+  font-size: 0.95em;
+  margin-bottom: 0.4em;
+}
+
+.reveal .tool-list {
+  text-align: left;
 }
 
 .reveal .slides section .fragment.fade-up {

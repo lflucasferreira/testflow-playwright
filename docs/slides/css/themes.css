@@ -1,0 +1,62 @@
+/**
+ * Playwright docs — light & dark semantic tokens
+ * Set via data-theme on <html> (theme.js)
+ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --pw-green: #45ba4b;
+  --pw-green-dark: #2ead33;
+  --pw-green-glow: rgba(69, 186, 75, 0.35);
+  --pw-bg: #0d1117;
+  --pw-surface: #161b22;
+  --pw-surface-2: #21262d;
+  --pw-border: #30363d;
+  --pw-text: #e6edf3;
+  --pw-muted: #8b949e;
+  --pw-code-bg: #0d1117;
+  --pw-code-text: #c9d1d9;
+  --pw-header-bg: rgba(13, 17, 23, 0.92);
+  --pw-gradient-a: rgba(69, 186, 75, 0.12);
+  --pw-gradient-b: rgba(46, 173, 51, 0.06);
+  --pw-shadow: rgba(0, 0, 0, 0.35);
+  --pw-h1-gradient-start: #ffffff;
+  --pw-step-counter-text: #0d1117;
+  --pw-table-hover: rgba(69, 186, 75, 0.06);
+  --pw-callout-bg: rgba(69, 186, 75, 0.08);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --pw-green: #1a7f37;
+  --pw-green-dark: #2da44e;
+  --pw-green-glow: rgba(45, 164, 78, 0.22);
+  --pw-bg: #ffffff;
+  --pw-surface: #f6f8fa;
+  --pw-surface-2: #eaeef2;
+  --pw-border: #d0d7de;
+  --pw-text: #1f2328;
+  --pw-muted: #656d76;
+  --pw-code-bg: #f6f8fa;
+  --pw-code-text: #24292f;
+  --pw-header-bg: rgba(255, 255, 255, 0.92);
+  --pw-gradient-a: rgba(45, 164, 78, 0.1);
+  --pw-gradient-b: rgba(45, 164, 78, 0.05);
+  --pw-shadow: rgba(31, 35, 40, 0.12);
+  --pw-h1-gradient-start: #1f2328;
+  --pw-step-counter-text: #ffffff;
+  --pw-table-hover: rgba(45, 164, 78, 0.08);
+  --pw-callout-bg: rgba(45, 164, 78, 0.1);
+}
+
+[data-theme='light'] img.tool-icon[src*='apple.svg'],
+[data-theme='light'] img.tool-icon[src*='github.svg'],
+[data-theme='light'] img.tool-icon[src*='microsoft.svg'],
+[data-theme='light'] .card-logo[src*='github.svg'] {
+  filter: brightness(0);
+}
+
+[data-theme='dark'] img.tool-icon[src*='github.svg'] {
+  filter: brightness(0) invert(1);
+}

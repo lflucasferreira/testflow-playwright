@@ -5,16 +5,6 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --pw-green: #45ba4b;
-  --pw-green-dark: #2ead33;
-  --pw-green-glow: rgba(69, 186, 75, 0.35);
-  --pw-bg: #0d1117;
-  --pw-surface: #161b22;
-  --pw-surface-2: #21262d;
-  --pw-border: #30363d;
-  --pw-text: #e6edf3;
-  --pw-muted: #8b949e;
-  --pw-code-bg: #0d1117;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --sidebar-width: 280px;
@@ -40,8 +30,8 @@ body {
   color: var(--pw-text);
   background: var(--pw-bg);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(69, 186, 75, 0.12), transparent),
-    radial-gradient(circle at 100% 100%, rgba(46, 173, 51, 0.06), transparent 40%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--pw-gradient-a), transparent),
+    radial-gradient(circle at 100% 100%, var(--pw-gradient-b), transparent 40%);
 }
 
 a {
@@ -63,7 +53,7 @@ a:hover {
   gap: 1rem;
   height: var(--header-height);
   padding: 0 1.5rem;
-  background: rgba(13, 17, 23, 0.92);
+  background: var(--pw-header-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--pw-border);
 }
@@ -99,6 +89,7 @@ a:hover {
 
 .header-links {
   display: flex;
+  align-items: center;
   gap: 1rem;
   font-size: 0.875rem;
 }
@@ -109,6 +100,30 @@ a:hover {
 
 .header-links a:hover {
   color: var(--pw-green);
+}
+
+.header-links a.nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.header-links a.nav-github:hover {
+  text-decoration: none;
+}
+
+.header-links a.nav-github img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+[data-theme='dark'] .header-links a.nav-github img {
+  filter: brightness(0) invert(1);
+}
+
+[data-theme='light'] .header-links a.nav-github img {
+  filter: none;
 }
 
 .layout {
@@ -196,7 +211,7 @@ main {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.04em;
-  background: linear-gradient(135deg, #fff 30%, var(--pw-green) 100%);
+  background: linear-gradient(135deg, var(--pw-h1-gradient-start) 30%, var(--pw-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -207,7 +222,7 @@ main {
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0 0 0.5rem;
-  background: linear-gradient(135deg, #fff 0%, var(--pw-green) 100%);
+  background: linear-gradient(135deg, var(--pw-h1-gradient-start) 0%, var(--pw-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -291,9 +306,12 @@ code {
 
 pre {
   margin: 1rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   border-radius: 10px;
   border: 1px solid var(--pw-border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 32px var(--pw-shadow);
   overflow: auto;
 }
 
@@ -301,7 +319,7 @@ pre code {
   display: block;
   padding: 1rem 1.25rem;
   background: var(--pw-code-bg);
-  color: #c9d1d9;
+  color: var(--pw-code-text);
   border: none;
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -315,12 +333,22 @@ pre code {
 }
 
 .platform-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .platform-grid pre {
   margin: 0.75rem 0 0;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
+}
+
+/* Any grid that contains code blocks — one card per row */
+.feature-grid:has(pre),
+.feature-grid:has(.terminal) {
+  grid-template-columns: 1fr;
+}
+
+.feature-card pre {
+  margin: 0.75rem 0 0;
 }
 
 .platform-grid .feature-card p {
@@ -385,7 +413,7 @@ pre code {
   justify-content: center;
   font-weight: 700;
   font-size: 0.875rem;
-  color: var(--pw-bg);
+  color: var(--pw-step-counter-text);
   background: var(--pw-green);
   border-radius: 50%;
 }
@@ -446,12 +474,20 @@ pre code {
 
 .two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.25rem;
   margin: 1rem 0;
 }
 
+.two-col > pre,
+.two-col > .terminal {
+  width: 100%;
+}
+
 .terminal {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: var(--pw-code-bg);
   border: 1px solid var(--pw-border);
   border-radius: 10px;
@@ -480,7 +516,7 @@ pre code {
 
 .terminal-body {
   padding: 1rem;
-  color: #c9d1d9;
+  color: var(--pw-code-text);
 }
 
 .terminal-body .prompt {
@@ -494,7 +530,7 @@ pre code {
 .callout {
   padding: 1rem 1.15rem;
   margin: 1rem 0;
-  background: rgba(69, 186, 75, 0.08);
+  background: var(--pw-callout-bg);
   border-left: 3px solid var(--pw-green);
   border-radius: 0 8px 8px 0;
   font-size: 0.9rem;
@@ -570,10 +606,6 @@ pre code {
 
   main {
     padding: 1.5rem;
-  }
-
-  .two-col {
-    grid-template-columns: 1fr;
   }
 
   .header-links {
