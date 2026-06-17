@@ -106,5 +106,5 @@ export async function visitWithToken(
     },
     { authEmail: email, authToken: token },
   )
-  await page.goto(path)
+  await page.goto(path, { waitUntil: 'domcontentloaded' })
 }

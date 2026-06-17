@@ -4,6 +4,13 @@ import { visitAuthenticated } from '../../support/auth'
 
 test.describe('Classic Widgets — QA School patterns', { tag: '@regression' }, () => {
   test.beforeEach(async ({ page, request }) => {
+    await page.route('**/*', (route) => {
+      const url = route.request().url()
+      if (/youtube\.com|googlevideo\.com|ytimg\.com/i.test(url)) {
+        return route.abort()
+      }
+      return route.continue()
+    })
     await visitAuthenticated(page, request, '/web/widgets.html')
     await new WidgetsPage(page).shouldShowPage()
   })
