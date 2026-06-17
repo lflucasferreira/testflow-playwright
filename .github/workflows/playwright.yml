@@ -163,8 +163,12 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           pattern: allure-results-*
-          merge-multiple: true
-          path: allure-results
+          path: allure-results-staging
+        continue-on-error: true
+
+      - name: Merge Allure results by browser
+        if: always()
+        run: npm run allure:merge-results
         continue-on-error: true
 
       - name: Prepare Allure report for Pages
