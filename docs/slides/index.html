@@ -342,7 +342,8 @@ export default defineConfig({
   ],
 })</code></pre>
           <p class="fragment fade-up" style="font-size: 0.65em; color: var(--pw-muted);">
-            <code>projects</code> permitem rodar suites em paralelo no CI — mesmo padrão do testflow-cypress.
+            <code>projects</code> agrupam specs por área e browser; no CI todos rodam em um
+            <code>npm test</code> — localmente use <code>npm run test:&lt;project&gt;</code>.
           </p>
         </section>
 
@@ -1252,24 +1253,24 @@ npm run report              # relatório HTML</code></pre>
           <h2>CI — GitHub Actions</h2>
           <div class="feature-grid fragment fade-up" style="font-size: 0.62em;">
             <div class="feature-card">
-              <h4>Matrix paralela</h4>
-              <p>17 projects + job @smoke — inclui Firefox, WebKit e visual</p>
+              <h4>Job único no CI</h4>
+              <p>18 projects em um <code>npm test</code> — Firefox, WebKit, visual, a11y, API</p>
             </div>
             <div class="feature-card">
               <h4>Service container</h4>
               <p><code>qaschool/testflow:latest</code> na porta 5050</p>
             </div>
             <div class="feature-card">
-              <h4>Artefatos</h4>
-              <p>HTML report + screenshots em falha</p>
+              <h4>Allure + Pages</h4>
+              <p>Allure Report 3 em cada push para <code>main</code></p>
             </div>
             <div class="feature-card">
-              <h4>Retries</h4>
-              <p>2 retries no CI · trace on first retry</p>
+              <h4>Artefatos</h4>
+              <p>HTML Playwright + Allure; screenshots em falha</p>
             </div>
           </div>
           <p class="fragment fade-up" style="font-size: 0.58em; color: var(--pw-muted); margin-top: 0.8em;">
-            Workflow: <code>.github/workflows/playwright.yml</code>
+            Workflow: <code>.github/workflows/playwright.yml</code> · <code>test</code> → <code>publish</code> → <code>deploy</code>
           </p>
         </section>
 
@@ -1286,7 +1287,7 @@ npm run report              # relatório HTML</code></pre>
               <li class="fragment fade-up"><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
               <li class="fragment fade-up">Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
               <li class="fragment fade-up">Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
-              <li class="fragment fade-up"><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
+              <li class="fragment fade-up"><code>projects</code> no config — 18 suites; CI roda tudo com <code>npm test</code></li>
               <li class="fragment fade-up"><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
               <li class="fragment fade-up"><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
               <li class="fragment fade-up">Tags <code>@needs-browser</code> / <code>@negative-testing</code> — filtrar jobs no CI</li>

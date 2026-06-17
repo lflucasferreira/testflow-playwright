@@ -6,7 +6,7 @@
 
 ## Objetivo
 
-Esta suite leve valida **pré-requisitos de CI/CD** antes da matriz completa de testes rodar. Verifica:
+Esta suite leve valida **pré-requisitos de CI/CD** antes da suite completa rodar. Verifica:
 
 1. Variáveis de ambiente de credenciais demo estão configuradas
 2. `BASE_URL` resolve para uma URL HTTP(S) válida

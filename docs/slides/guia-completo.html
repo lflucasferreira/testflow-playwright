@@ -418,8 +418,8 @@ export default defineConfig({
   ],
 })</code></pre>
           <p>
-            <code>projects</code> permitem rodar suites em paralelo no CI — mesmo padrão do
-            <code>testflow-cypress</code>.
+            <code>projects</code> agrupam specs por área e browser; no CI todos rodam em um único
+            <code>npm test</code> — localmente use <code>npm run test:&lt;project&gt;</code> para uma suite.
           </p>
         </section>
 
@@ -1364,25 +1364,25 @@ npm run report                   # relatório HTML</code></pre>
           <h2 class="icon-heading"><img src="assets/icons/githubactions.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> CI — GitHub Actions</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Matrix paralela</h4>
-              <p>17+ projects —
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Job único no CI</h4>
+              <p>18 projects Playwright em um <code>npm test</code> —
                 <span class="browser-icons"><img src="assets/icons/googlechrome.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/firefox.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/safari.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /></span>
-                Chromium, Firefox, WebKit e visual</p>
+                Chromium, Firefox, WebKit smoke, visual, a11y, API</p>
             </div>
             <div class="feature-card">
               <h4 class="icon-heading"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Service container</h4>
               <p><code>qaschool/testflow:latest</code> na porta 5050</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Artefatos</h4>
-              <p>HTML report + screenshots em falha</p>
+              <h4 class="icon-heading"><img src="assets/icons/allure.svg" alt="" class="tool-icon" aria-hidden="true" /> Allure + Pages</h4>
+              <p>Allure Report 3 publicado a cada push em <code>main</code> (<code>publish</code> → <code>deploy</code>)</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/github.svg" alt="" class="tool-icon" aria-hidden="true" /> Retries</h4>
-              <p>2 retries no CI · trace on first retry</p>
+              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Artefatos</h4>
+              <p>HTML Playwright + Allure results; screenshots em falha</p>
             </div>
           </div>
-          <p>Workflow: <code>.github/workflows/playwright.yml</code></p>
+          <p>Workflow: <code>.github/workflows/playwright.yml</code> · jobs: <code>test</code> → <code>publish</code> → <code>deploy</code></p>
         </section>
 
         <section id="boas-praticas">
@@ -1396,10 +1396,10 @@ npm run report                   # relatório HTML</code></pre>
             <li><code>page.route</code> + <code>waitForRequest</code> — spy payload e mock de erro</li>
             <li>Fixtures JSON — dados determinísticos (<code>credentials</code>, <code>team-member</code>)</li>
             <li>Um cenário por <code>test()</code> — falhas fáceis de diagnosticar no report</li>
-            <li><code>projects</code> no config — smoke, auth, api em paralelo no CI</li>
+            <li><code>projects</code> no config — 18 suites; CI roda tudo com <code>npm test</code></li>
             <li><code>test.step</code> + <code>attachHttpExchangeReport</code> — debug de API no HTML report</li>
             <li><code>EXPECT</code> constants — status codes nomeados, não magic numbers</li>
-            <li>Tags <code>@smoke</code> / <code>@regression</code> — filtrar jobs no CI</li>
+            <li>Tags <code>@smoke</code> / <code>@regression</code> — filtrar localmente com <code>test:grep:*</code></li>
             <li><code>globalSetup</code> + cache de token — setup pesado uma vez por run</li>
             <li><code>visitAuthenticated</code> — navega autenticado para qualquer rota</li>
             <li><code>AxeBuilder</code> + <code>@a11y</code> — scans de acessibilidade sem violações críticas</li>

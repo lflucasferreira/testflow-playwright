@@ -8,3 +8,5 @@ Choose your language:
 - **[Português (pt-BR)](pt/README.md)** — walkthrough bloco a bloco de cada spec
 
 Other resources: [slides](slides/) · [complete guide EN](slides/complete-guide.html) · [guia PT](slides/guia-completo.html) · [selector strategy](selector-strategy.md) · [interview questions (PT)](playwright-technical-interview-questions.md)
+
+CI runs the full suite in one GitHub Actions job (`.github/workflows/playwright.yml`); Allure Report is published on every push to `main`.

@@ -133,9 +133,22 @@ testflow-playwright/
 
 ## CI
 
-GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (17 matrix jobs + `@smoke` grep job), including Firefox/WebKit smoke and visual regression.
+GitHub Actions (`.github/workflows/playwright.yml`) runs in three stages on push to `main`:
 
-**GitHub Pages** (`.github/workflows/playwright.yml`, job `publish` on `main`): merges Allure results from the matrix, builds the docs landing, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
+| Job | When | What it does |
+|-----|------|----------------|
+| `test` | PR + `main` | `npm test` — all 18 Playwright projects in one job (45 min timeout) |
+| `publish` | `main` only | Generates Allure Report 3, builds docs site |
+| `deploy` | `main` only | Deploys to GitHub Pages |
+
+The runner starts a single `qaschool/testflow:latest` service, installs Chromium/Firefox/WebKit once, and executes every project sequentially (`workers: 1` in CI).
+
+**GitHub Pages:** enable **Settings → Pages → Source: GitHub Actions** once.
+
+- Hub: `https://lflucasferreira.github.io/testflow-playwright/`
+- Allure report: `https://lflucasferreira.github.io/testflow-playwright/report/`
+
+Locally, use `npm run test:<project>` to run a single project (e.g. `test:widgets`, `test:smoke-webkit`).
 
 ## Slides & interview prep
 

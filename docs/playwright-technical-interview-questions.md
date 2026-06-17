@@ -472,7 +472,7 @@
 | # | Pergunta | Tag |
 |---|----------|-----|
 | 19.1 | Como rodar project específico (`--project=smoke`)? | `[SLIDE]` `[PROJETO]` |
-| 19.2 | Como paralelizar testes no CI com matrix strategy? | `[SLIDE]` `[PROJETO]` |
+| 19.2 | Como o CI executa a suite completa em um job único (`npm test`)? | `[SLIDE]` `[PROJETO]` |
 | 19.3 | Como configurar GitHub Actions com cache e artifacts? | `[SLIDE]` `[PROJETO]` |
 | 19.4 | O que publicar como artifact em falha (report, test-results)? | `[SLIDE]` `[PROJETO]` |
 | 19.5 | Como rodar Playwright com Docker service (TestFlow container)? | `[PROJETO]` |
@@ -485,8 +485,8 @@
 | 19.12 | Como integrar com GitLab CI / Azure DevOps / Jenkins? | `[EXTRA]` |
 | 19.13 | Qual estratégia de gate: bloquear merge se smoke falhar? | `[EXTRA]` |
 | 19.14 | Como usar sharding (`--shard=1/4`) para paralelismo horizontal? | `[EXTRA]` |
-| 19.15 | Como configurar `fail-fast: false` na matrix? | `[PROJETO]` |
-| 19.16 | Como combinar reports de múltiplos jobs? | `[PROJETO]` |
+| 19.15 | Como estruturar jobs `test` → `publish` → `deploy` no GitHub Pages? | `[PROJETO]` |
+| 19.16 | Quando usar sharding ou matrix em vez de um job único? | `[PROJETO]` |
 | 19.17 | Como instalar browsers com deps no Ubuntu CI (`--with-deps`)? | `[PROJETO]` |
 
 ---

@@ -6,7 +6,7 @@
 
 ## Purpose
 
-This lightweight suite validates **CI/CD prerequisites** before the full test matrix runs. It checks:
+This lightweight suite validates **CI/CD prerequisites** before the full test suite runs. It checks:
 
 1. Demo credential environment variables are configured
 2. `BASE_URL` resolves to a valid HTTP(S) URL
