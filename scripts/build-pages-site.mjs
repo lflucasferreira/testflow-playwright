@@ -31,6 +31,13 @@ fs.mkdirSync(siteDir, { recursive: true })
 fs.copyFileSync(path.join(root, 'docs', 'index.html'), path.join(siteDir, 'index.html'))
 copyDir(path.join(root, 'docs', 'slides'), path.join(siteDir, 'slides'))
 
+for (const guide of ['guia-completo.html', 'complete-guide.html']) {
+  const src = path.join(root, 'docs', guide)
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, path.join(siteDir, guide))
+  }
+}
+
 const reportDest = path.join(siteDir, 'report')
 if (fs.existsSync(path.join(allureReport, 'index.html'))) {
   copyDir(allureReport, reportDest)

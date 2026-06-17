@@ -137,11 +137,17 @@ GitHub Actions (`.github/workflows/playwright.yml`) runs in three stages on push
 
 | Job | When | What it does |
 |-----|------|----------------|
-| `test` | PR + `main` | `npm test` — all 18 Playwright projects in one job (45 min timeout) |
-| `publish` | `main` only | Generates Allure Report 3, builds docs site |
+| `test` | PR + `main` | Matrix **chromium / firefox / webkit** — 3 parallel jobs (`test:ci:*`) |
+| `publish` | `main` only | Merges Allure results from all browsers, builds docs site |
 | `deploy` | `main` only | Deploys to GitHub Pages |
 
-The runner starts a single `qaschool/testflow:latest` service, installs Chromium/Firefox/WebKit once, and executes every project sequentially (`workers: 1` in CI).
+| Browser job | Projects | Timeout |
+|-------------|----------|---------|
+| `chromium` | api + 14 UI suites (smoke, auth, widgets, visual, a11y, …) | 40 min |
+| `firefox` | `smoke-firefox` | 20 min |
+| `webkit` | `smoke-webkit` | 20 min |
+
+Each runner starts `qaschool/testflow:latest`, installs **one browser**, and runs with `workers: 1` in CI. Wall-clock time ≈ duration of the chromium job (~30–40 min), not the sum of all three.
 
 **GitHub Pages:** enable **Settings → Pages → Source: GitHub Actions** once.
 

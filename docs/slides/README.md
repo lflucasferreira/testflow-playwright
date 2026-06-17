@@ -7,8 +7,6 @@ Apresentação Reveal.js sobre Playwright (E2E, API, POM, testflow-playwright).
 | Arquivo | Descrição |
 |---------|-----------|
 | `index.html` | Apresentação interativa (Reveal.js) |
-| `guia-completo.html` | Guia passo a passo em português (instalação + todos os comandos) |
-| `complete-guide.html` | Step-by-step guide in English (setup + all commands) |
 | `playwright-intro-slides.pdf` | Versão PDF (53 páginas — inclui sub-slides verticais) |
 | `css/theme-playwright.css` | Tema visual Playwright |
 | `assets/playwright-logo.svg` | Official Playwright logo ([playwright.dev](https://playwright.dev/img/playwright-logo.svg)) |
@@ -19,13 +17,15 @@ Apresentação Reveal.js sobre Playwright (E2E, API, POM, testflow-playwright).
 
 Training walkthroughs (block-by-block per spec): [`docs/`](../) · [English](../en/README.md) · [Português](../pt/README.md)
 
+Complete guides (single-page HTML): [`guia-completo.html`](../guia-completo.html) (PT) · [`complete-guide.html`](../complete-guide.html) (EN)
+
 ## Visualizar no browser
 
 ```bash
 npm run slides
-# http://localhost:3335/docs/slides/                        ← slides Reveal.js
-# http://localhost:3335/docs/slides/guia-completo.html      ← guia PT
-# http://localhost:3335/docs/slides/complete-guide.html     ← guide EN
+# http://localhost:3335/docs/slides/              ← slides Reveal.js
+# http://localhost:3335/docs/guia-completo.html   ← guia PT
+# http://localhost:3335/docs/complete-guide.html  ← guide EN
 ```
 
 Abrir direto:

@@ -83,8 +83,8 @@ The docs cover, among other topics:
 | Resource | Description |
 |----------|-------------|
 | [`slides/`](../slides/) | Introductory Playwright presentation (HTML/PDF) |
-| [`slides/guia-completo.html`](../slides/guia-completo.html) | Step-by-step guide in Portuguese (single page) |
-| [`slides/complete-guide.html`](../slides/complete-guide.html) | Step-by-step guide in English (single page) |
+| [`guia-completo.html`](../guia-completo.html) | Step-by-step guide in Portuguese (single page) |
+| [`complete-guide.html`](../complete-guide.html) | Step-by-step guide in English (single page) |
 | [`selector-strategy.md`](../selector-strategy.md) | `data-testid` via `page.getByTestId` |
 | [`playwright-technical-interview-questions.md`](../playwright-technical-interview-questions.md) | Technical interview question bank (Portuguese) |
 
@@ -95,6 +95,8 @@ The docs cover, among other topics:
 ```
 docs/
 ├── README.md                          ← language selector
+├── guia-completo.html                 ← complete guide (PT)
+├── complete-guide.html                ← complete guide (EN)
 ├── playwright-technical-interview-questions.md
 ├── selector-strategy.md
 ├── en/
@@ -103,7 +105,7 @@ docs/
 ├── pt/
 │   ├── README.md                      ← índice (Português)
 │   └── tests/
-└── slides/                            ← presentation
+└── slides/                            ← Reveal.js presentation only
 ```
 
 Each `.md` in `docs/en/tests/` mirrors the homonymous spec under `tests/`.

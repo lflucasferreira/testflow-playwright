@@ -5,6 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
+  /* Code blocks stay dark in every theme (complete guides) */
+  --pw-code-bg: #0d1117;
+  --pw-code-text: #c9d1d9;
+  --pw-code-border: #30363d;
+  --pw-code-surface: #161b22;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --sidebar-width: 280px;
@@ -304,13 +309,19 @@ code {
   border: 1px solid var(--pw-border);
 }
 
+[data-theme='light'] code:not(pre code) {
+  background: var(--pw-code-bg);
+  color: var(--pw-code-text);
+  border-color: var(--pw-code-border);
+}
+
 pre {
   margin: 1rem 0;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 1px solid var(--pw-border);
+  border: 1px solid var(--pw-code-border);
   box-shadow: 0 8px 32px var(--pw-shadow);
   overflow: auto;
 }
@@ -489,7 +500,7 @@ pre code {
   max-width: 100%;
   box-sizing: border-box;
   background: var(--pw-code-bg);
-  border: 1px solid var(--pw-border);
+  border: 1px solid var(--pw-code-border);
   border-radius: 10px;
   overflow: hidden;
   font-family: var(--font-mono);
@@ -500,8 +511,8 @@ pre code {
   display: flex;
   gap: 6px;
   padding: 0.6rem 0.75rem;
-  background: var(--pw-surface);
-  border-bottom: 1px solid var(--pw-border);
+  background: var(--pw-code-surface);
+  border-bottom: 1px solid var(--pw-code-border);
 }
 
 .terminal-dot {
@@ -524,7 +535,7 @@ pre code {
 }
 
 .terminal-body .comment {
-  color: var(--pw-muted);
+  color: #6e7681;
 }
 
 .callout {

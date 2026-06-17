@@ -83,8 +83,8 @@ Os documentos cobrem, entre outros:
 | Recurso | Descrição |
 |---------|-----------|
 | [`slides/`](../slides/) | Apresentação introdutória Playwright (HTML/PDF) |
-| [`slides/guia-completo.html`](../slides/guia-completo.html) | Guia passo a passo em português (página única) |
-| [`slides/complete-guide.html`](../slides/complete-guide.html) | Step-by-step guide in English (single page) |
+| [`guia-completo.html`](../guia-completo.html) | Guia passo a passo em português (página única) |
+| [`complete-guide.html`](../complete-guide.html) | Step-by-step guide in English (single page) |
 | [`selector-strategy.md`](../selector-strategy.md) | `data-testid` via `page.getByTestId` |
 | [`playwright-technical-interview-questions.md`](../playwright-technical-interview-questions.md) | Banco de perguntas técnicas para entrevistas (Português) |
 
@@ -95,6 +95,8 @@ Os documentos cobrem, entre outros:
 ```
 docs/
 ├── README.md                          ← seletor de idioma
+├── guia-completo.html                 ← guia completo (PT)
+├── complete-guide.html                ← complete guide (EN)
 ├── playwright-technical-interview-questions.md
 ├── selector-strategy.md
 ├── pt/
@@ -103,7 +105,7 @@ docs/
 ├── en/
 │   ├── README.md                      ← index (English)
 │   └── tests/
-└── slides/                            ← apresentação
+└── slides/                            ← apresentação Reveal.js
 ```
 
 Cada `.md` em `docs/pt/tests/` espelha o spec homônimo em `tests/`.

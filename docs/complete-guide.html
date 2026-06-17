@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playwright — Complete Guide (Setup &amp; Commands)</title>
     <meta name="description" content="Step-by-step: what Playwright is, installation, project structure, and every command from the slides." />
-    <link rel="icon" href="assets/playwright-logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="slides/assets/playwright-logo.svg" type="image/svg+xml" />
     <script>
       (function () {
         var path = location.pathname
         var last = path.split('/').filter(Boolean).pop() || ''
         if (/\.html?$/i.test(last)) return
 
-        var base
-        var slidesIdx = path.indexOf('/slides')
-        if (slidesIdx !== -1) {
-          base = path.substring(0, slidesIdx + '/slides'.length) + '/'
-        } else {
-          base = path.replace(/\/index$/i, '')
-          if (!base.endsWith('/')) base += '/'
+        var docsIdx = path.indexOf('/docs/')
+        if (docsIdx !== -1) {
+          var b = document.createElement('base')
+          b.href = path.substring(0, docsIdx + '/docs/'.length)
+          document.head.appendChild(b)
+          return
         }
 
+        var base = path.replace(/\/[^/]+$/, '/')
+        if (!base.endsWith('/')) base += '/'
         var b = document.createElement('base')
         b.href = base
         document.head.appendChild(b)
@@ -36,21 +37,22 @@
         document.documentElement.setAttribute('data-theme', t)
       })()
     </script>
-    <link id="hljs-theme" rel="stylesheet" href="../../node_modules/highlight.js/styles/github-dark.css" />
-    <link rel="stylesheet" href="css/themes.css" />
-    <link rel="stylesheet" href="css/theme-toggle.css" />
-    <link rel="stylesheet" href="css/guide.css" />
-    <link rel="stylesheet" href="css/icons.css" />
+    <link id="hljs-theme" rel="stylesheet" href="../node_modules/highlight.js/styles/github-dark.css" />
+    <link rel="stylesheet" href="slides/css/themes.css" />
+    <link rel="stylesheet" href="slides/css/theme-toggle.css" />
+    <link rel="stylesheet" href="slides/css/guide.css" />
+    <link rel="stylesheet" href="slides/css/theme-light.css" />
+    <link rel="stylesheet" href="slides/css/icons.css" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="../index.html">
-        <img src="assets/playwright-logo.svg" alt="Playwright" width="28" height="28" />
+      <a class="brand" href="index.html">
+        <img src="slides/assets/playwright-logo.svg" alt="Playwright" width="28" height="28" />
         Playwright — Complete Guide
       </a>
       <nav class="header-links">
         <a class="nav-github" href="https://github.com/lflucasferreira/testflow-playwright" target="_blank" rel="noopener">
-          <img src="assets/icons/github.svg" alt="" width="18" height="18" aria-hidden="true" />
+          <img src="slides/assets/icons/github.svg" alt="" width="18" height="18" aria-hidden="true" />
           GitHub
         </a>
         <button type="button" class="theme-toggle" aria-label="Toggle theme">
@@ -149,7 +151,7 @@
       <main>
         <header class="hero">
           <div class="hero-logo">
-            <img src="assets/playwright-logo.svg" alt="Playwright" width="64" height="64" />
+            <img src="slides/assets/playwright-logo.svg" alt="Playwright" width="64" height="64" />
             <span class="wordmark">Playwright</span>
           </div>
           <h1>Playwright — Step-by-step guide</h1>
@@ -164,20 +166,20 @@
           <h2>What is Playwright?</h2>
           <p>
             Playwright is a
-            <span class="tool-inline"><img src="assets/icons/microsoft.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Microsoft</strong></span>
+            <span class="tool-inline"><img src="slides/assets/icons/microsoft.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Microsoft</strong></span>
             automation framework for end-to-end and API testing — with native support for
-            <span class="browser-icons"><img src="assets/icons/googlechrome.svg" alt="Chromium" class="tool-icon" width="18" height="18" /><img src="assets/icons/firefox.svg" alt="Firefox" class="tool-icon" width="18" height="18" /><img src="assets/icons/safari.svg" alt="WebKit" class="tool-icon" width="18" height="18" /></span>
+            <span class="browser-icons"><img src="slides/assets/icons/googlechrome.svg" alt="Chromium" class="tool-icon" width="18" height="18" /><img src="slides/assets/icons/firefox.svg" alt="Firefox" class="tool-icon" width="18" height="18" /><img src="slides/assets/icons/safari.svg" alt="WebKit" class="tool-icon" width="18" height="18" /></span>
             Chromium, Firefox, and WebKit.
           </p>
           <ul>
-            <li>Written in <span class="tool-inline"><img src="assets/icons/typescript.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>TypeScript</strong></span> / JavaScript</li>
+            <li>Written in <span class="tool-inline"><img src="slides/assets/icons/typescript.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>TypeScript</strong></span> / JavaScript</li>
             <li>Modern API with <strong>auto-wait</strong> — less flakiness</li>
             <li>Fixtures <code>page</code>, <code>request</code>, <code>context</code> per test</li>
             <li>UI Mode, trace viewer, screenshots, and HTML report</li>
             <li>Native parallelism and isolation between workers</li>
           </ul>
           <div class="callout">
-            Unlike <span class="tool-inline"><img src="assets/icons/cypress.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />Cypress</span>, Playwright uses <strong>WebDriver BiDi</strong> / native browser protocols
+            Unlike <span class="tool-inline"><img src="slides/assets/icons/cypress.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />Cypress</span>, Playwright uses <strong>WebDriver BiDi</strong> / native browser protocols
             and runs outside the application context — supporting multiple browsers and API-only tests
             in the same runner.
           </div>
@@ -187,19 +189,19 @@
           <h2>Why use Playwright?</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Speed &amp; parallelism</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Speed &amp; parallelism</h4>
               <p>Parallel workers and isolated browser contexts per test.</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Resilient locators</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Resilient locators</h4>
               <p><code>getByTestId</code>, role, text — recommended by official docs.</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Rich debugging</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Rich debugging</h4>
               <p>UI Mode, headed, Inspector, and trace on retry.</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Unified E2E + API</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Unified E2E + API</h4>
               <p><code>page</code> for UI and <code>request</code> for REST contracts.</p>
             </div>
           </div>
@@ -212,20 +214,20 @@
               <h3>Environment</h3>
               <ul class="tool-list">
                 <li>
-                  <img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
                   <span><strong>Node.js</strong> 20+</span>
                 </li>
                 <li>
-                  <img src="assets/icons/npm.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <img src="slides/assets/icons/npm.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
                   <span><strong>npm</strong> (or pnpm / yarn)</span>
                 </li>
                 <li>
-                  <img src="assets/icons/testflow.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <img src="slides/assets/icons/testflow.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
                   <span><strong>TestFlow</strong> app on port <code>5050</code></span>
                 </li>
                 <li>
-                  <img src="assets/icons/visualstudiocode.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
-                  <span>Editor: <strong>VS Code</strong> / <img src="assets/icons/cursor.svg" alt="" class="tool-icon tool-icon--sm" width="16" height="16" aria-hidden="true" style="vertical-align:-0.15em" /> <strong>Cursor</strong> (Playwright extension optional)</span>
+                  <img src="slides/assets/icons/visualstudiocode.svg" alt="" class="tool-icon" width="20" height="20" aria-hidden="true" />
+                  <span>Editor: <strong>VS Code</strong> / <img src="slides/assets/icons/cursor.svg" alt="" class="tool-icon tool-icon--sm" width="16" height="16" aria-hidden="true" style="vertical-align:-0.15em" /> <strong>Cursor</strong> (Playwright extension optional)</span>
                 </li>
               </ul>
             </div>
@@ -250,16 +252,16 @@
           <h2>Environment setup by platform</h2>
           <p>
             Before cloning the repository, install
-            <span class="tool-inline"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Node.js 20+</strong></span>,
-            <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Git</strong></span>, and
-            <span class="tool-inline"><img src="assets/icons/docker.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Docker</strong></span>
-            (to run <span class="tool-inline"><img src="assets/icons/testflow.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />TestFlow</span> on port <code>5050</code>).
+            <span class="tool-inline"><img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Node.js 20+</strong></span>,
+            <span class="tool-inline"><img src="slides/assets/icons/git.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Git</strong></span>, and
+            <span class="tool-inline"><img src="slides/assets/icons/docker.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" /><strong>Docker</strong></span>
+            (to run <span class="tool-inline"><img src="slides/assets/icons/testflow.svg" alt="" class="tool-icon" width="18" height="18" aria-hidden="true" />TestFlow</span> on port <code>5050</code>).
             Project steps (<code>npm install</code>, browsers) are the same on every OS.
           </p>
 
           <div class="feature-grid platform-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/apple.svg" alt="" class="tool-icon" aria-hidden="true" /> macOS</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/apple.svg" alt="" class="tool-icon" aria-hidden="true" /> macOS</h4>
               <pre><code class="language-bash"># Homebrew — https://brew.sh
 brew install node@20 git
 brew link --overwrite node@20
@@ -268,27 +270,27 @@ brew install --cask docker
 node --version   # v20+
 git --version</code></pre>
               <div class="platform-tools">
-                <span class="tool-chip"><img src="assets/icons/homebrew.svg" alt="" class="tool-icon" aria-hidden="true" /> Homebrew</span>
-                <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> nvm</span>
-                <span class="tool-chip"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker Desktop</span>
+                <span class="tool-chip"><img src="slides/assets/icons/homebrew.svg" alt="" class="tool-icon" aria-hidden="true" /> Homebrew</span>
+                <span class="tool-chip"><img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> nvm</span>
+                <span class="tool-chip"><img src="slides/assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker Desktop</span>
               </div>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/windows.svg" alt="" class="tool-icon" aria-hidden="true" /> Windows</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/windows.svg" alt="" class="tool-icon" aria-hidden="true" /> Windows</h4>
               <pre><code class="language-powershell">winget install OpenJS.NodeJS.LTS
 winget install Git.Git
 winget install Docker.DockerDesktop
 
 node --version</code></pre>
               <div class="platform-tools">
-                <span class="tool-chip"><img src="assets/icons/winget.svg" alt="" class="tool-icon" aria-hidden="true" /> winget</span>
-                <span class="tool-chip"><img src="assets/icons/powershell.svg" alt="" class="tool-icon" aria-hidden="true" /> PowerShell</span>
-                <span class="tool-chip"><img src="assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git Bash</span>
+                <span class="tool-chip"><img src="slides/assets/icons/winget.svg" alt="" class="tool-icon" aria-hidden="true" /> winget</span>
+                <span class="tool-chip"><img src="slides/assets/icons/powershell.svg" alt="" class="tool-icon" aria-hidden="true" /> PowerShell</span>
+                <span class="tool-chip"><img src="slides/assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git Bash</span>
               </div>
-              <p>Installers: <span class="tool-inline"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a></span>, <span class="tool-inline"><img src="assets/icons/git.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a></span>, <span class="tool-inline"><img src="assets/icons/docker.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a></span>.</p>
+              <p>Installers: <span class="tool-inline"><img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs.org</a></span>, <span class="tool-inline"><img src="slides/assets/icons/git.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a></span>, <span class="tool-inline"><img src="slides/assets/icons/docker.svg" alt="" class="tool-icon tool-icon--sm" aria-hidden="true" /><a href="https://docker.com/products/docker-desktop" target="_blank" rel="noopener">Docker Desktop</a></span>.</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/linux.svg" alt="" class="tool-icon" aria-hidden="true" /> Linux</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/linux.svg" alt="" class="tool-icon" aria-hidden="true" /> Linux</h4>
               <pre><code class="language-bash"># Debian / Ubuntu
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs git docker.io
@@ -296,9 +298,9 @@ sudo usermod -aG docker $USER
 
 node --version</code></pre>
               <div class="platform-tools">
-                <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> NodeSource</span>
-                <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> install-deps</span>
-                <span class="tool-chip"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker</span>
+                <span class="tool-chip"><img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> NodeSource</span>
+                <span class="tool-chip"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> install-deps</span>
+                <span class="tool-chip"><img src="slides/assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Docker</span>
               </div>
               <p>After <code>npm install</code>: <code>npx playwright install-deps</code> (browser system libs). Fedora: <code>dnf install nodejs git docker</code>.</p>
             </div>
@@ -317,8 +319,8 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
                 <code>git clone https://github.com/lflucasferreira/testflow-playwright.git</code><br />
                 <code>cd testflow-playwright</code>
                 <div class="install-step-tools">
-                  <span class="tool-chip"><img src="assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git</span>
-                  <span class="tool-chip"><img src="assets/icons/github.svg" alt="" class="tool-icon" aria-hidden="true" /> GitHub</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/git.svg" alt="" class="tool-icon" aria-hidden="true" /> Git</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/github.svg" alt="" class="tool-icon" aria-hidden="true" /> GitHub</span>
                 </div>
               </div>
             </li>
@@ -327,8 +329,8 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
                 <strong>Install dependencies</strong><br />
                 <code>npm install</code>
                 <div class="install-step-tools">
-                  <span class="tool-chip"><img src="assets/icons/npm.svg" alt="" class="tool-icon" aria-hidden="true" /> npm</span>
-                  <span class="tool-chip"><img src="assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> Node.js</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/npm.svg" alt="" class="tool-icon" aria-hidden="true" /> npm</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/nodedotjs.svg" alt="" class="tool-icon" aria-hidden="true" /> Node.js</span>
                 </div>
               </div>
             </li>
@@ -337,10 +339,10 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
                 <strong>Install browsers</strong><br />
                 <code>npm run install:browsers</code>
                 <div class="install-step-tools">
-                  <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Playwright</span>
-                  <span class="tool-chip"><img src="assets/icons/googlechrome.svg" alt="" class="tool-icon" aria-hidden="true" /> Chromium</span>
-                  <span class="tool-chip"><img src="assets/icons/firefox.svg" alt="" class="tool-icon" aria-hidden="true" /> Firefox</span>
-                  <span class="tool-chip"><img src="assets/icons/safari.svg" alt="" class="tool-icon" aria-hidden="true" /> WebKit</span>
+                  <span class="tool-chip"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Playwright</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/googlechrome.svg" alt="" class="tool-icon" aria-hidden="true" /> Chromium</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/firefox.svg" alt="" class="tool-icon" aria-hidden="true" /> Firefox</span>
+                  <span class="tool-chip"><img src="slides/assets/icons/safari.svg" alt="" class="tool-icon" aria-hidden="true" /> WebKit</span>
                 </div>
               </div>
             </li>
@@ -349,7 +351,7 @@ docker run --rm -p 5050:5050 qaschool/testflow:latest</code></pre>
                 <strong>Run tests</strong><br />
                 <code>npm test</code> or <code>npm run test:ui</code>
                 <div class="install-step-tools">
-                  <span class="tool-chip"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</span>
+                  <span class="tool-chip"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</span>
                 </div>
               </div>
             </li>
@@ -542,7 +544,7 @@ test.describe('Authentication', () => {
           <h2>Selector strategy</h2>
           <p>
             This project uses <code>data-testid</code> exclusively on the TestFlow app — no component tests.
-            See also <a href="../selector-strategy.md">docs/selector-strategy.md</a>.
+            See also <a href="selector-strategy.md">docs/selector-strategy.md</a>.
           </p>
           <table class="compare-table compact">
             <thead>
@@ -871,19 +873,19 @@ npm run test:grep:smoke                              # @smoke (Chromium)</code><
           <p>API-only suite: no browser, no UI — focus on REST contracts, OAuth, and cross-service sync.</p>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/cypress.svg" alt="" class="tool-icon" aria-hidden="true" /> Cypress legacy</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/cypress.svg" alt="" class="tool-icon" aria-hidden="true" /> Cypress legacy</h4>
               <p>Service Objects + <code>cy.request</code> + localStorage token</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Current Playwright</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Current Playwright</h4>
               <p><code>request</code> fixture + helpers + JWT cache</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/typescript.svg" alt="" class="tool-icon" aria-hidden="true" /> Organization</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/typescript.svg" alt="" class="tool-icon" aria-hidden="true" /> Organization</h4>
               <p><code>api/gets/</code> · <code>api/patch/</code> · JSON fixtures</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/githubactions.svg" alt="" class="tool-icon" aria-hidden="true" /> CI</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/githubactions.svg" alt="" class="tool-icon" aria-hidden="true" /> CI</h4>
               <p><code>PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1</code></p>
             </div>
           </div>
@@ -1037,7 +1039,7 @@ await testInfo.attach('curl-replay', { body: buildCurl('PATCH', url, headers, bo
         </section>
 
         <section id="postman">
-          <h2 class="icon-heading"><img src="assets/icons/postman.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Postman → Playwright migration</h2>
+          <h2 class="icon-heading"><img src="slides/assets/icons/postman.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Postman → Playwright migration</h2>
           <ul>
             <li>Pre-request script → <code>buildApiHeaders()</code></li>
             <li>Tests tab assertions → <code>expect()</code> + golden fixtures</li>
@@ -1147,8 +1149,8 @@ test.beforeAll(async () =&gt; {
         </section>
 
         <section id="a11y-axe">
-          <h2 class="icon-heading"><img src="assets/icons/axe.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Accessibility — axe-core</h2>
-          <p><code>a11y</code> suite — scans with <code>@axe-core/playwright</code> on key pages. Doc: <a href="../en/tests/a11y/a11y.md">a11y.md</a></p>
+          <h2 class="icon-heading"><img src="slides/assets/icons/axe.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> Accessibility — axe-core</h2>
+          <p><code>a11y</code> suite — scans with <code>@axe-core/playwright</code> on key pages. Doc: <a href="en/tests/a11y/a11y.md">a11y.md</a></p>
           <pre><code class="language-typescript">import AxeBuilder from '@axe-core/playwright'
 
 async function assertNoCriticalViolations(page, scope?: string) {
@@ -1176,7 +1178,7 @@ for (const { path, name, scope } of A11Y_PAGES) {
 
         <section id="visual-regression">
           <h2>Visual regression — toHaveScreenshot</h2>
-          <p><code>visual</code> suite — compares screenshots of stable regions. Doc: <a href="../en/tests/visual/visual.md">visual.md</a></p>
+          <p><code>visual</code> suite — compares screenshots of stable regions. Doc: <a href="en/tests/visual/visual.md">visual.md</a></p>
           <pre><code class="language-typescript">const SCREENSHOT_OPTS = { animations: 'disabled', maxDiffPixelRatio: 0.05 }
 
 test('login form matches baseline', async ({ page }) =&gt; {
@@ -1197,7 +1199,7 @@ test('login form matches baseline', async ({ page }) =&gt; {
 
         <section id="layout-shell">
           <h2>App shell — layout &amp; navigation</h2>
-          <p><code>layout</code> suite — sidebar, topbar, notifications, theme toggle. Doc: <a href="../en/tests/layout/shell.md">shell.md</a></p>
+          <p><code>layout</code> suite — sidebar, topbar, notifications, theme toggle. Doc: <a href="en/tests/layout/shell.md">shell.md</a></p>
           <pre><code class="language-typescript">test.beforeEach(async ({ page, request }) =&gt; {
   await loginViaApi(page, request)
   await new ShellPage(page).shouldShowAppShell()
@@ -1218,7 +1220,7 @@ await expect.poll(() =&gt; page.evaluate(() =&gt; localStorage.getItem('theme'))
 
         <section id="widgets-patterns">
           <h2>Classic Widgets — QA School patterns</h2>
-          <p><code>widgets</code> suite — upload, Select2, SweetAlert2, drag-and-drop, popups. Doc: <a href="../en/tests/widgets/widgets.md">widgets.md</a></p>
+          <p><code>widgets</code> suite — upload, Select2, SweetAlert2, drag-and-drop, popups. Doc: <a href="en/tests/widgets/widgets.md">widgets.md</a></p>
           <pre><code class="language-typescript">// Upload with fixture
 await widgets.uploadFile('fixtures/sample-upload.txt')
 
@@ -1260,32 +1262,32 @@ await widgets.dragCardAToSlotB()</code></pre>
           <p>
             Each spec has a detailed walkthrough with Given/When/Then, tags, and run commands.
             Choose language:
-            <a href="../en/README.md">English</a> ·
-            <a href="../pt/README.md">Português</a>
+            <a href="en/README.md">English</a> ·
+            <a href="pt/README.md">Português</a>
           </p>
           <table class="compare-table compact">
             <thead>
               <tr><th>Suite</th><th>Doc EN</th><th>Doc PT</th><th>Command</th></tr>
             </thead>
             <tbody>
-              <tr><td>Smoke</td><td><a href="../en/tests/smoke/navigation.md">navigation.md</a></td><td><a href="../pt/tests/smoke/navigation.md">navigation.md</a></td><td><code>npm run test:smoke</code></td></tr>
-              <tr><td>Auth</td><td><a href="../en/tests/auth/login.md">login.md</a></td><td><a href="../pt/tests/auth/login.md">login.md</a></td><td><code>npm run test:auth</code></td></tr>
-              <tr><td>Dashboard</td><td><a href="../en/tests/dashboard/dashboard.md">dashboard.md</a></td><td><a href="../pt/tests/dashboard/dashboard.md">dashboard.md</a></td><td><code>npm run test:dashboard</code></td></tr>
-              <tr><td>Team</td><td><a href="../en/tests/team/team.md">team.md</a></td><td><a href="../pt/tests/team/team.md">team.md</a></td><td><code>npm run test:team</code></td></tr>
-              <tr><td>Settings</td><td><a href="../en/tests/settings/settings.md">settings.md</a></td><td><a href="../pt/tests/settings/settings.md">settings.md</a></td><td><code>npm run test:settings</code></td></tr>
-              <tr><td>Components</td><td><a href="../en/tests/components/components.md">components.md</a></td><td><a href="../pt/tests/components/components.md">components.md</a></td><td><code>npm run test:components</code></td></tr>
-              <tr><td>Wizard</td><td><a href="../en/tests/wizard/wizard.md">wizard.md</a></td><td><a href="../pt/tests/wizard/wizard.md">wizard.md</a></td><td><code>npm run test:wizard</code></td></tr>
-              <tr><td>Activity</td><td><a href="../en/tests/activity/activity.md">activity.md</a></td><td><a href="../pt/tests/activity/activity.md">activity.md</a></td><td><code>npm run test:activity</code></td></tr>
-              <tr><td>Advanced</td><td><a href="../en/tests/advanced/advanced.md">advanced.md</a></td><td><a href="../pt/tests/advanced/advanced.md">advanced.md</a></td><td><code>npm run test:advanced</code></td></tr>
-              <tr><td>UI States</td><td><a href="../en/tests/states/states.md">states.md</a></td><td><a href="../pt/tests/states/states.md">states.md</a></td><td><code>npm run test:states</code></td></tr>
-              <tr><td>Layout</td><td><a href="../en/tests/layout/shell.md">shell.md</a></td><td><a href="../pt/tests/layout/shell.md">shell.md</a></td><td><code>npm run test:layout</code></td></tr>
-              <tr><td>Widgets</td><td><a href="../en/tests/widgets/widgets.md">widgets.md</a></td><td><a href="../pt/tests/widgets/widgets.md">widgets.md</a></td><td><code>npm run test:widgets</code></td></tr>
-              <tr><td>Visual</td><td><a href="../en/tests/visual/visual.md">visual.md</a></td><td><a href="../pt/tests/visual/visual.md">visual.md</a></td><td><code>npm run test:visual</code></td></tr>
-              <tr><td>A11y</td><td><a href="../en/tests/a11y/a11y.md">a11y.md</a></td><td><a href="../pt/tests/a11y/a11y.md">a11y.md</a></td><td><code>npm run test:a11y</code></td></tr>
-              <tr><td>API auth</td><td><a href="../en/tests/api/auth.api.md">auth.api.md</a></td><td><a href="../pt/tests/api/auth.api.md">auth.api.md</a></td><td><code>npm run test:api</code></td></tr>
-              <tr><td>API users</td><td><a href="../en/tests/api/users.api.md">users.api.md</a></td><td><a href="../pt/tests/api/users.api.md">users.api.md</a></td><td><code>npm run test:api</code></td></tr>
-              <tr><td>API rules</td><td><a href="../en/tests/api/rules.api.md">rules.api.md</a></td><td><a href="../pt/tests/api/rules.api.md">rules.api.md</a></td><td><code>npm run test:api</code></td></tr>
-              <tr><td>CI diagnostics</td><td><a href="../en/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><a href="../pt/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>Smoke</td><td><a href="en/tests/smoke/navigation.md">navigation.md</a></td><td><a href="pt/tests/smoke/navigation.md">navigation.md</a></td><td><code>npm run test:smoke</code></td></tr>
+              <tr><td>Auth</td><td><a href="en/tests/auth/login.md">login.md</a></td><td><a href="pt/tests/auth/login.md">login.md</a></td><td><code>npm run test:auth</code></td></tr>
+              <tr><td>Dashboard</td><td><a href="en/tests/dashboard/dashboard.md">dashboard.md</a></td><td><a href="pt/tests/dashboard/dashboard.md">dashboard.md</a></td><td><code>npm run test:dashboard</code></td></tr>
+              <tr><td>Team</td><td><a href="en/tests/team/team.md">team.md</a></td><td><a href="pt/tests/team/team.md">team.md</a></td><td><code>npm run test:team</code></td></tr>
+              <tr><td>Settings</td><td><a href="en/tests/settings/settings.md">settings.md</a></td><td><a href="pt/tests/settings/settings.md">settings.md</a></td><td><code>npm run test:settings</code></td></tr>
+              <tr><td>Components</td><td><a href="en/tests/components/components.md">components.md</a></td><td><a href="pt/tests/components/components.md">components.md</a></td><td><code>npm run test:components</code></td></tr>
+              <tr><td>Wizard</td><td><a href="en/tests/wizard/wizard.md">wizard.md</a></td><td><a href="pt/tests/wizard/wizard.md">wizard.md</a></td><td><code>npm run test:wizard</code></td></tr>
+              <tr><td>Activity</td><td><a href="en/tests/activity/activity.md">activity.md</a></td><td><a href="pt/tests/activity/activity.md">activity.md</a></td><td><code>npm run test:activity</code></td></tr>
+              <tr><td>Advanced</td><td><a href="en/tests/advanced/advanced.md">advanced.md</a></td><td><a href="pt/tests/advanced/advanced.md">advanced.md</a></td><td><code>npm run test:advanced</code></td></tr>
+              <tr><td>UI States</td><td><a href="en/tests/states/states.md">states.md</a></td><td><a href="pt/tests/states/states.md">states.md</a></td><td><code>npm run test:states</code></td></tr>
+              <tr><td>Layout</td><td><a href="en/tests/layout/shell.md">shell.md</a></td><td><a href="pt/tests/layout/shell.md">shell.md</a></td><td><code>npm run test:layout</code></td></tr>
+              <tr><td>Widgets</td><td><a href="en/tests/widgets/widgets.md">widgets.md</a></td><td><a href="pt/tests/widgets/widgets.md">widgets.md</a></td><td><code>npm run test:widgets</code></td></tr>
+              <tr><td>Visual</td><td><a href="en/tests/visual/visual.md">visual.md</a></td><td><a href="pt/tests/visual/visual.md">visual.md</a></td><td><code>npm run test:visual</code></td></tr>
+              <tr><td>A11y</td><td><a href="en/tests/a11y/a11y.md">a11y.md</a></td><td><a href="pt/tests/a11y/a11y.md">a11y.md</a></td><td><code>npm run test:a11y</code></td></tr>
+              <tr><td>API auth</td><td><a href="en/tests/api/auth.api.md">auth.api.md</a></td><td><a href="pt/tests/api/auth.api.md">auth.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>API users</td><td><a href="en/tests/api/users.api.md">users.api.md</a></td><td><a href="pt/tests/api/users.api.md">users.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>API rules</td><td><a href="en/tests/api/rules.api.md">rules.api.md</a></td><td><a href="pt/tests/api/rules.api.md">rules.api.md</a></td><td><code>npm run test:api</code></td></tr>
+              <tr><td>CI diagnostics</td><td><a href="en/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><a href="pt/tests/api/env-diagnostics.md">env-diagnostics.md</a></td><td><code>npm run test:api</code></td></tr>
             </tbody>
           </table>
         </section>
@@ -1326,7 +1328,7 @@ await widgets.dragCardAToSlotB()</code></pre>
           <h2>How to run</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> UI Mode</h4>
               <pre><code class="language-bash">npm run test:ui
 npm run test:auth -- --ui</code></pre>
             </div>
@@ -1361,24 +1363,24 @@ npm run report                   # HTML report</code></pre>
         </section>
 
         <section id="ci">
-          <h2 class="icon-heading"><img src="assets/icons/githubactions.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> CI — GitHub Actions</h2>
+          <h2 class="icon-heading"><img src="slides/assets/icons/githubactions.svg" alt="" class="tool-icon tool-icon--md" aria-hidden="true" /> CI — GitHub Actions</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Single CI job</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Single CI job</h4>
               <p>18 Playwright projects in one <code>npm test</code> run —
-                <span class="browser-icons"><img src="assets/icons/googlechrome.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/firefox.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="assets/icons/safari.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /></span>
+                <span class="browser-icons"><img src="slides/assets/icons/googlechrome.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="slides/assets/icons/firefox.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /><img src="slides/assets/icons/safari.svg" alt="" class="tool-icon" width="16" height="16" aria-hidden="true" /></span>
                 Chromium, Firefox, WebKit smoke, visual, a11y, API</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Service container</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/docker.svg" alt="" class="tool-icon" aria-hidden="true" /> Service container</h4>
               <p><code>qaschool/testflow:latest</code> on port 5050</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/icons/allure.svg" alt="" class="tool-icon" aria-hidden="true" /> Allure + Pages</h4>
+              <h4 class="icon-heading"><img src="slides/assets/icons/allure.svg" alt="" class="tool-icon" aria-hidden="true" /> Allure + Pages</h4>
               <p>Allure Report 3 published on every push to <code>main</code> (<code>publish</code> → <code>deploy</code>)</p>
             </div>
             <div class="feature-card">
-              <h4 class="icon-heading"><img src="assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Artifacts</h4>
+              <h4 class="icon-heading"><img src="slides/assets/playwright-logo.svg" alt="" class="tool-icon" aria-hidden="true" /> Artifacts</h4>
               <p>Playwright HTML + Allure results; screenshots on failure</p>
             </div>
           </div>
@@ -1408,7 +1410,7 @@ npm run report                   # HTML report</code></pre>
             <li>Factories in <code>support/factories/</code> — reusable wizard and PATCH payloads</li>
             <li><code>readFixture</code> + <code>expectSameMembers</code> — golden contracts without JSON Schema</li>
             <li><code>JsonPatchBuilder</code> + <code>runPatchTests()</code> — enterprise data-driven PATCH</li>
-            <li>Read the block-by-block walkthrough in <a href="../en/README.md">docs/en/</a> or <a href="../pt/README.md">docs/pt/</a></li>
+            <li>Read the block-by-block walkthrough in <a href="en/README.md">docs/en/</a> or <a href="pt/README.md">docs/pt/</a></li>
             <li><code>npm run test:ui</code> in dev — immediate visual feedback</li>
           </ul>
         </section>
@@ -1416,38 +1418,38 @@ npm run report                   # HTML report</code></pre>
         <section id="next-steps">
           <h2>Next steps</h2>
           <div class="feature-grid">
-            <a class="feature-card" href="../en/README.md" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
+            <a class="feature-card" href="en/README.md" style="text-decoration:none;color:inherit;">
+              <img class="card-logo" src="slides/assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Docs EN — walkthroughs</h4>
               <p>Block-by-block explanation of every spec file (18 files).</p>
             </a>
-            <a class="feature-card" href="../pt/README.md" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
+            <a class="feature-card" href="pt/README.md" style="text-decoration:none;color:inherit;">
+              <img class="card-logo" src="slides/assets/icons/github.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Docs PT — walkthroughs</h4>
               <p>Explicação bloco a bloco de cada spec (18 arquivos).</p>
             </a>
-            <a class="feature-card" href="index.html" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/icons/revealjs.svg" alt="" width="32" height="32" aria-hidden="true" />
+            <a class="feature-card" href="slides/index.html" style="text-decoration:none;color:inherit;">
+              <img class="card-logo" src="slides/assets/icons/revealjs.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Interactive slides</h4>
               <p>Reveal.js presentation with animations and keyboard navigation.</p>
             </a>
-            <a class="feature-card" href="../selector-strategy.md" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
+            <a class="feature-card" href="selector-strategy.md" style="text-decoration:none;color:inherit;">
+              <img class="card-logo" src="slides/assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Selector strategy</h4>
               <p><code>data-testid</code> via <code>getByTestId</code> — TestFlow convention.</p>
             </a>
             <a class="feature-card" href="https://playwright.dev/docs/intro" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <img class="card-logo" src="slides/assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>Official documentation</h4>
               <p>playwright.dev — complete API reference.</p>
             </a>
             <a class="feature-card" href="https://playwright.dev/docs/test-ui-mode" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <img class="card-logo" src="slides/assets/playwright-logo.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>UI Mode</h4>
               <p>Interactive debug with time-travel.</p>
             </a>
             <a class="feature-card" href="https://github.com/qaschoolbr/testflow" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
-              <img class="card-logo" src="assets/icons/testflow.svg" alt="" width="32" height="32" aria-hidden="true" />
+              <img class="card-logo" src="slides/assets/icons/testflow.svg" alt="" width="32" height="32" aria-hidden="true" />
               <h4>TestFlow</h4>
               <p>App under test — qaschool/testflow.</p>
             </a>
@@ -1458,11 +1460,11 @@ npm run report                   # HTML report</code></pre>
 
     <footer class="site-footer">
       TestFlow Playwright — Complete guide · June 2026 ·
-      <a href="index.html">Back to slides</a>
+      <a href="slides/index.html">Back to slides</a>
     </footer>
 
-    <script src="js/theme.js" data-base="../../"></script>
-    <script src="../../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="slides/js/theme.js" data-base="../"></script>
+    <script src="../node_modules/reveal.js/plugin/highlight/highlight.js"></script>
     <script>hljs.highlightAll()</script>
     <script>
       const links = document.querySelectorAll('.sidebar a')

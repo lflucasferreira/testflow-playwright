@@ -16,9 +16,13 @@ permissions:
 
 jobs:
   test:
-    name: Playwright — full suite
+    name: Playwright — ${{ matrix.browser }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: ${{ matrix.browser == 'chromium' && 40 || 20 }}
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     services:
       testflow:
         image: qaschool/testflow:latest
@@ -53,23 +57,23 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: ms-playwright-all-${{ hashFiles('package-lock.json') }}
+          key: ms-playwright-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium firefox webkit --with-deps
+      - name: Install Playwright browser
+        run: npx playwright install ${{ matrix.browser }} --with-deps
 
       - name: Verify TestFlow is reachable
         continue-on-error: true
         run: curl -sf http://localhost:5050/health && echo "TestFlow OK" || echo "TestFlow not reachable"
 
-      - name: Run Playwright full suite
-        run: npm test
+      - name: Run Playwright — ${{ matrix.browser }}
+        run: npm run test:ci:${{ matrix.browser }}
 
       - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.browser }}
           path: playwright-report/
           if-no-files-found: ignore
 
@@ -77,7 +81,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: allure-results
+          name: allure-results-${{ matrix.browser }}
           path: allure-results/
           if-no-files-found: ignore
 
@@ -85,7 +89,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v6
         with:
-          name: test-results
+          name: test-results-${{ matrix.browser }}
           path: test-results/
           if-no-files-found: ignore
 
@@ -114,7 +118,8 @@ jobs:
       - name: Download Allure results
         uses: actions/download-artifact@v7
         with:
-          name: allure-results
+          pattern: allure-results-*
+          merge-multiple: true
           path: allure-results
         continue-on-error: true
 

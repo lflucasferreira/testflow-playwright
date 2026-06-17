@@ -21,10 +21,13 @@
     document.documentElement.setAttribute('data-theme', theme)
 
     if (basePath) {
-      const hlFile = theme === 'light' ? 'github.css' : 'github-dark.css'
+      const isRevealSlides = !!document.querySelector('.reveal')
+      const hlFile = isRevealSlides && theme === 'light' ? 'github.css' : 'github-dark.css'
       const revealFile = theme === 'light' ? 'white.css' : 'black.css'
       swapStylesheet('hljs-theme', `${basePath}node_modules/highlight.js/styles/${hlFile}`)
-      swapStylesheet('reveal-theme', `${basePath}node_modules/reveal.js/dist/theme/${revealFile}`)
+      if (isRevealSlides) {
+        swapStylesheet('reveal-theme', `${basePath}node_modules/reveal.js/dist/theme/${revealFile}`)
+      }
     }
 
     document.querySelectorAll('.theme-toggle').forEach((btn) => {

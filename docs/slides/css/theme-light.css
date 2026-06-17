@@ -1,0 +1,44 @@
+/**
+ * Light theme overrides — slides & guia
+ * Slides: light code palette scoped to Reveal viewport (matches testflow-pytest slides).
+ * Guia: code blocks keep dark palette from guide.css :root tokens.
+ */
+
+[data-theme='light'] .reveal-viewport {
+  --pw-code-bg: #f4f8fb;
+  --pw-code-text: #1a2332;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45, 164, 78, 0.1), transparent),
+    radial-gradient(circle at 100% 100%, rgba(45, 164, 78, 0.05), transparent 40%);
+}
+
+[data-theme='light'] .hero h1,
+[data-theme='light'] .hero-logo .wordmark {
+  background: linear-gradient(135deg, #1a2332 0%, var(--pw-green) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+[data-theme='light'] pre,
+[data-theme='light'] .reveal pre,
+[data-theme='light'] .terminal {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+[data-theme='light'] .reveal pre,
+[data-theme='light'] .reveal .terminal {
+  box-shadow: 0 8px 32px var(--pw-shadow);
+}
+
+[data-theme='light'] .reveal .terminal {
+  box-shadow: none;
+}
+
+[data-theme='light'] .reveal .terminal-header {
+  background: var(--pw-code-bg);
+  border-bottom-color: var(--pw-border);
+}
+
+[data-theme='light'] .callout {
+  color: var(--pw-muted);
+}

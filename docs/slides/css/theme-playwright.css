@@ -119,6 +119,11 @@
   border: 1px solid var(--pw-border);
 }
 
+.reveal pre code.hljs {
+  background: var(--pw-code-bg);
+  color: var(--pw-code-text);
+}
+
 .reveal pre code {
   display: block;
   padding: 1em 1.2em;
@@ -347,6 +352,10 @@
 
 .terminal-body .prompt {
   color: var(--pw-green);
+}
+
+.terminal-body .comment {
+  color: #6e7681;
 }
 
 .compare-table {
