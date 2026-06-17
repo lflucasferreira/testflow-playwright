@@ -63,6 +63,35 @@ function writeLegacyRedirect(destFile, target) {
   )
 }
 
+function copyPagesVendorAssets() {
+  const nodeModules = path.join(root, 'node_modules')
+  const revealSrc = path.join(nodeModules, 'reveal.js')
+  const hljsSrc = path.join(nodeModules, 'highlight.js')
+  const siteModules = path.join(siteDir, 'node_modules')
+
+  if (!fs.existsSync(revealSrc)) {
+    throw new Error('Missing reveal.js — run npm ci before pages:build')
+  }
+  if (!fs.existsSync(hljsSrc)) {
+    throw new Error('Missing highlight.js — run npm ci before pages:build')
+  }
+
+  copyDir(path.join(revealSrc, 'dist'), path.join(siteModules, 'reveal.js', 'dist'))
+  fs.mkdirSync(path.join(siteModules, 'reveal.js', 'plugin', 'highlight'), { recursive: true })
+  fs.copyFileSync(
+    path.join(revealSrc, 'plugin', 'highlight', 'highlight.js'),
+    path.join(siteModules, 'reveal.js', 'plugin', 'highlight', 'highlight.js'),
+  )
+
+  const hlStyles = path.join(siteModules, 'highlight.js', 'styles')
+  fs.mkdirSync(hlStyles, { recursive: true })
+  for (const style of ['github.css', 'github-dark.css']) {
+    fs.copyFileSync(path.join(hljsSrc, 'styles', style), path.join(hlStyles, style))
+  }
+
+  console.log('Copied reveal.js + highlight.js assets to site/node_modules/')
+}
+
 fs.rmSync(siteDir, { recursive: true, force: true })
 fs.mkdirSync(docsDest, { recursive: true })
 
@@ -78,8 +107,11 @@ for (const guide of ['guia-completo.html', 'complete-guide.html']) {
 
 fs.writeFileSync(path.join(siteDir, 'index.html'), ROOT_REDIRECT_HTML)
 
+writeLegacyRedirect(path.join(siteDir, 'slides', 'index.html'), '../docs/slides/')
 writeLegacyRedirect(path.join(siteDir, 'slides', 'complete-guide.html'), '../docs/complete-guide.html')
 writeLegacyRedirect(path.join(siteDir, 'slides', 'guia-completo.html'), '../docs/guia-completo.html')
+
+copyPagesVendorAssets()
 
 const reportDest = path.join(siteDir, 'report')
 if (fs.existsSync(path.join(allureReport, 'index.html'))) {
