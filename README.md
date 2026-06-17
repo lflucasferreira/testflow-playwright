@@ -135,7 +135,7 @@ testflow-playwright/
 
 GitHub Actions workflow runs each project in parallel against the `qaschool/testflow:latest` Docker service (17 matrix jobs + `@smoke` grep job), including Firefox/WebKit smoke and visual regression.
 
-**GitHub Pages** (`.github/workflows/pages.yml`): on every push to `main`, runs the full suite, generates an Allure report, builds the docs landing, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
+**GitHub Pages** (`.github/workflows/playwright.yml`, job `publish` on `main`): merges Allure results from the matrix, builds the docs landing, and deploys to GitHub Pages. Enable **Settings → Pages → Source: GitHub Actions** once.
 
 ## Slides & interview prep
 

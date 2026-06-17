@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -155,25 +156,76 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
 
-  report:
-    name: Publish combined report
-    runs-on: ubuntu-latest
-    needs: [test, smoke-grep]
-    if: always()
-    timeout-minutes: 5
-    steps:
-      - name: Download all reports
-        uses: actions/download-artifact@v7
-        with:
-          pattern: playwright-report-*
-          merge-multiple: true
-          path: combined-report
-        continue-on-error: true
-
-      - name: Upload combined report
+      - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: playwright-report
-          path: combined-report/
+          name: allure-results-smoke-grep
+          path: allure-results/
           if-no-files-found: ignore
+
+  publish:
+    name: Build Allure report & publish GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [test, smoke-grep]
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout test suite
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download Allure results
+        uses: actions/download-artifact@v7
+        with:
+          pattern: allure-results-*
+          merge-multiple: true
+          path: allure-results
+        continue-on-error: true
+
+      - name: Generate Allure report
+        run: npm run report:allure
+        continue-on-error: true
+
+      - name: Build GitHub Pages site
+        run: npm run pages:build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: allure-report-pages
+          path: |
+            allure-report/
+            allure-results/
+            site/report/
+          if-no-files-found: ignore
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
