@@ -4,9 +4,11 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const siteDir = path.join(root, 'site')
+const docsSrc = path.join(root, 'docs')
+const docsDest = path.join(siteDir, 'docs')
 const allureReport = path.join(root, 'allure-report')
 const playwrightReport = path.join(root, 'playwright-report')
-const fallbackReport = path.join(root, 'docs', 'report')
+const fallbackReport = path.join(docsSrc, 'report')
 
 const NO_REPORT_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -21,22 +23,63 @@ const NO_REPORT_HTML = `<!DOCTYPE html>
 </html>
 `
 
+const ROOT_REDIRECT_HTML = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0; url=docs/" />
+    <link rel="canonical" href="docs/" />
+    <title>testflow-playwright</title>
+    <script>location.replace('docs/')</script>
+  </head>
+  <body>
+    <p><a href="docs/">testflow-playwright documentation</a></p>
+  </body>
+</html>
+`
+
 function copyDir(src, dest) {
   fs.cpSync(src, dest, { recursive: true })
 }
 
-fs.rmSync(siteDir, { recursive: true, force: true })
-fs.mkdirSync(siteDir, { recursive: true })
+function writeLegacyRedirect(destFile, target) {
+  fs.mkdirSync(path.dirname(destFile), { recursive: true })
+  fs.writeFileSync(
+    destFile,
+    `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0; url=${target}" />
+    <link rel="canonical" href="${target}" />
+    <title>Redirecting…</title>
+    <script>location.replace('${target}')</script>
+  </head>
+  <body>
+    <p>Moved — <a href="${target}">open the guide</a>.</p>
+  </body>
+</html>
+`,
+  )
+}
 
-fs.copyFileSync(path.join(root, 'docs', 'index.html'), path.join(siteDir, 'index.html'))
-copyDir(path.join(root, 'docs', 'slides'), path.join(siteDir, 'slides'))
+fs.rmSync(siteDir, { recursive: true, force: true })
+fs.mkdirSync(docsDest, { recursive: true })
+
+fs.copyFileSync(path.join(docsSrc, 'index.html'), path.join(docsDest, 'index.html'))
+copyDir(path.join(docsSrc, 'slides'), path.join(docsDest, 'slides'))
 
 for (const guide of ['guia-completo.html', 'complete-guide.html']) {
-  const src = path.join(root, 'docs', guide)
+  const src = path.join(docsSrc, guide)
   if (fs.existsSync(src)) {
-    fs.copyFileSync(src, path.join(siteDir, guide))
+    fs.copyFileSync(src, path.join(docsDest, guide))
   }
 }
+
+fs.writeFileSync(path.join(siteDir, 'index.html'), ROOT_REDIRECT_HTML)
+
+writeLegacyRedirect(path.join(siteDir, 'slides', 'complete-guide.html'), '../docs/complete-guide.html')
+writeLegacyRedirect(path.join(siteDir, 'slides', 'guia-completo.html'), '../docs/guia-completo.html')
 
 const reportDest = path.join(siteDir, 'report')
 if (fs.existsSync(path.join(allureReport, 'index.html'))) {

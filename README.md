@@ -151,7 +151,10 @@ Each runner starts `qaschool/testflow:latest`, installs **one browser**, and run
 
 **GitHub Pages:** enable **Settings → Pages → Source: GitHub Actions** once.
 
-- Hub: `https://lflucasferreira.github.io/testflow-playwright/`
+- Hub: `https://lflucasferreira.github.io/testflow-playwright/docs/`
+- Complete guide (EN): `https://lflucasferreira.github.io/testflow-playwright/docs/complete-guide.html`
+- Guia completo (PT): `https://lflucasferreira.github.io/testflow-playwright/docs/guia-completo.html`
+- Slides: `https://lflucasferreira.github.io/testflow-playwright/docs/slides/`
 - Allure report: `https://lflucasferreira.github.io/testflow-playwright/report/`
 
 Locally, use `npm run test:<project>` to run a single project (e.g. `test:widgets`, `test:smoke-webkit`).
