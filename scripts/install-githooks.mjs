@@ -2,9 +2,14 @@ import { execSync } from 'node:child_process'
 import { chmodSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 
+if (process.env.CI) {
+  console.log('Skipping git hooks install in CI')
+  process.exit(0)
+}
+
 const root = process.cwd()
 const hooksDir = join(root, '.githooks')
-const hookNames = ['pre-commit', 'commit-msg', 'pre-push']
+const hookNames = ['pre-commit', 'commit-msg', 'prepare-commit-msg', 'pre-push']
 
 if (!existsSync(hooksDir)) {
   console.error('Missing .githooks directory')
