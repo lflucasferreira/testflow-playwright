@@ -35,6 +35,7 @@
     "test:ci:webkit": "playwright test --project=smoke-webkit",
     "report": "playwright show-report playwright-report",
     "report:allure": "node scripts/generate-allure-report.mjs",
+    "pages:prepare-allure": "node scripts/prepare-allure-for-pages.mjs",
     "report:allure:open": "npx allure open allure-report",
     "report:allure:serve": "npm run report:allure && npm run report:allure:open",
     "report:pages": "node scripts/publish-report-pages.mjs",

@@ -133,13 +133,15 @@ testflow-playwright/
 
 ## CI
 
-GitHub Actions (`.github/workflows/playwright.yml`) runs in three stages on push to `main`:
+GitHub Actions (`.github/workflows/playwright.yml`) on push to `main`:
 
 | Job | When | What it does |
 |-----|------|----------------|
 | `test` | PR + `main` | Matrix **chromium / firefox / webkit** — 3 parallel jobs (`test:ci:*`) |
-| `publish` | `main` only | Merges Allure results from all browsers, builds docs site |
-| `deploy` | `main` only | Deploys to GitHub Pages |
+| `publish-pages` | `main` only | Builds docs site (slides, guides) and deploys to GitHub Pages immediately |
+| `deploy-pages` | `main` only | Deploys the docs site |
+| `publish-allure` | `main` only | After tests (`if: always()`), merges Allure results, rebuilds site with report |
+| `deploy-allure` | `main` only | Redeploys GitHub Pages with the Allure report when available |
 
 | Browser job | Projects | Timeout |
 |-------------|----------|---------|

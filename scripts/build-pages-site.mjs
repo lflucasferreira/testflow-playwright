@@ -7,6 +7,7 @@ const siteDir = path.join(root, 'site')
 const docsSrc = path.join(root, 'docs')
 const docsDest = path.join(siteDir, 'docs')
 const allureReport = path.join(root, 'allure-report')
+const allureStaging = path.join(root, 'pages-allure-staging')
 const playwrightReport = path.join(root, 'playwright-report')
 const fallbackReport = path.join(docsSrc, 'report')
 
@@ -114,7 +115,10 @@ writeLegacyRedirect(path.join(siteDir, 'slides', 'guia-completo.html'), '../docs
 copyPagesVendorAssets()
 
 const reportDest = path.join(siteDir, 'report')
-if (fs.existsSync(path.join(allureReport, 'index.html'))) {
+if (fs.existsSync(path.join(allureStaging, 'index.html'))) {
+  copyDir(allureStaging, reportDest)
+  console.log('Using pages-allure-staging/ for site/report/')
+} else if (fs.existsSync(path.join(allureReport, 'index.html'))) {
   copyDir(allureReport, reportDest)
   console.log('Using allure-report/ for site/report/')
 } else if (fs.existsSync(path.join(playwrightReport, 'index.html'))) {

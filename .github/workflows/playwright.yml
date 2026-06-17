@@ -93,10 +93,57 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
 
-  publish:
-    name: Build Allure report & publish GitHub Pages
+  publish-pages:
+    name: Build site & publish GitHub Pages
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout test suite
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build GitHub Pages site
+        run: npm run pages:build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: publish-pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.publish-pages.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  publish-allure:
+    name: Publish Allure report to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: test
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 15
     permissions:
       contents: read
@@ -123,9 +170,9 @@ jobs:
           path: allure-results
         continue-on-error: true
 
-      - name: Generate Allure report
+      - name: Prepare Allure report for Pages
         if: always()
-        run: npm run report:allure
+        run: npm run pages:prepare-allure
         continue-on-error: true
 
       - name: Build GitHub Pages site
@@ -144,13 +191,14 @@ jobs:
           path: |
             allure-report/
             allure-results/
+            pages-allure-staging/
             site/report/
           if-no-files-found: ignore
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: publish
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.publish.result == 'success'
+  deploy-allure:
+    name: Deploy Allure report to GitHub Pages
+    needs: publish-allure
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.publish-allure.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
