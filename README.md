@@ -139,9 +139,7 @@ GitHub Actions (`.github/workflows/playwright.yml`) on push to `main`:
 |-----|------|----------------|
 | `test` | PR + `main` | Matrix **chromium / firefox / webkit** — 3 parallel jobs (`test:ci:*`) |
 | `publish-pages` | `main` only | Builds docs site (slides, guides) and deploys to GitHub Pages immediately |
-| `deploy-pages` | `main` only | Deploys the docs site |
-| `publish-allure` | `main` only | After tests (`if: always()`), merges Allure results, rebuilds site with report |
-| `deploy-allure` | `main` only | Redeploys GitHub Pages with the Allure report when available |
+| `publish-allure` | `main` only | After tests (`if: always()`), merges Allure results, rebuilds site, and redeploys |
 
 | Browser job | Projects | Timeout |
 |-------------|----------|---------|
